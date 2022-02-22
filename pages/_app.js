@@ -1,18 +1,23 @@
 import '../styles/globals.scss'
+import { RecoilRoot } from 'recoil'
 import { SessionProvider, useSession } from 'next-auth/react'
-import Topbar from '../components/menu/Topbar'
+import LeftRemote from '../components/menu/RemoteMenu'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      {Component.auth ? (
-        <Auth>
-          <Topbar />
+      <RecoilRoot>
+        {Component.auth ? (
+          <Auth>
+            <div className="h-screen w-screen md:flex md:p-5">
+              <LeftRemote />
+              <Component {...pageProps} />
+            </div>
+          </Auth>
+        ) : (
           <Component {...pageProps} />
-        </Auth>
-      ) : (
-        <Component {...pageProps} />
-      )}
+        )}
+      </RecoilRoot>
     </SessionProvider>
   )
 }
