@@ -1,12 +1,34 @@
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
+import Router from 'next/router'
 import Link from 'next/link'
-import { Formik, ErrorMessage } from 'formik'
-import { AiFillCheckCircle } from 'react-icons/ai'
+import axios from 'axios'
+import { gql } from 'graphql-request'
+import { graphcmsClient } from '../lib/graphcms'
+import { hash } from 'bcryptjs'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import YupPassword from 'yup-password'
+import { AiFillCheckCircle } from 'react-icons/ai'
+import { useWindowSize } from '../hooks/useWindowSize'
+import { useSession } from 'next-auth/react'
 
 YupPassword(Yup)
 
 const register = () => {
+  const { data: session } = useSession()
+  if (session) Router.push('/')
+
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
+  const [newUserName, setNewUserName] = useState('')
+  const [verificationCode, setVerificationCode] = useState('')
+  const { width, height } = useWindowSize()
+
+  // 동적 임포트를 안하면 서버랑 클라이언트에서 윈도우 너비가 다르다고 에러가 난다
+  // 이 에러에 대한 내용은 https://github.com/vercel/next.js/discussions/18379
+  // 다이나믹 임포트에 대한 자세한 내용은 https://nextjs.org/docs/advanced-features/dynamic-import
+  const Confetti = dynamic(() => import('react-confetti'), { ssr: false })
+
   const fields = [
     {
       id: 'username',
@@ -14,6 +36,11 @@ const register = () => {
       placeholder: '특수문자 및 공백 사용 불가',
     },
     { id: 'email', label: '이메일' },
+    {
+      id: 'verificationCode',
+      label: '인증코드',
+      placeholder: '메일을 확인하시고 6자리의 숫자를 입력해주세요',
+    },
     {
       id: 'password',
       label: '비밀번호',
@@ -39,10 +66,52 @@ const register = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다')
       .required('필수 입력 항목입니다'),
+    verificationCode: Yup.string()
+      .matches(verificationCode, '발송된 코드와 일치하지 않습니다')
+      .required('필수 입력 항목입니다'),
   })
 
+  const CreateUserByEmail = gql`
+    mutation CreateUserByEmail(
+      $username: String!
+      $email: String!
+      $password: String!
+    ) {
+      newUser: createDayrecorderUser(
+        data: { username: $username, email: $email, password: $password }
+      ) {
+        email
+        username
+      }
+    }
+  `
+
+  const sendEmail = async (userEmail) => {
+    const { data: verificationCode } = await axios.post(
+      'api/auth/verificationMail',
+      {
+        mail: userEmail,
+      }
+    )
+    setVerificationCode(verificationCode)
+  }
+
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
+    <div className="relative flex h-screen items-center justify-center bg-gray-100">
+      {isRegisterSuccess && (
+        <>
+          <Confetti width={width} height={height} />
+          <div className="absolute h-full w-full bg-black bg-opacity-40" />
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <h1 className="flex justify-center text-5xl font-black text-gray-100 opacity-90">
+              환영합니다, {newUserName}님 🎉
+            </h1>
+            <p className="absolute left-1/2 mt-8 w-fit -translate-x-1/2 rounded-md bg-gray-700 bg-opacity-80 py-1 px-2 text-lg text-gray-200">
+              2초 뒤 로그인 페이지로 이동합니다
+            </p>
+          </div>
+        </>
+      )}
       <div className="w-5/6 rounded-md bg-white py-10 px-8 xl:w-1/4">
         <Link href="/login">
           <p className="mb-1 w-fit cursor-pointer py-1 px-2 text-xs text-gray-400 hover:rounded-lg hover:bg-gray-100 hover:text-blue-400">
@@ -56,13 +125,28 @@ const register = () => {
             email: '',
             password: '',
             confirmPassword: '',
+            verificationCode: '',
           }}
           validationSchema={validate}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2))
-              setSubmitting(false)
-            }, 400)
+          onSubmit={async (values, { setSubmitting }) => {
+            setSubmitting(true)
+            const { username, email, password } = values
+
+            const { newUser } = await graphcmsClient.request(
+              CreateUserByEmail,
+              {
+                username,
+                email,
+                password: await hash(password, 12),
+              }
+            )
+            console.log(newUser)
+
+            setNewUserName(newUser.username)
+            setIsRegisterSuccess(true)
+            setSubmitting(false)
+
+            setTimeout(() => Router.push('/login'), 3000)
           }}
         >
           {({
@@ -103,7 +187,7 @@ const register = () => {
                           {field.label}
                         </label>
                       </section>
-                      <section className="col-span-9">
+                      <section className="col-span-9 flex items-center">
                         <input
                           key={i}
                           type={
@@ -119,6 +203,14 @@ const register = () => {
                           value={values[field.id]}
                           className="inputBorderBottomBlue mb-4"
                         />
+                        {field.id === 'email' && (
+                          <button
+                            onClick={() => sendEmail(values.email)}
+                            className="btnGray ml-2 w-40 -translate-y-2"
+                          >
+                            인증코드 발송
+                          </button>
+                        )}
                       </section>
 
                       <p className="alertTextSm -translate-y-3 tracking-normal">

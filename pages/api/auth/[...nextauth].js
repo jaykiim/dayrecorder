@@ -1,0 +1,67 @@
+import NextAuth from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { compare } from 'bcrypt'
+import { gql } from 'graphql-request'
+import { graphcmsClient } from '../../../lib/graphcms'
+
+const GetUserByEmail = gql`
+  query getUserByEmail($email: String!) {
+    user: dayrecorderUser(where: { email: $email }, stage: DRAFT) {
+      email
+      password
+    }
+  }
+`
+
+export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt', // 사용자 세션 저장 방법 (database 또는 jwt를 선택할 수 있는데, CredentialsProvider를 사용하려면 jwt를 써야한다.)
+    maxAge: 30 * 24 * 60 * 60, // 유효 기간 30일 (기본값)
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
+  debug: process.env.NODE_ENV === 'development',
+  providers: [
+    CredentialsProvider({
+      authorize: async ({ email, password }) => {
+        // 파라미터로 들어오는 값은 프론트 코드에서 signIn함수 두 번째 인자로 넘긴 객체
+
+        const { user } = await graphcmsClient.request(GetUserByEmail, {
+          email,
+        })
+        console.log(user)
+
+        if (!user) {
+          throw new Error('이메일 혹은 비밀번호가 일치하지 않습니다.')
+        }
+
+        const isValid = await compare(password, user.password)
+
+        if (!isValid) {
+          throw new Error('이메일 혹은 비밀번호가 일치하지 않습니다.')
+        }
+
+        return {
+          username: user.username,
+          email,
+        }
+      },
+    }),
+    GoogleProvider({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_PWD,
+    }),
+  ],
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    async session({ session, token }) {
+      session.userId = token.sub
+      return Promise.resolve(session)
+    },
+  },
+})
