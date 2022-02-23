@@ -1,40 +1,31 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
-import { selectedDate } from '../../store/common'
 import { dateObj } from '../calendar/utils'
 import { getTimeline } from './utils'
 
-const Body = ({ isWeek }) => {
+const Body = ({ year, month, day }) => {
   const timeline = getTimeline()
-  const date = useRecoilValue(selectedDate)
-  const { day, weekday } = dateObj(date)
+  const { weekday } = dateObj(new Date(year, month, day))
 
   return (
-    <>
-      <header className="mt-6 h-fit flex-1 border-b border-green-500 text-center md:border-green-300">
+    <div className="w-full">
+      <header className="mt-6 h-fit flex-1 border-l border-b border-green-500 py-3 text-center text-green-700 md:border-green-300">
         <p className="font-bold">{weekday}</p>
         <p>{day}</p>
       </header>
 
-      <section>
-        {timeline.map((time, i) => {
+      <section className="w-full">
+        {timeline.map((_, i) => {
           return (
-            <div key={i} className="flex h-24 text-xs">
-              <span
-                className={`border-r border-green-500 pr-3 md:border-green-300 ${
-                  time === '00:00' && 'text-green-300 md:text-white'
-                }`}
-              >
-                {time}
-              </span>
-              {i !== 0 && (
-                <div className="w-full translate-y-2 border-t border-green-500 md:border-green-300"></div>
-              )}
-            </div>
+            <div
+              key={i}
+              className={`h-24 w-full ${
+                i !== 0 && 'border-t'
+              } border-l border-green-500 md:border-green-300`}
+            ></div>
           )
         })}
       </section>
-    </>
+    </div>
   )
 }
 

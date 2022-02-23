@@ -74,7 +74,7 @@ const getSelectedWeekNo = (year, month, date) => {
     num = i
     return week.includes(date)
   })
-  return num
+  return allWeeks[num]
 }
 
 const getSelectedWeek = (year, month, weekNo) => {

@@ -35,10 +35,10 @@ const Header = ({ width, isWeek, setIsWeek }) => {
                 !isWeek && 'translate-x-16'
               } text-bold absolute top-1 h-6 w-14 rounded-md bg-white text-center font-bold text-carrot-light shadow-sm transition-all`}
             >
-              {isWeek ? 'Day' : 'Week'}
+              {isWeek ? 'Week' : 'Day'}
             </div>
-            <div className="flex-1 text-center">Day</div>
             <div className="flex-1 text-center">Week</div>
+            <div className="flex-1 text-center">Day</div>
           </section>
         )}
       </div>

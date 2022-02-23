@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useWindowSize } from 'react-use'
 import Header from './Header'
-import Body from './Body'
+import Bodies from './Bodies'
 
 const Scheduler = () => {
   const { width } = useWindowSize()
-  const [isWeek, setIsWeek] = useState(width >= 1024 ? true : false)
+  const [isWeek, setIsWeek] = useState(width >= 1280 ? true : false)
 
   return (
     <>
@@ -18,7 +18,7 @@ const Scheduler = () => {
       </h1>
       <section className="flex flex-col border-t py-5 px-2 md:border-none md:p-5">
         <Header width={width} isWeek={isWeek} setIsWeek={setIsWeek} />
-        <Body isWeek={isWeek} />
+        <Bodies width={width} isWeek={isWeek} setIsWeek={setIsWeek} />
       </section>
     </>
   )
