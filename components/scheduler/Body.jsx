@@ -1,10 +1,25 @@
 import React from 'react'
+import Minutehand from './Minutehand'
 import { dateObj } from '../calendar/utils'
 import { getTimeline } from './utils'
+import { useRecoilValue } from 'recoil'
+import { currentTime, minutehandPosition } from '../../store/common'
 
-const Body = ({ year, month, day }) => {
+const Body = ({ order, year, month, day }) => {
+  const today = new Date().getDate()
   const timeline = getTimeline()
-  const { weekday } = dateObj(new Date(year, month, day))
+  const { day: currentDay, weekday } = dateObj(new Date(year, month, day))
+
+  const time = useRecoilValue(currentTime)
+  const timeTagPos = useRecoilValue(minutehandPosition)
+
+  const timeTag = {
+    position: 'absolute',
+    top: `${timeTagPos}px`,
+    width: '44px',
+    height: '24px',
+    backgroundColor: '#F08D72',
+  }
 
   return (
     <div className="w-full">
@@ -13,8 +28,24 @@ const Body = ({ year, month, day }) => {
         <p>{day}</p>
       </header>
 
-      <section className="w-full">
-        {timeline.map((_, i) => {
+      <section className="relative w-full">
+        {/*  */}
+        {/* GUIDE 시간 태그 */}
+
+        {order === 0 && (
+          <div
+            className="flex -translate-y-1/2 -translate-x-12 items-center justify-center rounded-md text-xs font-bold text-white"
+            style={timeTag}
+          >
+            {time}
+          </div>
+        )}
+
+        <Minutehand today={currentDay === today} minhandPos={timeTagPos} />
+
+        {/* GUIDE 줄눈 */}
+
+        {timeline.map((time, i) => {
           return (
             <div
               key={i}

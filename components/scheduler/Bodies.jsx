@@ -1,19 +1,24 @@
 import React from 'react'
 import Body from './Body'
 import { useRecoilValue } from 'recoil'
-import { selectedDate } from '../../store/common'
+import {
+  currentTime,
+  minutehandPosition,
+  selectedDate,
+} from '../../store/common'
 import { dateObj, getSelectedWeekNo } from '../calendar/utils'
 import { getTimeline } from './utils'
 
 const Bodies = ({ isWeek }) => {
-  console.log(isWeek)
   const timeline = getTimeline()
   const date = useRecoilValue(selectedDate)
   const { year, month, day } = dateObj(date)
   const week = getSelectedWeekNo(year, month, day)
 
   return (
-    <main className="flex">
+    <main className="relative flex">
+      {/*  */}
+      {/* GUIDE 타임라인 */}
       <div>
         {timeline.map((time, i) => (
           <div key={i}>
@@ -29,9 +34,11 @@ const Bodies = ({ isWeek }) => {
         ))}
       </div>
 
+      {/* GUIDE 테이블 */}
+
       {isWeek ? (
         week.map((day, i) => (
-          <Body key={i} year={year} month={month} day={day} />
+          <Body key={i} order={i} year={year} month={month} day={day} />
         ))
       ) : (
         <Body year={year} month={month} day={day} />
