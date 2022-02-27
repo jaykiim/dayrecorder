@@ -9,4 +9,7 @@ module.exports = {
     NEXT_PUBLIC_GOOGLE_OAUTH_ID: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_ID,
     NEXT_PUBLIC_GOOGLE_OAUTH_PWD: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_PWD,
   },
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+  },
 }

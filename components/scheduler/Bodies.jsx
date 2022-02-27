@@ -1,16 +1,13 @@
 import React from 'react'
 import Body from './Body'
 import { useRecoilValue } from 'recoil'
-import {
-  currentTime,
-  minutehandPosition,
-  selectedDate,
-} from '../../store/common'
+import { selectedDate } from '../../store/common'
 import { dateObj, getSelectedWeekNo } from '../calendar/utils'
 import { getTimeline } from './utils'
 
 const Bodies = ({ isWeek }) => {
   const timeline = getTimeline()
+
   const date = useRecoilValue(selectedDate)
   const { year, month, day } = dateObj(date)
   const week = getSelectedWeekNo(year, month, day)
@@ -38,10 +35,10 @@ const Bodies = ({ isWeek }) => {
 
       {isWeek ? (
         week.map((day, i) => (
-          <Body key={i} order={i} year={year} month={month} day={day} />
+          <Body key={i} order={i + 1} year={year} month={month} day={day} />
         ))
       ) : (
-        <Body year={year} month={month} day={day} />
+        <Body order={0} year={year} month={month} day={day} />
       )}
     </main>
   )

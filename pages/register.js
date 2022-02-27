@@ -2,10 +2,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Router from 'next/router'
 import Link from 'next/link'
-import axios from 'axios'
-import { gql } from 'graphql-request'
-import { graphcmsClient } from '../lib/graphcms'
-import { hash } from 'bcryptjs'
+import { createUserByEmailReq, sendEmail } from '../apicalls/authCalls'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import YupPassword from 'yup-password'
@@ -71,31 +68,6 @@ const register = () => {
       .required('필수 입력 항목입니다'),
   })
 
-  const CreateUserByEmail = gql`
-    mutation CreateUserByEmail(
-      $username: String!
-      $email: String!
-      $password: String!
-    ) {
-      newUser: createDayrecorderUser(
-        data: { username: $username, email: $email, password: $password }
-      ) {
-        email
-        username
-      }
-    }
-  `
-
-  const sendEmail = async (userEmail) => {
-    const { data: verificationCode } = await axios.post(
-      'api/auth/verificationMail',
-      {
-        mail: userEmail,
-      }
-    )
-    setVerificationCode(verificationCode)
-  }
-
   return (
     <div className="relative flex h-screen items-center justify-center bg-gray-100">
       {isRegisterSuccess && (
@@ -130,19 +102,9 @@ const register = () => {
           validationSchema={validate}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true)
-            const { username, email, password } = values
 
-            const { newUser } = await graphcmsClient.request(
-              CreateUserByEmail,
-              {
-                username,
-                email,
-                password: await hash(password, 12),
-              }
-            )
-            console.log(newUser)
-
-            setNewUserName(newUser.username)
+            const res = await createUserByEmailReq(values)
+            setNewUserName(res.username)
             setIsRegisterSuccess(true)
             setSubmitting(false)
 
@@ -205,7 +167,9 @@ const register = () => {
                         />
                         {field.id === 'email' && (
                           <button
-                            onClick={() => sendEmail(values.email)}
+                            onClick={() =>
+                              sendEmail(values.email, setVerificationCode)
+                            }
                             className="btnGray ml-2 w-40 -translate-y-2"
                           >
                             인증코드 발송

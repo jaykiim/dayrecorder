@@ -2,17 +2,10 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { compare } from 'bcrypt'
-import { gql } from 'graphql-request'
-import { graphcmsClient } from '../../../lib/graphcms'
-
-const GetUserByEmail = gql`
-  query getUserByEmail($email: String!) {
-    user: dayrecorderUser(where: { email: $email }, stage: DRAFT) {
-      email
-      password
-    }
-  }
-`
+import {
+  createUserByEmailReq,
+  getUserByEmailReq,
+} from '../../../apicalls/authCalls'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -29,10 +22,7 @@ export default NextAuth({
       authorize: async ({ email, password }) => {
         // 파라미터로 들어오는 값은 프론트 코드에서 signIn함수 두 번째 인자로 넘긴 객체
 
-        const { user } = await graphcmsClient.request(GetUserByEmail, {
-          email,
-        })
-        console.log(user)
+        const user = await getUserByEmailReq(email)
 
         if (!user) {
           throw new Error('이메일 혹은 비밀번호가 일치하지 않습니다.')
@@ -45,7 +35,7 @@ export default NextAuth({
         }
 
         return {
-          username: user.username,
+          name: user.username,
           email,
         }
       },
@@ -60,7 +50,26 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
-      session.userId = token.sub
+      if (session.user) {
+        const { name, email } = session.user
+
+        const user = await getUserByEmailReq(email) // DB에서 찾아서
+        console.log('[...nextauth].js > callbacks > session', user)
+
+        // 없으면 DB에 등록
+        if (!user) {
+          createUserByEmailReq(null, {
+            username: name,
+            email,
+          })
+        } else {
+          // 소셜 로그인의 경우
+          if (token.sub) session.userId = token.sub
+
+          session.user.colors = user.colors
+        }
+      }
+
       return Promise.resolve(session)
     },
   },

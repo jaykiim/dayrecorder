@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: ({ colors }) => ({
+      colors: () => ({
         green: {
           black: '#434648',
           900: '#497173',
@@ -15,6 +15,10 @@ module.exports = {
           300: '#EFF5F5',
         },
         carrot: { light: '#F08D72', deep: '#EB6440' },
+      }),
+      height: () => ({
+        100: '27rem',
+        120: '36rem',
       }),
     },
   },

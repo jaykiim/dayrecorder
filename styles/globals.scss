@@ -37,6 +37,10 @@ body {
   border: 2px solid transparent;
 }
 
+.title {
+  @apply text-xl font-black uppercase;
+}
+
 .btnFullBlue {
   @apply w-full rounded-lg bg-blue-500 py-2 px-4 text-sm font-bold uppercase tracking-wide text-white hover:bg-blue-600 hover:shadow-lg;
 }
@@ -50,15 +54,35 @@ body {
 }
 
 .btnLightGreen {
-  @apply rounded-md bg-green-300 px-2 py-1;
+  @apply rounded-md bg-green-300 px-2 py-1 hover:bg-green-500;
+}
+
+.btnLightCarrot {
+  @apply rounded-md bg-carrot-light px-2 py-1 hover:bg-carrot-deep;
 }
 
 .btnFullOutlineGray {
   @apply w-full rounded-lg border border-gray-300 py-1 px-4 text-sm font-bold uppercase tracking-wide text-gray-400 hover:border-gray-700 hover:bg-gray-700 hover:text-white hover:shadow-lg;
 }
 
+.btnIconHoverContainer {
+  @apply cursor-pointer rounded-full p-2 hover:bg-gray-100;
+}
+
+.inputUnderline {
+  @apply w-full border-b bg-transparent pl-1 tracking-wide focus:outline-none;
+}
+
 .inputBorderBottomBlue {
   @apply w-full border-b bg-transparent pl-1 tracking-wide text-gray-700 focus:border-b-2 focus:border-blue-500 focus:outline-none;
+}
+
+.inputBorderBottomCarrot {
+  @apply w-full border-b bg-transparent tracking-wide text-gray-700 focus:border-b-2 focus:border-carrot-light focus:outline-none;
+}
+
+.inputBorderCarrot {
+  @apply w-full rounded-lg border border-gray-300 px-2 focus:border-2 focus:border-carrot-light focus:outline-none;
 }
 
 .inputBorderGray {
@@ -66,7 +90,7 @@ body {
 }
 
 .reference {
-  @apply mt-6 pl-1 text-xs text-gray-400;
+  @apply mt-3 pl-1 text-xs text-gray-400;
 }
 
 .alertTextSm {
@@ -89,6 +113,28 @@ LeftRemote
 
 /* 
 ============================================================================================================ 
-Calendar
+Colors
 ============================================================================================================ 
 */
+
+.menuItem {
+  @apply mr-4 w-full cursor-pointer px-1 pb-1 text-sm text-gray-400 transition-all hover:border-b-2 hover:border-green-500 hover:border-opacity-30;
+}
+
+.menuItemSelected {
+  @apply border-b-2 border-green-700 font-semibold text-green-black hover:border-opacity-100;
+}
+
+#user-colors::-webkit-scrollbar {
+  display: none;
+}
+
+#color-picker-bg {
+  background-image: url('../public/images/plant1.jpg');
+  width: 100%;
+  height: 133px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  box-shadow: inset 0 0 0 2000px rgba(60, 70, 72, 0.4);
+}

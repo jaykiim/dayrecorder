@@ -23,9 +23,13 @@ export const getTimeline = () => {
 */
 
 export const MINUTEHAND_MOVEMENT = 3.2 // 분당 3.2px 씩 하강 (현재 UI에서 1시간의 높이가 192px이므로)
-export const getMinutehandPos = (hr, min) => {
+export const getMinutehandPos = (hr, min, timestr) => {
   // top에서부터 몇 픽셀 지점에 위치해야하는지 계산하여 리턴
   // ===> 현재 시각을 분 단위로 바꾼 뒤 MINUTEHAND_MOVEMENT 를 곱해준다
+  if (timestr) {
+    const [hr, min] = timestr.split(':')
+    return (hr * 60 + Number(min)) * MINUTEHAND_MOVEMENT
+  }
   return (hr * 60 + Number(min)) * MINUTEHAND_MOVEMENT
 }
 
@@ -41,3 +45,21 @@ export const getCurrentTime = () => {
   if (min.toString().length < 2) min = '0' + min
   return `${hr}:${min}`
 }
+
+/* 
+============================================================================================================ 
+  DO :: 날짜 포맷터 
+============================================================================================================ 
+*/
+
+export const dateFormatter = (year, month, day) => {
+  if (Number(month) < 10) month = '0' + month
+  if (Number(day) < 10) day = '0' + day
+  return `${year}-${month}-${day}`
+}
+
+/* 
+============================================================================================================ 
+  DO :: 날짜 포맷터 
+============================================================================================================ 
+*/
