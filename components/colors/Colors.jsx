@@ -3,9 +3,9 @@ import ColorForm from './ColorForm'
 import Menu from './Menu'
 
 const Colors = ({ user }) => {
-  const colors = JSON.parse(user.colors)
+  const [colors, setColors] = useState(user.colors)
   const folderNames = Object.keys(colors)
-  const [selectedFolder, setSelectedFolder] = useState('')
+  const [selectedFolder, setSelectedFolder] = useState(folderNames[0])
 
   return (
     <>
@@ -15,9 +15,12 @@ const Colors = ({ user }) => {
 
       <main className="px-5 md:p-5">
         <Menu
-          folderNames={folderNames}
           selectedFolder={selectedFolder}
           setSelectedFolder={setSelectedFolder}
+          folderNames={folderNames}
+          colors={colors}
+          setColors={setColors}
+          userId={user.email}
         />
         <ColorForm />
       </main>

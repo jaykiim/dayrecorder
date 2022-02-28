@@ -5,7 +5,7 @@ import ColorPicker from './ColorPicker'
 const NewColor = (props) => {
   return (
     <>
-      <ColorPicker flex={props.flex} />
+      <ColorPicker {...props} />
       <div
         className={`flex flex-col gap-y-4 rounded-b-lg bg-green-900 p-5 text-sm text-green-500 ${
           props.flex && 'w-full rounded-b-none rounded-r-lg'
@@ -24,7 +24,7 @@ const NewColor = (props) => {
             ...props,
             type: 'text',
             id: 'tag',
-            placeholder: '컬러의 의미를 입력하세요 ex.휴식',
+            placeholder: '컬러명 (ex.휴식) 입력 후 엔터로 등록',
           }}
         />
       </div>

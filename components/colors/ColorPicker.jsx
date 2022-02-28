@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SliderPicker } from 'react-color'
 
-const ColorPicker = ({ hex, setHex, flex }) => {
+const ColorPicker = ({ values, setValues, flex }) => {
   return (
     <div
       className={`bg-white p-5 md:bg-gray-50 ${
@@ -9,8 +9,8 @@ const ColorPicker = ({ hex, setHex, flex }) => {
       } `}
     >
       <SliderPicker
-        color={hex}
-        onChange={setHex}
+        color={values.hex}
+        onChange={(color) => setValues({ ...values, hex: color.hex })}
         className={`w-full opacity-30`}
       />
     </div>
