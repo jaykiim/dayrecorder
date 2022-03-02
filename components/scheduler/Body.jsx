@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil'
 import { currentTime, minutehandPosition } from '../../store/common'
 
 const records = {
-  '2022-02-20': [
+  '2022-03-01': [
     {
       id: '9b835d50d3e699c6ed1fa047503e03e6',
       start: '00:03',
@@ -18,7 +18,7 @@ const records = {
       color: '#839EA0',
     },
   ],
-  '2022-02-23': [
+  '2022-03-02': [
     {
       id: 'ae57550f6daa238ba409d2b18173d239',
       start: '01:00',

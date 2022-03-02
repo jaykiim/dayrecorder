@@ -3,8 +3,8 @@ import ReactTooltip from 'react-tooltip'
 import { AiFillDelete } from 'react-icons/ai'
 import { ImCancelCircle } from 'react-icons/im'
 
-const BtnDelete = ({ name, cb, updating, setUpdating }) => {
-  const cancel = updating.state && updating.name === name
+const BtnDelete = ({ id, cb, updating, setUpdating }) => {
+  const cancel = updating.state && updating.id === id
   return (
     <div
       data-tip={cancel ? '' : '삭제'}
@@ -12,9 +12,9 @@ const BtnDelete = ({ name, cb, updating, setUpdating }) => {
     >
       <ReactTooltip backgroundColor="#da4343" />
       {cancel ? (
-        <ImCancelCircle onClick={() => setUpdating({ name, state: false })} />
+        <ImCancelCircle onClick={() => setUpdating({ id, state: false })} />
       ) : (
-        <AiFillDelete onClick={() => cb(name)} />
+        <AiFillDelete onClick={() => cb(id)} />
       )}
     </div>
   )

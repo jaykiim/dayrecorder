@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ColorDropdown from '../micro/ColorDropdown'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -18,7 +19,8 @@ const Modal = ({ dayrecords, modal, setModal }) => {
         className="fixed top-0 left-0 z-20 h-full w-full bg-black bg-opacity-30"
       />
       <div
-        className={`min-h-120 fixed top-1/2 left-1/2 z-30 w-72 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-4 shadow-lg`}
+        className={`fixed top-1/2 left-1/2 z-30 w-72 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll rounded-lg bg-white p-4 shadow-lg`}
+        style={{ height: '510px' }}
       >
         <section className="mb-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">Settings</h1>
@@ -44,6 +46,8 @@ const Modal = ({ dayrecords, modal, setModal }) => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
+              <ColorDropdown />
+
               <section className="mb-5 flex flex-col">
                 <label htmlFor="title" className="text-sm text-gray-400">
                   Title

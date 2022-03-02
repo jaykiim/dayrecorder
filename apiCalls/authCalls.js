@@ -22,9 +22,11 @@ export const CreateUserByEmail = gql`
       email
       username
       colors
+      defaultColor
     }
   }
 `
+
 export const createUserByEmailReq = async (credentials, userInfo) => {
   try {
     // 로컬 가입

@@ -19,7 +19,7 @@ const TextInput = ({
       value={values[id]}
       onChange={handleChange}
       onBlur={handleBlur}
-      className="w-full bg-transparent focus:outline-none"
+      className="w-full bg-transparent lowercase focus:outline-none"
     />
   </div>
 )

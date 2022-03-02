@@ -1,47 +1,66 @@
 import React from 'react'
+import uuid from 'react-uuid'
 import { Formik } from 'formik'
-import NewColor from './NewColor'
-import { LARGE, MEDIUM, SMALL } from '../../store/constants'
 import { useWindowSize } from 'react-use'
-import * as Yup from 'yup'
+import { LARGE, MEDIUM, SMALL } from '../../store/constants'
+import NewColor from './NewColor'
+import { colorValidate } from './utils'
+import { updateUserColorReq } from '../../apiCalls/colorCalls'
 
-const ColorForm = () => {
+const ColorForm = ({
+  userId,
+  folders,
+  setFolders,
+  selectedFolder,
+  defaultFolder,
+}) => {
   const { width } = useWindowSize()
 
-  // 라지 모바일 or 큰 화면
+  // 라지모바일 or 데스크탑
   const flex = (SMALL <= width && width < MEDIUM) || width >= LARGE
 
-  const colorValidate = (where, tags, hexes) => {
-    return Yup.object({
-      hex: Yup.string()
-        .required('* 색상 코드를 입력해주세요')
-        .notOneOf(
-          where === 'update' ? [] : hexes,
-          '* 이미 폴더에 존재하는 색상입니다'
-        )
-        .matches(
-          /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/,
-          '* 존재하지 않는 색상 코드입니다'
-        ),
-      colorTag: Yup.string()
-        .required('* 색상 이름 (tag) 을 입력해주세요')
-        .notOneOf(tags, '* 이미 폴더에 존재하는 색상명입니다'),
+  const tags = selectedFolder.items.map(({ tag }) => tag)
+  const hexes = selectedFolder.items.map(({ hex }) => hex)
+
+  const addNewColor = async (values, { setSubmitting, setValues }) => {
+    setSubmitting(true)
+
+    const newColor = { hex: values.hex, tag: values.tag, uuid: uuid() }
+    const newFolders = folders.map((folder) => {
+      if (folder.uuid === selectedFolder.uuid) folder.items.push(newColor)
+      return folder
     })
+
+    setFolders(newFolders)
+    setValues({ hex: '', tag: '' })
+
+    await updateUserColorReq(userId, { folders: newFolders, defaultFolder })
+
+    setSubmitting(false)
   }
 
   return (
     <Formik
       initialValues={{ hex: '', tag: '' }}
-      // validationSchema={() => colorValidate("new", )}
-      // onSubmit={onSubmit}
+      validationSchema={() => colorValidate('new', tags, hexes)}
+      onSubmit={addNewColor}
     >
       {(props) => (
-        <form
-          onSubmit={props.handleSubmit}
-          className={`mt-3 ${flex && 'mt-5 flex'} shadow-lg`}
-        >
-          <NewColor {...{ ...props, flex }} />
-        </form>
+        <>
+          <form
+            onSubmit={props.handleSubmit}
+            onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit()}
+            className={`mt-3 ${flex && 'mt-5 flex'} shadow-lg`}
+          >
+            <NewColor {...{ ...props, flex }} />
+          </form>
+          <p className="reference">
+            * 실제 화면에 표시될 색상과 동일합니다 (투명도가 적용되어있음)
+          </p>
+          <p className="alertTextSm mt-2">
+            {props.errors.hex || props.errors.tag}
+          </p>
+        </>
       )}
     </Formik>
   )

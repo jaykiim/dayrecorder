@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { SliderPicker } from 'react-color'
 
 const ColorPicker = ({ values, setValues, flex }) => {

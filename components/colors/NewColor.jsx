@@ -1,6 +1,6 @@
 import React from 'react'
-import TextInput from '../micro/TextInput'
 import ColorPicker from './ColorPicker'
+import TextInput from '../micro/TextInput'
 
 const NewColor = (props) => {
   return (
