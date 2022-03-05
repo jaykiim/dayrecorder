@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
-import { IoMdAdd } from 'react-icons/io'
-import { useSetRecoilState } from 'recoil'
-import { selectedDate } from '../../store/common'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { isRecording, selectedDate } from '../../store/common'
+import StartModal from './StartModal'
+import RecordStarter from '../micro/RecordStarter'
+import { useRecorder } from '../../hooks/useRecorder'
 
 const Header = ({ width, isWeek, setIsWeek }) => {
   const setSelectedDate = useSetRecoilState(selectedDate)
+
+  const [modal, setModal] = useState(false)
+
+  const { startRecording, stopRecording } = useRecorder()
+  const recording = useRecoilValue(isRecording)
+  console.log('recording: ', recording)
+
   return (
     <div className="flex">
       {width < 768 && <div className="flex-1" />}
@@ -43,12 +52,15 @@ const Header = ({ width, isWeek, setIsWeek }) => {
         )}
       </div>
 
-      <button className="flex items-center rounded-md bg-carrot-light p-1 px-4 text-white hover:bg-carrot-deep">
-        <div className="mr-2 h-4 w-4 rounded-full bg-white">
-          <IoMdAdd className="text-carrot-deep" />
-        </div>
-        <p className="md:text-md text-xs">Start {width > 768 && 'Recording'}</p>
-      </button>
+      {recording ? (
+        <RecordStarter label="stop" cb={stopRecording} />
+      ) : (
+        <RecordStarter label="start" cb={() => setModal(true)} />
+      )}
+
+      {modal && (
+        <StartModal setModal={setModal} startRecording={startRecording} />
+      )}
     </div>
   )
 }

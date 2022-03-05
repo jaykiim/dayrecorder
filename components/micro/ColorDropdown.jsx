@@ -35,7 +35,7 @@ const ColorDropdown = () => {
           {folderNames.map((name, i) => (
             <li
               key={i}
-              className={` cursor-pointer transition-all ${
+              className={`cursor-pointer transition-all ${
                 subOpen.state && subOpen.name === name
                   ? 'max-h-full'
                   : 'max-h-7'

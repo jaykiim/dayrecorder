@@ -37,6 +37,10 @@ body {
   border: 2px solid transparent;
 }
 
+#ColorDropdownSublist::-webkit-scrollbar {
+  width: 0px;
+}
+
 .title {
   @apply text-xl font-black uppercase;
 }

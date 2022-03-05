@@ -1,17 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import ColorDropdown from '../micro/ColorDropdown'
+import React, { useState } from 'react'
+import ColorDropdown from '../colors/ColorDropdown'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { convertToMin } from './utils'
+import { deleteRecordReq, updateRecordReq } from '../../apiCalls/recordCalls'
 
-const Modal = ({ dayrecords, modal, setModal }) => {
-  const { title, start, end, memo } = dayrecords
+const Modal = ({ dayrecord, modal, setModal, records, setRecords }) => {
+  const { id, title, start, end, memo, date, color: colorInfo } = dayrecord
 
+  const [color, setColor] = useState(colorInfo)
   const validate = Yup.object({
-    start: Yup.string().required('시작 시각을 입력해주세요'),
+    start: Yup.string()
+      .matches(
+        /^(0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9])$/g,
+        '시간을 xx:xx 형식으로 입력해주세요'
+      )
+      .required('시작 시각을 입력해주세요'),
     end: Yup.string().required('종료 시각을 입력해주세요'),
   })
-  // 시간 포맷 오류 : 시간을 00:00 형식으로 입력해주세요
+
+  // GUIDE 레코드 수정
+
+  const changeRecord = async (values, { errors, setSubmitting }) => {
+    setSubmitting(true)
+
+    const { start, end } = values
+
+    if (convertToMin(start) > convertToMin(end)) {
+      errors.setErrors({ start: '마친 시각이 시작 시각보다 빠를 수 없습니다' })
+      return
+    }
+
+    const updatedRecord = { ...values, id, color, date }
+    const newRecords = records.filter((record) => record.id !== dayrecord.id)
+    newRecords.push(updatedRecord)
+    setRecords(newRecords)
+    setModal(false)
+
+    await updateRecordReq(updatedRecord)
+    setSubmitting(false)
+  }
+
+  // GUIDE 레코드 삭제
+
+  const deleteRecord = async () => {
+    const newRecords = records.filter((record) => record.id !== dayrecord.id)
+    setRecords(newRecords)
+    setModal(false)
+
+    await deleteRecordReq(dayrecord.id)
+  }
+
   return (
     <>
       <div
@@ -20,7 +60,7 @@ const Modal = ({ dayrecords, modal, setModal }) => {
       />
       <div
         className={`fixed top-1/2 left-1/2 z-30 w-72 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll rounded-lg bg-white p-4 shadow-lg`}
-        style={{ height: '510px' }}
+        style={{ height: '540px' }}
       >
         <section className="mb-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">Settings</h1>
@@ -35,6 +75,7 @@ const Modal = ({ dayrecords, modal, setModal }) => {
         <Formik
           initialValues={{ title, start, end, memo }}
           validationSchema={validate}
+          onSubmit={changeRecord}
         >
           {({
             values,
@@ -46,9 +87,9 @@ const Modal = ({ dayrecords, modal, setModal }) => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
-              <ColorDropdown />
+              <ColorDropdown color={color} setColor={setColor} />
 
-              <section className="mb-5 flex flex-col">
+              <section className="my-5 flex flex-col">
                 <label htmlFor="title" className="text-sm text-gray-400">
                   Title
                 </label>
@@ -118,7 +159,7 @@ const Modal = ({ dayrecords, modal, setModal }) => {
                 <textarea
                   id="memo"
                   placeholder="여기에 메모"
-                  value={values.memo}
+                  value={values.memo || ''}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   rows={10}
@@ -128,17 +169,17 @@ const Modal = ({ dayrecords, modal, setModal }) => {
 
               <section className="flex gap-x-3">
                 <button
-                  onClick={() => setModal({ ...modal, open: false })}
+                  onClick={deleteRecord}
                   type="button"
                   className="btnLightGreen w-full text-green-700"
                 >
-                  Cancel
+                  Delete
                 </button>
                 <button
                   type="submit"
                   className="btnLightCarrot w-full text-white"
                 >
-                  Create
+                  Update
                 </button>
               </section>
             </form>

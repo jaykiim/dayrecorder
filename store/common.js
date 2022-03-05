@@ -21,3 +21,15 @@ export const minutehandPosition = selector({
     return getMinutehandPos(hour, min)
   },
 })
+
+// 시간 기록 중인지 아닌지
+export const isRecording = atom({
+  key: 'isRecording',
+  default: null,
+})
+
+// 레코드
+export const allRecords = atom({
+  key: 'allRecords',
+  default: [],
+})

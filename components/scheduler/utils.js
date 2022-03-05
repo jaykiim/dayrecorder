@@ -53,13 +53,25 @@ export const getCurrentTime = () => {
 */
 
 export const dateFormatter = (year, month, day) => {
+  if (typeof day === 'string') {
+    const [prefix, date] = day.split('.')
+    prefix === 'prev' ? month-- : month++
+    day = date
+  }
+
   if (Number(month) < 10) month = '0' + month
   if (Number(day) < 10) day = '0' + day
+
   return `${year}-${month}-${day}`
 }
 
 /* 
 ============================================================================================================ 
-  DO :: 날짜 포맷터 
+  DO :: 시간 (문자열) 을 분 (숫자) 으로 변환
 ============================================================================================================ 
 */
+
+export const convertToMin = (timestamp) => {
+  const [hour, min] = timestamp.split(':')
+  return Number(hour) * 60 + Number(min)
+}
