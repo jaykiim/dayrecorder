@@ -1,6 +1,27 @@
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 
+export const GetTodos = gql`
+  query GetTodos($date: Date!, $email: String!) {
+    todos: todos(where: { date: $date, user: { email: $email } }) {
+      title
+      id
+      date
+      done
+      color
+    }
+  }
+`
+
+export const getTodos = async (date, email) => {
+  try {
+    const { todos } = await graphcmsClient.request(GetTodos, { date, email })
+    return todos
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const CreateTodo = gql`
   mutation CreateTodo(
     $title: String!
@@ -9,7 +30,7 @@ export const CreateTodo = gql`
     $date: Date!
     $email: String!
   ) {
-    createTodo(
+    newTodo: createTodo(
       data: {
         title: $title
         color: $color
@@ -22,13 +43,15 @@ export const CreateTodo = gql`
       date
       done
       id
+      color
     }
   }
 `
 
 export const createTodoReq = async (values) => {
   try {
-    await graphcmsClient.request(CreateTodo, values)
+    const { newTodo } = await graphcmsClient.request(CreateTodo, values)
+    return newTodo
   } catch (err) {
     console.log(err)
   }

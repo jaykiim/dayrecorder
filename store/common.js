@@ -33,3 +33,9 @@ export const allRecords = atom({
   key: 'allRecords',
   default: [],
 })
+
+// 할 일
+export const todos = atom({
+  key: 'todos',
+  default: [],
+})
