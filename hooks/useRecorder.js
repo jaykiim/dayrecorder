@@ -1,8 +1,8 @@
-import uuid from 'react-uuid'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { createRecordReq } from '../apiCalls/recordCalls'
+import { dateObj } from '../components/calendar/utils'
 import { dateFormatter, getCurrentTime } from '../components/scheduler/utils'
 import { allRecords, isRecording } from '../store/common'
 
@@ -23,19 +23,12 @@ export function useRecorder() {
 
     setRecording(true)
 
-    const date = new Date()
-    const datestamp = dateFormatter(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()
-    )
-
-    console.log(datestamp)
+    const { year, month, day } = dateObj(new Date())
+    const datestamp = dateFormatter(year, month, day)
 
     window.localStorage.setItem(
       'recording',
       JSON.stringify({
-        id: uuid(),
         start: getCurrentTime(),
         title,
         color,
@@ -46,30 +39,25 @@ export function useRecorder() {
     setModal(false)
   }
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     setRecording(false)
 
     // 시작할 때 저장해두었던 정보 가져오기
     const saved = JSON.parse(window.localStorage.getItem('recording'))
     if (!saved) return
-    const { id, start, title, color, date: startDate } = saved
+    const { start, title, color, date: startDate } = saved
 
     // 끝난 시간
     const end = getCurrentTime()
 
     // 끝난 날짜
-    const date = new Date()
-    const endDate = dateFormatter(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()
-    )
+    const { year, month, day } = dateObj(new Date())
+    const endDate = dateFormatter(year, month, day)
 
     // * 시작 날짜와 끝난 날짜가 다를 경우
     // 시작 날짜의 시작 시간 ~ 23:59 까지 레코드, 끝난 날짜의 00:00 ~ 끝난 시간까지 레코드를 만든다
     if (startDate !== endDate) {
       const record1 = {
-        id,
         date: startDate,
         start,
         end: '23:59',
@@ -77,18 +65,18 @@ export function useRecorder() {
         color,
         memo: '',
       }
-      const record2 = { id, date: endDate, start, end, title, color, memo: '' }
-      setRecords((records) => [...records, record1, record2])
+      const record2 = { date: endDate, start, end, title, color, memo: '' }
 
-      createRecordReq({ ...record1, user: user.email })
-      createRecordReq({ ...record2, user: user.email })
+      // DB에 저장하고나서 응답으로 오는 데이터에 id가 포함되어 있으므로, 응답을 받고 난 다음에 setRecords를 해줘야한다
+      const recordOne = await createRecordReq({ ...record1, user: user.email })
+      const recordTwo = await createRecordReq({ ...record2, user: user.email })
+
+      setRecords((records) => [...records, recordOne, recordTwo])
     }
 
     // 시작 날짜와 끝난 날짜가 같으면
     else {
-      console.log(start)
       const newRecord = {
-        id,
         date: startDate,
         start,
         end,
@@ -96,9 +84,9 @@ export function useRecorder() {
         color,
         memo: '',
       }
-      setRecords((records) => [...records, newRecord])
 
-      createRecordReq({ ...newRecord, email: user.email })
+      const record = await createRecordReq({ ...newRecord, email: user.email })
+      setRecords((records) => [...records, record])
     }
 
     // 로컬 스토리지 지우기

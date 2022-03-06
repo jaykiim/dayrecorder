@@ -7,8 +7,6 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
   const [modal, setModal] = useState(false)
   const currentRecord = useRef({})
 
-  console.log(currentRecord.current)
-
   return (
     <>
       {!loading &&
@@ -70,7 +68,6 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
         <Modal
           currentRecord={currentRecord.current}
           order={order}
-          modal={modal}
           setModal={setModal}
           records={records}
           setRecords={setRecords}

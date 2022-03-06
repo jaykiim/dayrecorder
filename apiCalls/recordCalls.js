@@ -116,8 +116,8 @@ export const CreateRecord = gql`
 
 export const createRecordReq = async (values) => {
   try {
-    const res = await graphcmsClient.request(CreateRecord, values)
-    console.log(res)
+    const { createRecord } = await graphcmsClient.request(CreateRecord, values)
+    return createRecord
   } catch (err) {
     console.log(err)
   }

@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { convertToMin } from './utils'
 import { deleteRecordReq, updateRecordReq } from '../../apiCalls/recordCalls'
 
-const Modal = ({ currentRecord, modal, setModal, records, setRecords }) => {
+const Modal = ({ currentRecord, setModal, records, setRecords }) => {
   const { id, title, start, end, memo, date, color: colorInfo } = currentRecord
 
   const [color, setColor] = useState(colorInfo)
