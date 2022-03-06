@@ -8,7 +8,7 @@ const BtnDelete = ({ id, cb, updating, setUpdating }) => {
   return (
     <div
       data-tip={cancel ? '' : '삭제'}
-      className="rounded-md text-lg text-gray-400 hover:opacity-100"
+      className="cursor-pointer rounded-md text-lg text-gray-400 hover:opacity-100"
     >
       <ReactTooltip backgroundColor="#da4343" />
       {cancel ? (

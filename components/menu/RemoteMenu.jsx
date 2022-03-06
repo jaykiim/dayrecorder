@@ -20,7 +20,12 @@ const LeftRemote = () => {
           </div>
         </Link>
 
-        <AiFillCheckCircle className="leftRemoteIcon" />
+        <Link href="/todo">
+          <div>
+            <AiFillCheckCircle className="leftRemoteIcon" />
+          </div>
+        </Link>
+
         <AiOutlineAreaChart className="leftRemoteIcon" />
 
         <Link href="/account">

@@ -105,6 +105,10 @@ body {
   @apply text-lg uppercase text-gray-600;
 }
 
+.bodyContainer {
+  @apply relative flex flex-col border-t py-5 px-2 md:border-none md:p-5;
+}
+
 /* 
 ============================================================================================================ 
 LeftRemote

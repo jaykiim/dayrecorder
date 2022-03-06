@@ -20,7 +20,7 @@ const Colors = ({ user }) => {
 
       <main className="px-5 md:p-5">
         <Menu
-          userId={user.email}
+          user={user}
           defaultFolder={defaultFolder}
           folders={folders}
           setFolders={setFolders}
@@ -34,7 +34,13 @@ const Colors = ({ user }) => {
           selectedFolder={selectedFolder}
           defaultFolder={defaultFolder}
         />
-        <ColorList selectedFolder={selectedFolder} />
+        <ColorList
+          user={user}
+          folders={folders}
+          selectedFolder={selectedFolder}
+          setSelectedFolder={setSelectedFolder}
+          defaultFolder={defaultFolder}
+        />
       </main>
     </>
   )

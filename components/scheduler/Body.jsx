@@ -51,10 +51,16 @@ import { currentTime, minutehandPosition } from '../../store/common'
 // }
 
 const Body = ({ order, year, month, day, records, setRecords, loading }) => {
+  // 주간 뷰일 경우, 현재 바디 (column) 의 날짜가 오늘인 경우에만 분침을 실선으로 함
   const today = new Date().getDate()
-  const timeline = getTimeline()
-  const { day: currentDay, weekday } = dateObj(new Date(year, month, day))
 
+  // timeline = ['00:00', '00:30', ... ] 이 배열의 요소 갯수만큼 밑줄 (줄눈) 을 만들어야 함
+  const timeline = getTimeline()
+
+  // 요일 표시
+  const { weekday } = dateObj(new Date(year, month, day))
+
+  // 현재 시각 및 시간 태그를 렌더할 위치
   const time = useRecoilValue(currentTime)
   const timeTagPos = useRecoilValue(minutehandPosition)
 
@@ -66,12 +72,17 @@ const Body = ({ order, year, month, day, records, setRecords, loading }) => {
     backgroundColor: '#F08D72',
   }
 
+  // 주간 레코드 중에서 현재 바디에 해당하는 날짜만의 레코드
+  // --> records (일주일간 레코드) 가 없는 경우 그냥 빈배열이지 undefined나 null이 아니므로 dayrecords도 항상 값이 존재함 (빈배열이거나 아니거나)
   const dayrecords = records.filter(
     (record) => record.date === dateFormatter(year, month, day)
   )
 
   return (
     <div className="relative w-full">
+      {/*  */}
+      {/* GUIDE 요일 및 날짜 */}
+
       <header className="mt-6 h-fit flex-1 border-l border-b border-green-500 py-3 text-center text-green-700 md:border-green-300">
         <p className="font-bold">{weekday}</p>
         <p>{day}</p>
@@ -79,27 +90,29 @@ const Body = ({ order, year, month, day, records, setRecords, loading }) => {
 
       <section className="relative w-full">
         {/*  */}
-        {/* GUIDE 시간 태그 */}
+        {/* GUIDE 현재 시간 태그 */}
 
-        {order === 1 && (
-          <div
-            className="flex -translate-y-1/2 -translate-x-12 items-center justify-center rounded-md text-xs font-bold text-white"
-            style={timeTag}
-          >
-            {time}
-          </div>
-        )}
+        {
+          // 주간 뷰일 경우 현재 컴포넌트가 화면에 7번 그려지는데 시간 태그는 한번만 그려져야 하므로
+          order === 1 && (
+            <div
+              className="flex -translate-y-1/2 -translate-x-12 items-center justify-center rounded-md text-xs font-bold text-white"
+              style={timeTag}
+            >
+              {time}
+            </div>
+          )
+        }
 
-        <Minutehand today={currentDay === today} minhandPos={timeTagPos} />
-        {dayrecords && (
-          <Record
-            order={order}
-            records={records}
-            setRecords={setRecords}
-            dayrecords={dayrecords}
-            loading={loading}
-          />
-        )}
+        <Minutehand today={day === today} minhandPos={timeTagPos} />
+
+        <Record
+          order={order}
+          records={records}
+          setRecords={setRecords}
+          dayrecords={dayrecords}
+          loading={loading}
+        />
 
         {/* GUIDE 줄눈 */}
 

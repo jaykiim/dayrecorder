@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import Dropdown from '../micro/Dropdown'
 import ColorChip from './ColorChip'
 
-const ColorDropdown = ({ color, setColor }) => {
+const ColorDropdown = ({ bg, color, setColor }) => {
   const folders = useSession().data.user.colors.folders
 
   const [open, setOpen] = useState(false)
@@ -60,7 +60,7 @@ const ColorDropdown = ({ color, setColor }) => {
       cb={renderList}
       style={{
         open: 'overflow-y-auto',
-        common: 'bg-gray-50 rounded-lg p-1 px-2',
+        common: `${bg ? bg : 'bg-gray-50'} rounded-lg p-1 px-2`,
         notOpen: '',
         listItem: 'font-bold',
       }}

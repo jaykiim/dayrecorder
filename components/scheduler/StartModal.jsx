@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
 import ColorDropdown from '../colors/ColorDropdown'
 import { useRecorder } from '../../hooks/useRecorder'
+import { DEFAULT_COLOR } from '../../store/constants'
 
 const StartModal = ({ setModal, startRecording }) => {
-  const [color, setColor] = useState({
-    hex: '#d4d4d4',
-    tag: '기타',
-    folder: '',
-    uuid: '',
-  })
+  const [color, setColor] = useState(DEFAULT_COLOR)
 
   const [title, setTitle] = useState('')
 

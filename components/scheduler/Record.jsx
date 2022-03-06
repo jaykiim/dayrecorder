@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Modal from './Modal'
 import { getMinutehandPos } from './utils'
+import { RECORD_MIN_HEIGHT } from '../../store/constants'
 
 const Record = ({ order, records, setRecords, dayrecords, loading }) => {
-  const [modal, setModal] = useState({ open: false, record: {} })
+  const [modal, setModal] = useState(false)
+  const currentRecord = useRef({})
+
+  console.log(currentRecord.current)
 
   return (
     <>
@@ -13,7 +17,9 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
 
           const top = getMinutehandPos(null, null, start)
           const bottom = getMinutehandPos(null, null, end)
-          const height = Math.round(bottom - top)
+          let height = Math.round(bottom - top)
+
+          if (height < RECORD_MIN_HEIGHT) height = RECORD_MIN_HEIGHT
 
           return (
             // 컨테이너
@@ -24,7 +30,10 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
             >
               {/* 박스 */}
               <div
-                onClick={() => setModal({ open: true, record })}
+                onClick={() => {
+                  setModal(true)
+                  currentRecord.current = record
+                }}
                 className="bg-gray relative flex cursor-pointer overflow-hidden rounded-md p-1 hover:shadow-lg"
                 style={{
                   height: `${height}px`,
@@ -37,8 +46,17 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
                   style={{ backgroundColor: color.hex }}
                 />
                 {/* 타이틀 및 시간 */}
-                <div className="pl-1" style={{ color: color.hex }}>
-                  <p className="text-xs font-semibold">{title}</p>
+                <div
+                  className={`pl-1 ${height <= RECORD_MIN_HEIGHT && 'flex'}`}
+                  style={{ color: color.hex }}
+                >
+                  <p
+                    className={`text-xs font-semibold ${
+                      height <= RECORD_MIN_HEIGHT && 'mr-2'
+                    }`}
+                  >
+                    {title}
+                  </p>
                   <p className="text-xs">
                     {start} - {end}
                   </p>
@@ -48,9 +66,9 @@ const Record = ({ order, records, setRecords, dayrecords, loading }) => {
           )
         })}
 
-      {modal.open && (
+      {modal && (
         <Modal
-          dayrecord={modal.record}
+          currentRecord={currentRecord.current}
           order={order}
           modal={modal}
           setModal={setModal}

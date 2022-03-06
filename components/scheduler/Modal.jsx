@@ -6,10 +6,11 @@ import * as Yup from 'yup'
 import { convertToMin } from './utils'
 import { deleteRecordReq, updateRecordReq } from '../../apiCalls/recordCalls'
 
-const Modal = ({ dayrecord, modal, setModal, records, setRecords }) => {
-  const { id, title, start, end, memo, date, color: colorInfo } = dayrecord
+const Modal = ({ currentRecord, modal, setModal, records, setRecords }) => {
+  const { id, title, start, end, memo, date, color: colorInfo } = currentRecord
 
   const [color, setColor] = useState(colorInfo)
+
   const validate = Yup.object({
     start: Yup.string()
       .matches(
@@ -33,7 +34,10 @@ const Modal = ({ dayrecord, modal, setModal, records, setRecords }) => {
     }
 
     const updatedRecord = { ...values, id, color, date }
-    const newRecords = records.filter((record) => record.id !== dayrecord.id)
+
+    const newRecords = records.filter(
+      (record) => record.id !== currentRecord.id
+    )
     newRecords.push(updatedRecord)
     setRecords(newRecords)
     setModal(false)
@@ -45,17 +49,19 @@ const Modal = ({ dayrecord, modal, setModal, records, setRecords }) => {
   // GUIDE 레코드 삭제
 
   const deleteRecord = async () => {
-    const newRecords = records.filter((record) => record.id !== dayrecord.id)
+    const newRecords = records.filter(
+      (record) => record.id !== currentRecord.id
+    )
     setRecords(newRecords)
     setModal(false)
 
-    await deleteRecordReq(dayrecord.id)
+    await deleteRecordReq(currentRecord.id)
   }
 
   return (
     <>
       <div
-        onClick={() => setModal({ ...modal, open: false })}
+        onClick={() => setModal(false)}
         className="fixed top-0 left-0 z-20 h-full w-full bg-black bg-opacity-30"
       />
       <div
@@ -66,7 +72,7 @@ const Modal = ({ dayrecord, modal, setModal, records, setRecords }) => {
           <h1 className="text-xl font-bold">Settings</h1>
           <button className="rounded-full p-1 hover:bg-gray-100">
             <AiOutlineCloseCircle
-              onClick={() => setModal({ ...modal, open: false })}
+              onClick={() => setModal(false)}
               className="text-lg text-gray-400"
             />
           </button>

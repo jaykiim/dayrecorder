@@ -5,11 +5,11 @@ import { BsCheckCircleFill } from 'react-icons/bs'
 import { ImCancelCircle } from 'react-icons/im'
 import { updateUserColorReq } from '../../apiCalls/colorCalls'
 
-const NewFolder = ({ userId, folders, setFolders, defaultFolder }) => {
+const NewFolder = ({ user, folders, setFolders, defaultFolder }) => {
   const [adding, setAdding] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
 
-  const addFolder = () => {
+  const addFolder = async () => {
     if (!newFolderName.replace(/\s+/g, '')) return
 
     const newFolders = [
@@ -17,18 +17,16 @@ const NewFolder = ({ userId, folders, setFolders, defaultFolder }) => {
       { folderName: newFolderName, items: [], uuid: uuid() },
     ]
 
-    updateUserColorReq(userId, { folders: newFolders, defaultFolder })
+    setAdding(false)
     setNewFolderName('')
     setFolders(newFolders)
-    setAdding(false)
+    user.colors.folders = newFolders
+
+    await updateUserColorReq(user.email, { folders: newFolders, defaultFolder })
   }
 
   return (
-    <div
-      className={`flex translate-y-6 justify-center opacity-0 ${
-        open && 'opacity-100'
-      }`}
-    >
+    <div className={`flex justify-center opacity-0 ${open && 'opacity-100'}`}>
       {adding ? (
         <div className="flex w-full items-center">
           <input

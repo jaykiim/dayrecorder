@@ -11,12 +11,15 @@ const Bodies = ({ isWeek, loading, setLoading }) => {
   const timeline = getTimeline()
   const user = useSession().data.user
 
+  // 현재 보고 있는 날짜가 속해 있는 주의 모든 일자를 배열로 가져옴 ex. [6, 7, 8, 9, 10, 11, 12]
   const date = useRecoilValue(selectedDate)
   const { year, month, day } = dateObj(date)
   const week = getSelectedWeekNo(year, month, day)
 
   const [records, setRecords] = useRecoilState(allRecords)
 
+  // week 배열의 첫 번째 날과 마지막 날을 2022-03-01 같은 식으로 만들고
+  // useEffect에서 주간 레코드를 한번에 가져온다
   const [firstday, lastday] = [
     dateFormatter(year, month, week[0]),
     dateFormatter(year, month, week[6]),
@@ -24,8 +27,13 @@ const Bodies = ({ isWeek, loading, setLoading }) => {
 
   useEffect(() => {
     const getRecords = async () => {
+      // 주간 레코드 가져오기
       const records = await getWeeklyRecordsReq(user.email, firstday, lastday)
+
+      // records 데이터를 다 받아왔을때만 (= loading이 false일 때) Body를 렌더
       setLoading(false)
+
+      // records 상태에 주간 레코드 저장
       setRecords(records)
     }
 
@@ -70,7 +78,7 @@ const Bodies = ({ isWeek, loading, setLoading }) => {
           ))
         ) : (
           <Body
-            order={0}
+            order={1}
             year={year}
             month={month}
             day={day}

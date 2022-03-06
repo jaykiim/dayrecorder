@@ -4,7 +4,7 @@ import BtnDelete from '../micro/BtnDelete'
 import BtnUpdate from '../micro/BtnUpdate'
 
 const MenuItem = ({
-  userId,
+  user,
   folders,
   defaultFolder,
   setFolders,
@@ -23,8 +23,9 @@ const MenuItem = ({
 
     setFolders(newFolder)
     setUpdating({ id: '', state: false })
+    user.colors.folders = newFolder
 
-    updateUserColorReq(userId, { folders: newFolder, defaultFolder })
+    updateUserColorReq(user.email, { folders: newFolder, defaultFolder })
   }
 
   const deleteFolder = (id) => {
@@ -35,7 +36,8 @@ const MenuItem = ({
     const newFolder = folders.filter((folder) => folder.uuid !== id)
 
     setFolders(newFolder)
-    updateUserColorReq(userId, { folders: newFolder, defaultFolder })
+    user.colors.folders = newFolder
+    updateUserColorReq(user.email, { folders: newFolder, defaultFolder })
   }
 
   return (

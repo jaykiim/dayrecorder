@@ -11,3 +11,12 @@ export const DEFAULT_COLORS = {
     업무: '#eb6440',
   },
 }
+
+export const RECORD_MIN_HEIGHT = 15
+
+export const DEFAULT_COLOR = {
+  hex: '#d4d4d4',
+  tag: '기타',
+  folder: '',
+  uuid: '',
+}

@@ -27,7 +27,7 @@ const Menu = (props) => {
         stretched="64"
         cb={renderList}
         style={{
-          common: 'w-full rounded-lg md:bg-green-300',
+          common: 'w-full rounded-lg md:bg-green-300 p-2',
           open: 'bg-green-500',
           notOpen: '',
         }}

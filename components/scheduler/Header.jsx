@@ -6,18 +6,20 @@ import StartModal from './StartModal'
 import RecordStarter from '../micro/RecordStarter'
 import { useRecorder } from '../../hooks/useRecorder'
 
+// SCHEDULER 바로 아래 버튼들
 const Header = ({ width, isWeek, setIsWeek }) => {
+  // 클릭한 날짜 ---> Today 버튼 누를 경우 오늘 날짜로 수정하기 위해
   const setSelectedDate = useSetRecoilState(selectedDate)
 
   const [modal, setModal] = useState(false)
 
   const { startRecording, stopRecording } = useRecorder()
   const recording = useRecoilValue(isRecording)
-  console.log('recording: ', recording)
 
   return (
     <div className="flex">
       {width < 768 && <div className="flex-1" />}
+
       <div className="mx-3 flex gap-3 md:mx-0 md:flex-1">
         <section className="flex gap-x-1">
           <button className="btnGreen md:text-md text-xs">
@@ -55,7 +57,7 @@ const Header = ({ width, isWeek, setIsWeek }) => {
       {recording ? (
         <RecordStarter label="stop" cb={stopRecording} />
       ) : (
-        <RecordStarter label="start" cb={() => setModal(true)} />
+        <RecordStarter label="start" cb={() => setModal(!modal)} />
       )}
 
       {modal && (

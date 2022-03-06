@@ -1,5 +1,6 @@
+import uuid from 'react-uuid'
 import { useSession } from 'next-auth/react'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { createRecordReq } from '../apiCalls/recordCalls'
 import { dateFormatter, getCurrentTime } from '../components/scheduler/utils'
@@ -33,7 +34,13 @@ export function useRecorder() {
 
     window.localStorage.setItem(
       'recording',
-      JSON.stringify({ start: getCurrentTime(), title, color, date: datestamp })
+      JSON.stringify({
+        id: uuid(),
+        start: getCurrentTime(),
+        title,
+        color,
+        date: datestamp,
+      })
     )
 
     setModal(false)
@@ -45,7 +52,7 @@ export function useRecorder() {
     // 시작할 때 저장해두었던 정보 가져오기
     const saved = JSON.parse(window.localStorage.getItem('recording'))
     if (!saved) return
-    const { start, title, color, date: startDate } = saved
+    const { id, start, title, color, date: startDate } = saved
 
     // 끝난 시간
     const end = getCurrentTime()
@@ -62,6 +69,7 @@ export function useRecorder() {
     // 시작 날짜의 시작 시간 ~ 23:59 까지 레코드, 끝난 날짜의 00:00 ~ 끝난 시간까지 레코드를 만든다
     if (startDate !== endDate) {
       const record1 = {
+        id,
         date: startDate,
         start,
         end: '23:59',
@@ -69,7 +77,7 @@ export function useRecorder() {
         color,
         memo: '',
       }
-      const record2 = { date: endDate, start, end, title, color, memo: '' }
+      const record2 = { id, date: endDate, start, end, title, color, memo: '' }
       setRecords((records) => [...records, record1, record2])
 
       createRecordReq({ ...record1, user: user.email })
@@ -79,7 +87,15 @@ export function useRecorder() {
     // 시작 날짜와 끝난 날짜가 같으면
     else {
       console.log(start)
-      const newRecord = { date: startDate, start, end, title, color, memo: '' }
+      const newRecord = {
+        id,
+        date: startDate,
+        start,
+        end,
+        title,
+        color,
+        memo: '',
+      }
       setRecords((records) => [...records, newRecord])
 
       createRecordReq({ ...newRecord, email: user.email })
