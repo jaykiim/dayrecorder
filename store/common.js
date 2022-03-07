@@ -1,5 +1,8 @@
-import { atom, selector } from 'recoil'
-import { getCurrentTime, getMinutehandPos } from '../components/scheduler/utils'
+import { atom, atomFamily, selector } from 'recoil'
+import {
+  getCurrentTime,
+  getMinutehandPos,
+} from '../components/scheduler2/utils'
 
 // 클릭된 날짜
 export const selectedDate = atom({
@@ -37,5 +40,11 @@ export const allRecords = atom({
 // 할 일
 export const todos = atom({
   key: 'todos',
+  default: [],
+})
+
+// 카테고리
+export const categoriesData = atom({
+  key: 'categories',
   default: [],
 })

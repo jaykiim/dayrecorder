@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { isRecording, selectedDate } from '../../store/common'
-import StartModal from './StartModal'
+// import StartModal from './StartModal'
 import RecordStarter from '../micro/RecordStarter'
 import { useRecorder } from '../../hooks/useRecorder'
 
@@ -60,9 +60,9 @@ const Header = ({ width, isWeek, setIsWeek }) => {
         <RecordStarter label="start" cb={() => setModal(!modal)} />
       )}
 
-      {modal && (
+      {/* {modal && (
         <StartModal setModal={setModal} startRecording={startRecording} />
-      )}
+      )} */}
     </div>
   )
 }

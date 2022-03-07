@@ -51,22 +51,19 @@ export default NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (session.user) {
-        const { name, email } = session.user
+        const { email } = session.user
 
         const user = await getUserByEmailReq(email) // DB에서 찾아서
         console.log('[...nextauth].js > callbacks > session', user)
 
         // 없으면 DB에 등록
         if (!user) {
-          createUserByEmailReq(null, {
-            username: name,
-            email,
-          })
+          createUserByEmailReq(null, session.user)
         } else {
           // 소셜 로그인의 경우
           if (token.sub) session.userId = token.sub
 
-          session.user.colors = user.colors
+          session.user.categories = user.userCategory
         }
       }
 

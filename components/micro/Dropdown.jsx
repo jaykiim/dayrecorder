@@ -5,31 +5,40 @@ const Dropdown = ({
   id,
   open,
   setOpen,
-  header,
-  cb,
-  origin,
-  stretched,
+  before,
+  after,
   style,
+  preview,
+  contents,
+  contentHeight,
+  others,
 }) => {
   return (
-    <div
-      id="ColorDropdownSublist"
-      className={`h-${stretched} ${style.common} transition-all ${
-        id === open.id && open.state
-          ? `max-h-${stretched} ${style.open}`
-          : `max-h-${origin}`
-      } ${!open && style.notOpen}`}
+    <section
+      className={`flex flex-col h-${after} rounded-md transition-all ${style} ${
+        open.state && open.id === id ? 'max-h-' + after : 'max-h-' + before
+      }`}
     >
-      <div className="flex items-center justify-between">
-        <span className={style.listItem}>{header}</span>
-        <AiOutlineDownCircle
-          onClick={() => setOpen({ id, state: !open.state })}
-          className="cursor-pointer text-xl text-gray-400"
-        />
+      <div
+        onClick={() => setOpen({ id, state: !open.state })}
+        className={`flex h-${before} cursor-pointer items-center px-2`}
+      >
+        <AiOutlineDownCircle className="mr-2 text-xl text-gray-400" />
+        <span className="text-sm">{preview}</span>
       </div>
 
-      {id === open.id && open.state && cb(id)}
-    </div>
+      <div
+        className={`${
+          open.state && open.id === id
+            ? `h-${contentHeight} overflow-y-auto border-t p-2`
+            : 'hidden'
+        }`}
+      >
+        {contents}
+      </div>
+
+      {others}
+    </section>
   )
 }
 

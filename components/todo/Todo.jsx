@@ -6,7 +6,7 @@ import { createTodoReq, getTodos } from '../../apiCalls/todoCalls'
 import { selectedDate, todos } from '../../store/common'
 import { DEFAULT_COLOR, MEDIUM } from '../../store/constants'
 import { getDateStamp } from '../scheduler/utils'
-import ColorDropdown from '../colors/ColorDropdown'
+// import ColorDropdown from '../colors/ColorDropdown'
 import Title from '../micro/Title'
 import ListItem from './ListItem'
 
@@ -65,11 +65,11 @@ const Todo = () => {
         onSubmit={(e) => createTodo(e)}
         className="relative flex flex-col border-t py-5 px-2 md:border-none md:p-5"
       >
-        <ColorDropdown
+        {/* <ColorDropdown
           bg={`${width < MEDIUM ? 'bg-green-300' : 'bg-white'}`}
           color={color}
           setColor={setColor}
-        />
+        /> */}
         <input
           type="text"
           className="mt-3 rounded-lg border border-gray-400 p-2 text-lg focus:border-2 focus:border-green-700 focus:outline-none"

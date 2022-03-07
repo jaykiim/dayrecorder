@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Dropdown from '../micro/Dropdown'
+import Dropdown from '../micro/Dropdown2'
 import MenuItem from './MenuItem'
 import NewFolder from './NewFolder'
 

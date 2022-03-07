@@ -2,27 +2,18 @@ import axios from 'axios'
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 import { hash } from 'bcryptjs'
-import { DEFAULT_COLORS } from '../store/constants'
 
 export const CreateUserByEmail = gql`
   mutation CreateUserByEmail(
     $username: String!
     $email: String!
     $password: String
-    $colors: Json!
   ) {
     newUser: createDayrecorderUser(
-      data: {
-        username: $username
-        email: $email
-        password: $password
-        colors: $colors
-      }
+      data: { username: $username, email: $email, password: $password }
     ) {
       email
       username
-      colors
-      defaultColor
     }
   }
 `
@@ -36,7 +27,6 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
         username,
         email,
         password: await hash(password, 12),
-        colors: JSON.stringify(DEFAULT_COLORS),
       })
       return newUser
     }
@@ -47,7 +37,6 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
       const { newUser } = await graphcmsClient.request(CreateUserByEmail, {
         username,
         email,
-        colors: JSON.stringify(DEFAULT_COLORS),
       })
       return newUser
     }
@@ -62,16 +51,24 @@ export const GetUserByEmail = gql`
       email
       password
       username
-      colors
+      userCategory {
+        id
+        categoryName
+        userColors {
+          color {
+            hex
+          }
+          id
+          tag
+        }
+      }
     }
   }
 `
 
 export const getUserByEmailReq = async (email) => {
   try {
-    const { user } = await graphcmsClient.request(GetUserByEmail, {
-      email,
-    })
+    const { user } = await graphcmsClient.request(GetUserByEmail, { email })
     return user
   } catch (err) {
     console.log(err)

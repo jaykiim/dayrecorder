@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ColorDropdown from '../colors/ColorDropdown'
+// import ColorDropdown from '../colors2/ColorDropdown'
 import { DEFAULT_COLOR } from '../../store/constants'
 
 const StartModal = ({ setModal, startRecording }) => {
@@ -14,7 +14,7 @@ const StartModal = ({ setModal, startRecording }) => {
       className="absolute right-5 top-12 z-10 h-24 w-52 rounded-lg bg-white p-2 shadow-md"
     >
       <div className="absolute top-2 z-30 w-48">
-        <ColorDropdown color={color} setColor={setColor} />
+        {/* <ColorDropdown color={color} setColor={setColor} /> */}
       </div>
       <input
         type="text"

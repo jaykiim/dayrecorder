@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ColorDropdown from '../colors/ColorDropdown'
+// import ColorDropdown from '../colors/ColorDropdown'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -93,7 +93,7 @@ const Modal = ({ currentRecord, setModal, records, setRecords }) => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
-              <ColorDropdown color={color} setColor={setColor} />
+              {/* <ColorDropdown color={color} setColor={setColor} /> */}
 
               <section className="my-5 flex flex-col">
                 <label htmlFor="title" className="text-sm text-gray-400">
