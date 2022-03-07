@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as Yup from 'yup'
 import BtnDelete from './BtnDelete'
 import BtnUpdate from './BtnUpdate'
@@ -12,6 +12,7 @@ const ModabbleItem = ({
   validationProps,
   handleDelete,
   handleUpdate,
+  handleListItemClick,
   useUpdateSubmitBtn,
   style,
 }) => {
@@ -28,19 +29,26 @@ const ModabbleItem = ({
       name: 'value',
       type: 'text',
       autoFocus: true,
-      className: 'px-2 focus:outline-none',
+      className:
+        'px-1 bg-transparent border-b border-green-700 focus:outline-none',
     },
   ]
 
   return (
-    <div className={'flex justify-between hover:bg-gray-100 ' + style}>
+    <div
+      onClick={() => handleListItemClick(id)}
+      className={'flex justify-between rounded-md hover:bg-gray-50 ' + style}
+    >
       {updating.state && updating.id === id ? (
         <Form
           initialValues={initialValues}
           validate={validate}
           fields={fields}
           onSubmit={handleUpdate}
+          itemId={id}
+          onItemClick={handleListItemClick}
           submitProps={id}
+          alertStyle="alertTextSm mt-1"
         />
       ) : (
         <p className="w-full cursor-pointer">{name}</p>

@@ -7,9 +7,10 @@ const TextInput = ({
   values,
   handleChange,
   handleBlur,
+  styles,
 }) => (
-  <div className="flex">
-    <label htmlFor={id} className="mr-4 font-bold">
+  <div className={styles.container}>
+    <label htmlFor={id} className={styles.label}>
       {id.toUpperCase()}
     </label>
     <input
@@ -19,7 +20,7 @@ const TextInput = ({
       value={values[id]}
       onChange={handleChange}
       onBlur={handleBlur}
-      className="w-full bg-transparent lowercase focus:outline-none"
+      className={styles.input}
     />
   </div>
 )

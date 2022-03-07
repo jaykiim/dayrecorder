@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const Profile = ({ user }) => {
   return (
-    <div className="flex w-full flex-col items-center border-b py-4 tracking-wide">
+    <div className="flex w-full flex-col items-center py-4 tracking-wide md:border-b">
       {user.image && (
         <Image
           src={user.image}

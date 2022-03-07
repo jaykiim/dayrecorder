@@ -41,6 +41,10 @@ body {
   width: 0px;
 }
 
+#chrome-picker {
+  box-shadow: none;
+}
+
 .title {
   @apply text-xl font-black uppercase;
 }

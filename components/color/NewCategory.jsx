@@ -46,7 +46,7 @@ const NewCategory = ({ open }) => {
       name: 'newCategory',
       type: 'text',
       placeholder: '카테고리명 입력 후 Enter키로 등록',
-      className: 'w-full p-1 px-2 text-sm focus:outline-none',
+      className: 'w-full rounded-md p-1 px-2 text-sm focus:outline-none',
     },
   ]
 
@@ -56,8 +56,9 @@ const NewCategory = ({ open }) => {
       validate={validate}
       onSubmit={createNewCategory}
       formStyle={`${
-        open.state ? 'h-16 flex-col justify-center bg-gray-100 p-2' : 'hidden'
+        open.state ? 'h-16 flex-col justify-center bg-green-700 p-2' : 'hidden'
       }`}
+      alertStyle="ml-1 mt-1 text-xs text-gray-200"
       fields={fields}
     />
   )

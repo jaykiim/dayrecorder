@@ -8,7 +8,7 @@ const Title = ({ title }) => {
     <h1
       className={`${
         width < MEDIUM && 'hidden'
-      } border-b border-green-300 p-4 px-5 text-xl font-black uppercase`}
+      } border-b border-green-300 p-4 px-5 text-xl font-black uppercase text-green-900`}
     >
       {title}
     </h1>

@@ -48,3 +48,21 @@ export const categoriesData = atom({
   key: 'categories',
   default: [],
 })
+
+// 선택된 카테고리 아이디
+export const currentCategoryId = atom({
+  key: 'currentCategoryId',
+  default: '',
+})
+
+// 선택된 카테고리 객체
+export const currentCategory = selector({
+  key: 'currentCategory',
+  get: ({ get }) => {
+    const categories = get(categoriesData)
+    const id = get(currentCategoryId)
+
+    if (categories) return categories.find((category) => category.id === id)
+    else return {}
+  },
+})
