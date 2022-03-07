@@ -84,3 +84,51 @@ export const createUserCategoryReq = async (categoryName, email) => {
     console.log(err)
   }
 }
+
+export const updateUserCategoryName = gql`
+  mutation updateUserCategoryName($categoryName: String!, $id: ID!) {
+    updatedUserCategory: updateUserCategory(
+      data: { categoryName: $categoryName }
+      where: { id: $id }
+    ) {
+      categoryName
+      id
+      userColors {
+        color {
+          hex
+        }
+        id
+        tag
+      }
+    }
+  }
+`
+
+export const updateUserCategoryNameReq = async (categoryName, id) => {
+  try {
+    const updatedUserCategory = await graphcmsClient.request(
+      updateUserCategoryName,
+      { categoryName, id }
+    )
+    return updatedUserCategory
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteUserCategory = gql`
+  mutation deleteUserCategory($id: ID!) {
+    deleteUserCategory(where: { id: $id }) {
+      id
+      categoryName
+    }
+  }
+`
+
+export const deleteUserCategoryReq = async (id) => {
+  try {
+    await graphcmsClient.request(deleteUserCategory, { id })
+  } catch (err) {
+    console.log(err)
+  }
+}

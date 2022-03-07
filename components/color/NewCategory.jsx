@@ -1,10 +1,10 @@
 import React from 'react'
-import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { createUserCategoryReq } from '../../apiCalls/colorCalls'
 import { useSession } from 'next-auth/react'
 import { useRecoilState } from 'recoil'
 import { categoriesData } from '../../store/common'
+import Form from '../micro/Form'
 
 const NewCategory = ({ open }) => {
   const email = useSession().data.user.email
@@ -15,7 +15,9 @@ const NewCategory = ({ open }) => {
   const names = categories.map((category) => category.categoryName)
 
   // onSubmit 콜백 (새 카테고리 생성)
-  const createNewCategory = async (values, { setValues }) => {
+  const createNewCategory = async (values, tools) => {
+    const { setValues } = tools
+
     // 공백만 있을 경우 리턴
     if (!values.newCategory.replace(/\s+/g, '')) return
 
@@ -39,35 +41,25 @@ const NewCategory = ({ open }) => {
       .notOneOf(names, '이미 존재하는 카테고리입니다'),
   })
 
+  const fields = [
+    {
+      name: 'newCategory',
+      type: 'text',
+      placeholder: '카테고리명 입력 후 Enter키로 등록',
+      className: 'w-full p-1 px-2 text-sm focus:outline-none',
+    },
+  ]
+
   return (
-    <Formik
+    <Form
       initialValues={{ newCategory: '' }}
-      validationSchema={validate}
+      validate={validate}
       onSubmit={createNewCategory}
-    >
-      {({ handleSubmit, values, errors, handleChange, handleBlur }) => (
-        <form
-          onSubmit={handleSubmit}
-          onKeyDown={(e) => e.key === 'Enter' && handleSubmit}
-          className={`${
-            open.state
-              ? 'h-16 flex-col justify-center bg-gray-100 p-2'
-              : 'hidden'
-          }`}
-        >
-          <input
-            id="newCategory"
-            type="text"
-            placeholder="카테고리명 입력 후 Enter키로 등록"
-            className="w-full p-1 px-2 text-sm focus:outline-none"
-            value={values.newCategory}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          <p className="alertTextSm ml-1 mt-1">{errors.newCategory}</p>
-        </form>
-      )}
-    </Formik>
+      formStyle={`${
+        open.state ? 'h-16 flex-col justify-center bg-gray-100 p-2' : 'hidden'
+      }`}
+      fields={fields}
+    />
   )
 }
 

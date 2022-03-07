@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { categoriesData } from '../../store/common'
 import Title from '../micro/Title'
-import Categories from './CategoryDropdown'
+import CategoryDropdown from './CategoryDropdown'
 
 const Color = () => {
   // 컴포넌트가 마운트되면 카테고리 데이터를 패치해서 전역 상태에 저장할 것임
@@ -23,7 +23,7 @@ const Color = () => {
     <>
       <Title title="Colors" />
       <section className="bodyContainer">
-        <Categories />
+        <CategoryDropdown />
       </section>
     </>
   )
