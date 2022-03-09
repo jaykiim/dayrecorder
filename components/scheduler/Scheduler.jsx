@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useWindowSize } from 'react-use'
 import { useRecoilValue } from 'recoil'
 import { selectedDate } from '../../store/common'
+import { XLARGE } from '../../store/constants'
+import { dateObj, getSelectedWeekNo } from '../calendar/utils'
 import Title from '../micro/Title'
 import HeaderBtns from './HeaderBtns'
 import TableBody from './TableBody'
@@ -8,8 +11,18 @@ import TableHeader from './TableHeader'
 import TimeLine from './TimeLine'
 
 const Scheduler = () => {
-  const [isWeek, setIsWeek] = useState(false)
+  // 브라우저 너비
+  const { width } = useWindowSize()
+
+  // 주간 뷰
+  const [isWeek, setIsWeek] = useState(width < XLARGE ? false : true)
+
+  // 달력에서 클릭된 날짜
   const clickedDate = useRecoilValue(selectedDate)
+  const { year, month, day } = dateObj(clickedDate)
+
+  // 달력에서 클릭된 날짜가 속한 주의 모든 날짜
+  const week = getSelectedWeekNo(year, month, day)
 
   return (
     <>
@@ -23,9 +36,19 @@ const Scheduler = () => {
             // GUIDE 날짜 
           =============================================================================================================================== */}
 
-          <div className="mb-3 flex">
+          <div className="mb-3 mr-2 flex">
             <div style={{ width: 39.55 }} />
-            <TableHeader clickedDate={clickedDate} />
+            {isWeek ? (
+              week.map((day, i) => (
+                <TableHeader
+                  key={i}
+                  isWeek={isWeek}
+                  date={{ year, month, day }}
+                />
+              ))
+            ) : (
+              <TableHeader isWeek={isWeek} date={{ year, month, day }} />
+            )}
           </div>
 
           {/* ===============================================================================================================================  
@@ -37,8 +60,20 @@ const Scheduler = () => {
               <TimeLine />
             </div>
 
-            <div className="w-full">
-              <TableBody />
+            <div className="flex w-full">
+              {isWeek ? (
+                <>
+                  {week.map((_, i) => (
+                    <div style={{ width: 'calc(100% / 7)' }}>
+                      <TableBody key={i} />
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className="w-full">
+                  <TableBody />
+                </div>
+              )}
             </div>
           </div>
         </div>

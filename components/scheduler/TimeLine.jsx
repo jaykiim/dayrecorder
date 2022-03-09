@@ -9,7 +9,7 @@ const TimeLine = () => {
     <>
       {timeline.map((time, i) => (
         <div key={i} style={{ height: MIN_HEIGHT * 30 }}>
-          <p className="-translate-y-2 text-xs">
+          <p className="-translate-y-2 text-xs text-green-700">
             {time === '00:00' ? '' : time}
           </p>
         </div>
