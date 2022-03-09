@@ -8,6 +8,7 @@ import { categoriesData, currentCategory } from '../../store/common'
 import Dropdown from '../micro/Dropdown'
 import ModabbleItem from '../micro/ModabbleItem'
 import NewCategory from './NewCategory'
+import { categoryNameValidate } from './utils'
 
 const CategoryDropdown = ({ setSelectedCategoryId }) => {
   // Color 컴포넌트에서 데이터 패칭되는 동안에는 Loading창 나오고 await 다 되면 재렌더 될 것임
@@ -51,6 +52,24 @@ const CategoryDropdown = ({ setSelectedCategoryId }) => {
 
   // 카테고리 이름 수정 시 기존에 존재하는 카테고리명과 중복될 수 없도록 유효성 검사할 떄 쓸 배열
   const existingNames = categories.map((category) => category.categoryName)
+  const validate = categoryNameValidate({ notOneOf: existingNames })
+
+  // 수정 버튼 클릭 시 나올 필드들
+  const editFields = [
+    {
+      name: 'value',
+      type: 'text',
+      autoFocus: true,
+      className:
+        'px-1 bg-transparent border-b border-green-700 focus:outline-none',
+    },
+  ]
+
+  // 개별 카테고리 아이템에 적용할 스타일
+  const style = {
+    container: 'text-sm p-2 hover:bg-gray-50', // 개별 카테고리 div
+    displayName: 'w-full cursor-pointer', // 카테고리명 p
+  }
 
   // 카테고리 리스트 아이템 렌더
   const renderList = () =>
@@ -58,15 +77,17 @@ const CategoryDropdown = ({ setSelectedCategoryId }) => {
       <ModabbleItem
         key={i}
         id={category.id}
-        name={category.categoryName}
+        displayName={category.categoryName}
         updating={updating}
         setUpdating={setUpdating}
-        validationProps={{ notOneOf: existingNames }}
+        editFields={editFields}
+        fieldDefaultVal={{ value: category.categoryName }}
+        validate={validate}
         handleUpdate={handleUpdate}
         handleDelete={handleDelete}
         handleListItemClick={handleListItemClick}
         useUpdateSubmitBtn={false}
-        style="text-sm p-2"
+        style={style}
       />
     ))
 

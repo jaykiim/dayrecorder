@@ -1,4 +1,4 @@
-import { atom, atomFamily, selector } from 'recoil'
+import { atom, selector, selectorFamily } from 'recoil'
 import {
   getCurrentTime,
   getMinutehandPos,
@@ -64,5 +64,19 @@ export const currentCategory = selector({
 
     if (categories) return categories.find((category) => category.id === id)
     else return {}
+  },
+})
+
+// 선택된 카테고리에 속한 컬러들의 hex 및 tag 배열
+export const currentCategoryHexTag = selector({
+  key: 'currentCategoryHexTag',
+  get: ({ get }) => {
+    const selectedCategory = get(currentCategory)
+
+    if (selectedCategory) {
+      const hexes = selectedCategory.userColors.map((color) => color.color.hex)
+      const tags = selectedCategory.userColors.map((color) => color.tag)
+      return [hexes, tags]
+    }
   },
 })

@@ -1,60 +1,52 @@
 import React from 'react'
-import * as Yup from 'yup'
 import BtnDelete from './BtnDelete'
 import BtnUpdate from './BtnUpdate'
 import Form from './Form'
 
 const ModabbleItem = ({
-  name,
+  displayName,
   id,
   updating,
   setUpdating,
-  validationProps,
+  validate,
   handleDelete,
   handleUpdate,
   handleListItemClick,
+  submitProps,
   useUpdateSubmitBtn,
+  editFields,
+  fieldDefaultVal,
   style,
 }) => {
-  const initialValues = { value: name }
-
-  const validate = Yup.object({
-    value: Yup.string()
-      .required('카테고리명을 입력하세요')
-      .notOneOf(validationProps.notOneOf, '이미 존재하는 카테고리명입니다'),
-  })
-
-  const fields = [
-    {
-      name: 'value',
-      type: 'text',
-      autoFocus: true,
-      className:
-        'px-1 bg-transparent border-b border-green-700 focus:outline-none',
-    },
-  ]
+  const initialValues = editFields.reduce((a, c) => {
+    a[c.name] = fieldDefaultVal[c.name]
+    return a
+  }, {})
 
   return (
-    <div
-      onClick={() => handleListItemClick(id)}
-      className={'flex justify-between rounded-md hover:bg-gray-50 ' + style}
-    >
+    <div className={'flex justify-between rounded-md ' + style?.container}>
       {updating.state && updating.id === id ? (
         <Form
           initialValues={initialValues}
           validate={validate}
-          fields={fields}
+          fields={editFields}
           onSubmit={handleUpdate}
-          itemId={id}
+          itemId={submitProps || id}
           onItemClick={handleListItemClick}
           submitProps={id}
           alertStyle="alertTextSm mt-1"
+          formStyle={style?.formStyle}
         />
       ) : (
-        <p className="w-full cursor-pointer">{name}</p>
+        <p
+          onClick={() => handleListItemClick(id)}
+          className={style?.displayName}
+        >
+          {displayName}
+        </p>
       )}
 
-      <div className="flex gap-x-2">
+      <div className="flex items-center gap-x-2">
         <BtnUpdate
           id={id}
           cb={handleUpdate}

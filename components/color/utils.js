@@ -17,3 +17,10 @@ export const colorValidate = (where, tags, hexes) => {
       .notOneOf(tags, '* 이미 폴더에 존재하는 이름입니다'),
   })
 }
+
+export const categoryNameValidate = (validationProps) =>
+  Yup.object({
+    value: Yup.string()
+      .required('카테고리명을 입력하세요')
+      .notOneOf(validationProps.notOneOf, '이미 존재하는 카테고리명입니다'),
+  })

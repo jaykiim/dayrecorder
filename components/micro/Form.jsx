@@ -20,13 +20,21 @@ const Form = ({
       {(props) => (
         <form
           onSubmit={props.handleSubmit}
-          onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit}
+          onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit()}
           className={formStyle}
         >
           {renderComponents && renderComponents(props)}
           {fields?.map(
-            ({ name, className, type, placeholder, autoFocus }, i) => (
-              <section key={i} className="flex h-full flex-col justify-center">
+            (
+              { name, className, type, placeholder, autoFocus, containerStyle },
+              i
+            ) => (
+              <section
+                key={i}
+                className={
+                  'flex h-full flex-col justify-center ' + containerStyle
+                }
+              >
                 <input
                   name={name}
                   type={type}
