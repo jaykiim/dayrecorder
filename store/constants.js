@@ -20,3 +20,6 @@ export const DEFAULT_COLOR = {
   folder: '',
   uuid: '',
 }
+
+export const MIN_HEIGHT = 3.5
+export const TABLE_HEADER_HEIGHT = 64
