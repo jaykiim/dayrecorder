@@ -52,7 +52,7 @@ const Scheduler = () => {
           </div>
 
           {/* ===============================================================================================================================  
-            // GUIDE 타임라인 - 타임테이블 
+            // GUIDE 타임라인 - 테이블 
           =============================================================================================================================== */}
 
           <div className="flex overflow-y-scroll " style={{ height: 712 }}>
@@ -60,18 +60,20 @@ const Scheduler = () => {
               <TimeLine />
             </div>
 
+            {/* 테이블 */}
             <div className="flex w-full">
               {isWeek ? (
-                <>
-                  {week.map((_, i) => (
-                    <div style={{ width: 'calc(100% / 7)' }}>
-                      <TableBody key={i} />
-                    </div>
-                  ))}
-                </>
+                week.map((day, i) => (
+                  <div
+                    key={i}
+                    style={{ width: 'calc(100% / 7)', position: 'relative' }}
+                  >
+                    <TableBody key={i} date={{ year, month, day }} />
+                  </div>
+                ))
               ) : (
-                <div className="w-full">
-                  <TableBody />
+                <div className="relative w-full">
+                  <TableBody date={{ year, month, day }} />
                 </div>
               )}
             </div>

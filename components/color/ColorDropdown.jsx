@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import Dropdown from '../micro/Dropdown'
 
-const ColorDropdown = () => {
+const ColorDropdown = ({ style }) => {
   const categories = useSession().data.user.categories
 
   const [outerList, setOuterList] = useState({ id: '', state: false })
@@ -23,25 +23,24 @@ const ColorDropdown = () => {
         before="8"
         after="56"
         preview={category.categoryName}
+        style={style?.outerList}
         contents={renderInnerList(category.id)}
       />
     ))
 
   return (
     <>
-      <div className="bodyContainer">
-        <Dropdown
-          id=""
-          open={outerList}
-          setOpen={setOuterList}
-          before="8"
-          after="64"
-          style="bg-gray-50"
-          preview={categories[0].categoryName || '카테고리를 생성하세요'}
-          contents={renderOuterList()}
-          contentHeight="56"
-        />
-      </div>
+      <Dropdown
+        id=""
+        open={outerList}
+        setOpen={setOuterList}
+        before="8"
+        after="64"
+        style={style?.preview}
+        preview={categories[0].categoryName || '카테고리를 생성하세요'}
+        contents={renderOuterList()}
+        contentHeight="56"
+      />
     </>
   )
 }

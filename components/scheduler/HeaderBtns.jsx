@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BtnLeft from '../micro/BtnLeft'
 import BtnText from '../micro/BtnText'
 import BtnRight from '../micro/BtnRight'
 import BtnToggleSquare from '../micro/BtnToggleSquare'
+import NewRecordModal from './NewRecordModal'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {
@@ -20,6 +21,8 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
       'bg-carrot-light text-white px-3 py-1 rounded-md cursor-pointer hover:bg-carrot-deep',
   }
 
+  const [modal, setModal] = useState(false)
+
   return (
     <div className="flex items-center ">
       <div className="flex flex-1 items-center gap-x-1">
@@ -28,7 +31,16 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
         <BtnRight style={arrowStyle} />
         <BtnToggleSquare toggle={isWeek} setToggle={setIsWeek} />
       </div>
-      <BtnText text="Record" style={recordStyle} />
+
+      <div className="relative">
+        {/* 시간 기록 시작 버튼 */}
+        <BtnText
+          btnClick={() => setModal(!modal)}
+          text="Record"
+          style={recordStyle}
+        />
+        {modal && <NewRecordModal />}
+      </div>
     </div>
   )
 }

@@ -1,6 +1,42 @@
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 
+export const getRecords = gql`
+  query getRecords($date: Date!, $email: String!) {
+    records(where: { date: $date, user: { email: $email } }) {
+      userCategory {
+        categoryName
+        id
+      }
+      userColor {
+        color {
+          hex
+        }
+        id
+        tag
+      }
+      id
+      start
+      end
+      title
+      date
+      memo
+    }
+  }
+`
+
+export const getRecordsReq = async (date, email) => {
+  try {
+    const { records } = await graphcmsClient.request(getRecords, {
+      date,
+      email,
+    })
+    return records
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const GetWeeklyRecords = gql`
   query GetWeeklyRecords($email: String!, $firstday: Date!, $lastday: Date!) {
     weeklyRecords: dayrecorderUser(where: { email: $email }) {
