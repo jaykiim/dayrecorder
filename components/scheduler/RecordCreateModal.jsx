@@ -1,9 +1,18 @@
 import React from 'react'
 import ColorDropdown from '../color/ColorDropdown'
 
-const NewRecordModal = () => {
+const RecordCreateModal = () => {
   const dropdownStyle = {
-    preview: 'bg-green-300 md:bg-gray-50 border border-green-900',
+    outside: {
+      container: 'bg-green-300 md:bg-gray-50 border border-green-900',
+      icon: 'mr-2 text-xl text-green-900',
+      title: 'text-sm text-green-900',
+      underlineColor: 'border-green-900',
+    },
+    inside: {
+      icon: 'mr-2 text-green-900',
+      title: 'text-sm text-green-900',
+    },
   }
 
   return (
@@ -24,4 +33,4 @@ const NewRecordModal = () => {
   )
 }
 
-export default NewRecordModal
+export default RecordCreateModal

@@ -31,6 +31,7 @@ export const getRecordsReq = async (date, email) => {
       date,
       email,
     })
+
     return records
   } catch (err) {
     console.log(err)

@@ -15,22 +15,22 @@ const Dropdown = ({
 }) => {
   return (
     <section
-      className={`flex flex-col h-${after} rounded-md transition-all ${style} ${
-        open.state && open.id === id ? 'max-h-' + after : 'max-h-' + before
-      }`}
+      className={`flex flex-col h-${after} rounded-md transition-all ${
+        style?.container
+      } ${open.state && open.id === id ? 'max-h-' + after : 'max-h-' + before}`}
     >
       <div
         onClick={() => setOpen({ id, state: !open.state })}
         className={`flex h-${before} cursor-pointer items-center px-2`}
       >
-        <AiOutlineDownCircle className="mr-2 text-xl text-green-700" />
-        <span className="text-sm text-green-900">{preview}</span>
+        <AiOutlineDownCircle className={style?.icon} />
+        <span className={style?.title}>{preview}</span>
       </div>
 
       <div
         className={`${
           open.state && open.id === id
-            ? `h-${contentHeight} overflow-y-auto border-t border-green-700 p-2`
+            ? `h-${contentHeight} overflow-y-auto border-t ${style?.underlineColor} p-2`
             : 'hidden'
         }`}
       >

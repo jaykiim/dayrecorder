@@ -1,4 +1,5 @@
-import { atom, selector } from 'recoil'
+import { atom, selector, selectorFamily } from 'recoil'
+import { getRecordsReq } from '../apiCalls/recordCalls'
 import {
   getCurrentTime,
   getMinutehandPos,
@@ -32,9 +33,20 @@ export const isRecording = atom({
 })
 
 // 레코드
-export const allRecords = atom({
-  key: 'allRecords',
+export const recordsData = atom({
+  key: 'recordsData',
   default: [],
+})
+
+// 레코드 패치
+export const fetchRecords = selectorFamily({
+  key: 'fetchRecords',
+  get:
+    ({ datestamp, email }) =>
+    async () => {
+      const records = await getRecordsReq(datestamp, email)
+      return records
+    },
 })
 
 // 할 일

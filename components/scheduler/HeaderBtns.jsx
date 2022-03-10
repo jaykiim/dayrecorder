@@ -3,7 +3,7 @@ import BtnLeft from '../micro/BtnLeft'
 import BtnText from '../micro/BtnText'
 import BtnRight from '../micro/BtnRight'
 import BtnToggleSquare from '../micro/BtnToggleSquare'
-import NewRecordModal from './NewRecordModal'
+import RecordCreateModal from './RecordCreateModal'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {
@@ -11,15 +11,11 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
     icon: 'text-green-700',
   }
 
-  const todayStyle = {
-    container:
-      'bg-green-300 py-1 px-4 rounded-md text-green-700 font-bold hover:bg-green-500',
-  }
+  const todayStyle =
+    'bg-green-300 py-1 px-4 rounded-md text-green-700 font-bold hover:bg-green-500'
 
-  const recordStyle = {
-    container:
-      'bg-carrot-light text-white px-3 py-1 rounded-md cursor-pointer hover:bg-carrot-deep',
-  }
+  const recordStyle =
+    'bg-carrot-light text-white px-3 py-1 rounded-md cursor-pointer hover:bg-carrot-deep'
 
   const [modal, setModal] = useState(false)
 
@@ -39,7 +35,7 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
           text="Record"
           style={recordStyle}
         />
-        {modal && <NewRecordModal />}
+        {modal && <RecordCreateModal />}
       </div>
     </div>
   )

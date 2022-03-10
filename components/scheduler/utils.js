@@ -26,3 +26,14 @@ export const getTimeline = () => {
 
   return timeline
 }
+
+/* 
+============================================================================================================ 
+  DO :: hour (문자열) ---> min (숫자)
+============================================================================================================ 
+*/
+
+export const convertToMin = (timestamp) => {
+  const [hour, min] = timestamp.split(':')
+  return Number(hour) * 60 + Number(min)
+}
