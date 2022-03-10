@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImCancelCircle } from 'react-icons/im'
+import { DEFAULT_COLOR } from '../../store/constants'
 import ColorDropdown from '../color/ColorDropdown'
 import BtnText from '../micro/BtnText'
 
 const RecordEditModal = ({ modal, setModal, recordData }) => {
-  const { userCategory, userColor, id, start, end, title, memo } = recordData
-
   const colordropdownStyle = {
     outside: {
       container: 'border border-gray-600',
@@ -20,8 +19,13 @@ const RecordEditModal = ({ modal, setModal, recordData }) => {
       underlineColor: 'border-gray-600 mt-1',
     },
   }
-
   const btnStyle = 'p-2 flex-1 rounded-md '
+
+  const { userCategory, userColor, id, start, end, title, memo } = recordData
+
+  // 재설정된 컬러
+  const [selectedColor, setSelectedColor] = useState(userColor)
+  const handleColorClick = (colorInfo) => setSelectedColor(colorInfo)
 
   return (
     <>
@@ -56,7 +60,16 @@ const RecordEditModal = ({ modal, setModal, recordData }) => {
             =============================================================================================================================== */}
 
             <div>
-              <ColorDropdown style={colordropdownStyle} />
+              <ColorDropdown
+                defaultColor={
+                  selectedColor || {
+                    color: { hex: DEFAULT_COLOR.hex },
+                    tag: '삭제된 컬러',
+                  }
+                }
+                handleColorClick={handleColorClick}
+                style={colordropdownStyle}
+              />
             </div>
           </div>
 

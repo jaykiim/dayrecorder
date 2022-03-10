@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { MIN_HEIGHT } from '../../store/constants'
+import { DEFAULT_COLOR, MIN_HEIGHT } from '../../store/constants'
 import { convertToMin } from '../scheduler/utils'
 import RecordEditModal from './RecordEditModal'
 
@@ -22,13 +22,13 @@ const Record = (props) => {
     },
     boxLeft: {
       width: '7px',
-      backgroundColor: userColor || '#e5e5e5',
+      backgroundColor: userColor || DEFAULT_COLOR.hex,
     },
     boxRight: {
       width: '100%',
       padding: '4px 8px',
-      backgroundColor: userColor?.hex || '#e5e5e5' + '4d',
-      color: userColor?.hex || '#d4d4d4',
+      backgroundColor: userColor?.hex || DEFAULT_COLOR.hex + '4d',
+      color: userColor?.hex || DEFAULT_COLOR.hex,
     },
   }
 

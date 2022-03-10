@@ -24,7 +24,7 @@ const Dropdown = ({
         className={`flex h-${before} cursor-pointer items-center px-2`}
       >
         <AiOutlineDownCircle className={style?.icon} />
-        <span className={style?.title}>{preview}</span>
+        {preview}
       </div>
 
       <div
