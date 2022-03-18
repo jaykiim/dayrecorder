@@ -1,7 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
-const Profile = ({ user }) => {
+const Profile = () => {
+  const user = useSession().data.user
+
   return (
     <div className="flex w-full flex-col items-center py-4 tracking-wide md:border-b">
       {user.image && (

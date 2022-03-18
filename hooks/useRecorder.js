@@ -1,37 +1,46 @@
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilStateLoadable } from 'recoil'
 import { createRecordReq } from '../apiCalls/recordCalls'
 import { dateObj } from '../components/calendar/utils'
 import { dateFormatter, getCurrentTime } from '../components/scheduler/utils'
-import { allRecords, isRecording } from '../store/common'
+import { isRecording, recordsData } from '../store/common'
 
 export function useRecorder() {
-  const setRecording = useSetRecoilState(isRecording)
-  const user = useSession().data.user
-
+  // 현재 레코딩 중인지 (전역 상태)
+  const [recording, setRecording] = useRecoilState(isRecording)
   useEffect(() => {
     window.localStorage.getItem('recording')
       ? setRecording(true)
       : setRecording(false)
   }, [])
 
-  const setRecords = useSetRecoilState(allRecords)
+  const user = useSession().data.user
 
-  const startRecording = (e, title, color, setModal) => {
+  // 오늘 날짜의 레코드 데이터 상태를 가져오기 위해서 datestamp를 구한다
+  const { year, month, day } = dateObj(new Date())
+  const datestamp = dateFormatter(year, month, day)
+
+  // 레코드 데이터 상태
+  const [records, setRecords] = useRecoilStateLoadable(
+    recordsData({ datestamp, email: user.email })
+  )
+
+  /* ============================================================================================================================================
+    // TODO 레코딩 시작
+  ============================================================================================================================================ */
+
+  const startRecording = (e, title, userColor, setModal) => {
     e.preventDefault()
 
     setRecording(true)
-
-    const { year, month, day } = dateObj(new Date())
-    const datestamp = dateFormatter(year, month, day)
 
     window.localStorage.setItem(
       'recording',
       JSON.stringify({
         start: getCurrentTime(),
         title,
-        color,
+        userColor,
         date: datestamp,
       })
     )
@@ -39,53 +48,74 @@ export function useRecorder() {
     setModal(false)
   }
 
+  /* ============================================================================================================================================
+    // TODO 레코딩 종료
+  ============================================================================================================================================ */
+
   const stopRecording = async () => {
     setRecording(false)
 
     // 시작할 때 저장해두었던 정보 가져오기
     const saved = JSON.parse(window.localStorage.getItem('recording'))
     if (!saved) return
-    const { start, title, color, date: startDate } = saved
 
     // 끝난 시간
-    const end = getCurrentTime()
+    const endTime = getCurrentTime()
 
     // 끝난 날짜
     const { year, month, day } = dateObj(new Date())
     const endDate = dateFormatter(year, month, day)
 
+    // 레코드 객체 생성기
+    const createRecordData = ({ date, start, end }) => ({
+      // 파라미터로 받은 값 사용 : 날짜, 시작시각, 종료시각
+      date,
+      start,
+      end,
+
+      // 레코딩 시작 시 설정한 값 사용 : 제목, 컬러, 카테고리
+      title: saved.title,
+      colorId: saved.userColor?.id,
+      categoryId: saved.userColor?.userCategory.id,
+
+      // 입력받지 않은 값
+      memo: '',
+
+      // 유저 정보
+      email: user.email,
+    })
+
     // * 시작 날짜와 끝난 날짜가 다를 경우
-    // 시작 날짜의 시작 시간 ~ 23:59 까지 레코드, 끝난 날짜의 00:00 ~ 끝난 시간까지 레코드를 만든다
-    if (startDate !== endDate) {
-      const record1 = {
-        date: startDate,
-        start,
+    if (saved.date !== endDate) {
+      // 시작 날짜 ~ 23:59
+      const record1 = createRecordData({
+        date: saved.date,
+        start: saved.start,
         end: '23:59',
-        title,
-        color,
-        memo: '',
-      }
-      const record2 = { date: endDate, start, end, title, color, memo: '' }
+      })
+
+      // 끝난 날짜 00:00 ~ 끝난 시각
+      const record2 = createRecordData({
+        date: endDate,
+        start: '00:00',
+        end: endTime,
+      })
 
       // DB에 저장하고나서 응답으로 오는 데이터에 id가 포함되어 있으므로, 응답을 받고 난 다음에 setRecords를 해줘야한다
-      const recordOne = await createRecordReq({ ...record1, user: user.email })
-      const recordTwo = await createRecordReq({ ...record2, user: user.email })
+      const record1Res = await createRecordReq(record1)
+      const record2Res = await createRecordReq(record2)
 
-      setRecords((records) => [...records, recordOne, recordTwo])
+      setRecords((records) => [...records, record1Res, record2Res])
     }
 
     // 시작 날짜와 끝난 날짜가 같으면
     else {
-      const newRecord = {
-        date: startDate,
-        start,
-        end,
-        title,
-        color,
-        memo: '',
-      }
-
-      const record = await createRecordReq({ ...newRecord, email: user.email })
+      const newRecord = createRecordData({
+        date: endDate,
+        start: saved.start,
+        end: endTime,
+      })
+      const record = await createRecordReq(newRecord)
       setRecords((records) => [...records, record])
     }
 
@@ -93,5 +123,5 @@ export function useRecorder() {
     window.localStorage.removeItem('recording')
   }
 
-  return { startRecording, stopRecording }
+  return { recording, setRecording, startRecording, stopRecording }
 }

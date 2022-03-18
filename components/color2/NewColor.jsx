@@ -1,24 +1,18 @@
-import { useSession } from 'next-auth/react'
 import React from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useSession } from 'next-auth/react'
+import { useRecoilValue } from 'recoil'
 import { createUserColorReq } from '../../apiCalls/colorCalls'
-import {
-  categoriesData,
-  currentCategoryHexTag,
-  currentCategoryId,
-} from '../../store/common'
+import { currentCategoryHexTag, currentCategoryId } from '../../store/common'
+import { colorValidate } from './utils'
 import Form from '../micro/Form'
 import TextInput from '../micro/TextInput'
 import ColorPicker from './ColorPicker'
-import { colorValidate } from './utils'
 
-const NewColor = () => {
+const NewColor = ({ categories, setCategories }) => {
   // 사용자가 hex, tag 입력 후 엔터 시 실행되는 콜백에서 서버에 요청을 보낼건데 user 이메일이랑 categoryId 보내야함
-  const user = useSession().data.user
+  const email = useSession().data.user.email
   const categoryId = useRecoilValue(currentCategoryId)
-
-  // 컬러 생성 요청 보내고나면 그 결과로 업데이트된 현재 카테고리 객체를 응답으로 받으므로, 해당 데이터로 전역 상태를 업데이트시킨다
-  const [categories, setCategories] = useRecoilState(categoriesData)
+  console.log('categoryId', categoryId)
 
   // hex 및 tag 입력창 데이터
   const initialValues = { hex: '', tag: '' }
@@ -30,15 +24,15 @@ const NewColor = () => {
 
   // 카테고리에 이미 존재하는 요소와 중복되지 않도록,
   // 현재 카테고리 내에 기존에 저장되있던 아이템 객체 배열에서 hex만 뽑은 배열, tag만 뽑은 배열을 가져와서 validation에서 이용
-  const hexesTags = useRecoilValue(currentCategoryHexTag)
+  const hexesTags = useRecoilValue(currentCategoryHexTag(email))
 
   // 색상 등록 콜백
   const submitColor = async (values, { setValues }) => {
     // 서버에 요청
-    const { userCategory: updatedCategory } = await createUserColorReq({
+    const updatedCategory = await createUserColorReq({
       hex: values.hex,
       tag: values.tag,
-      email: user.email,
+      email,
       categoryId,
     })
 
@@ -56,16 +50,16 @@ const NewColor = () => {
     <>
       <section className="mt-5 flex">
         {/* ============================================================================================================================== 
-        좌측: 컬러 픽커 
-      ============================================================================================================================== */}
+          좌측: 컬러 픽커 
+        ============================================================================================================================== */}
 
         <div className="flex-1">
           <ColorPicker values={values} setValues={setValues} />
         </div>
 
         {/* ============================================================================================================================== 
-        우측: hex 및 tag 입력창 
-      ============================================================================================================================== */}
+          우측: hex 및 tag 입력창 
+        ============================================================================================================================== */}
 
         <div className="flex flex-1 flex-col justify-center gap-y-3 rounded-r-md bg-green-700 px-2">
           <TextInput
@@ -100,14 +94,12 @@ const NewColor = () => {
 
   return (
     <>
-      {hexesTags && (
-        <Form
-          initialValues={initialValues}
-          renderComponents={(props) => renderNewColor(props)}
-          validate={colorValidate('new', hexesTags[1], hexesTags[0])}
-          onSubmit={submitColor}
-        />
-      )}
+      <Form
+        initialValues={initialValues}
+        renderComponents={(props) => renderNewColor(props)}
+        validate={colorValidate('new', hexesTags[1], hexesTags[0])}
+        onSubmit={submitColor}
+      />
     </>
   )
 }

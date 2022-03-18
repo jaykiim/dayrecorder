@@ -1,6 +1,33 @@
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 
+export const getUserCategory = gql`
+  query getUserCategory($email: String!) {
+    userCategories(where: { dayrecorderUser: { email: $email } }) {
+      categoryName
+      id
+      userColors {
+        color {
+          hex
+        }
+        id
+        tag
+      }
+    }
+  }
+`
+
+export const getUserCategoryReq = async (email) => {
+  try {
+    const { userCategories } = await graphcmsClient.request(getUserCategory, {
+      email,
+    })
+    return userCategories
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const CreateUserCategory = gql`
   mutation CreateUserCategory($categoryName: String!, $email: String!) {
     createdCategory: createUserCategory(
@@ -55,7 +82,7 @@ export const updateUserCategoryName = gql`
 
 export const updateUserCategoryNameReq = async (categoryName, id) => {
   try {
-    const updatedUserCategory = await graphcmsClient.request(
+    const { updatedUserCategory } = await graphcmsClient.request(
       updateUserCategoryName,
       { categoryName, id }
     )
@@ -118,6 +145,7 @@ export const createUserColorReq = async (values) => {
       createUserColor,
       values
     )
+    console.log(updatedCategory)
     return updatedCategory
   } catch (err) {
     console.log(err)

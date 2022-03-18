@@ -2,6 +2,7 @@ import axios from 'axios'
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 import { hash } from 'bcryptjs'
+import { CreateUserCategory, createUserColor } from './colorCalls'
 
 export const CreateUserByEmail = gql`
   mutation CreateUserByEmail(
@@ -18,6 +19,23 @@ export const CreateUserByEmail = gql`
   }
 `
 
+export const createInitialCategory = async (email) => {
+  try {
+    const { createdCategory } = await graphcmsClient.request(
+      CreateUserCategory,
+      { categoryName: '미분류', email }
+    )
+    await graphcmsClient.request(createUserColor, {
+      hex: '#e5e5e5',
+      tag: '미정',
+      email,
+      categoryId: createdCategory.id,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const createUserByEmailReq = async (credentials, userInfo) => {
   try {
     // 로컬 가입
@@ -28,6 +46,7 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
         email,
         password: await hash(password, 12),
       })
+      await createInitialCategory(email)
       return newUser
     }
 
@@ -38,6 +57,7 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
         username,
         email,
       })
+      await createInitialCategory(email)
       return newUser
     }
   } catch (err) {
@@ -60,6 +80,10 @@ export const GetUserByEmail = gql`
           }
           id
           tag
+          userCategory {
+            id
+            categoryName
+          }
         }
       }
     }

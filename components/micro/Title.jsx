@@ -4,6 +4,7 @@ import { MEDIUM } from '../../store/constants'
 
 const Title = ({ title }) => {
   const { width } = useWindowSize()
+
   return (
     <h1
       className={`${

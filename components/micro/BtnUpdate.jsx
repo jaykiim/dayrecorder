@@ -1,15 +1,13 @@
 import React from 'react'
 import { BsPencilSquare, BsCheckCircleFill } from 'react-icons/bs'
 
-const BtnUpdate = ({ color, id, updating, setUpdating, cb }) => {
+const BtnUpdate = ({ updating, setUpdating, handleSubmit, style }) => {
   return (
-    <div
-      className={`cursor-pointer rounded-full text-lg text-green-700 hover:bg-${color}`}
-    >
-      {updating.state && id === updating.id ? (
-        <BsCheckCircleFill onClick={() => cb(id)} />
+    <div className={style}>
+      {updating ? (
+        <BsCheckCircleFill onClick={handleSubmit} />
       ) : (
-        <BsPencilSquare onClick={() => setUpdating({ id, state: true })} />
+        <BsPencilSquare onClick={() => setUpdating(!updating)} />
       )}
     </div>
   )

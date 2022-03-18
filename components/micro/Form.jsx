@@ -10,17 +10,21 @@ const Form = ({
   alertStyle,
   submitProps,
   renderComponents,
+  useLabel,
 }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validate}
-      onSubmit={(values, tools) => onSubmit(values, tools, submitProps)}
+      onSubmit={(values, tools) => {
+        console.log('onsubmit')
+        onSubmit(values, tools, submitProps)
+      }}
     >
       {(props) => (
         <form
           onSubmit={props.handleSubmit}
-          onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit()}
+          onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit}
           className={formStyle}
         >
           {renderComponents && renderComponents(props)}

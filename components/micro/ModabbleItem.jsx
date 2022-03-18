@@ -31,9 +31,9 @@ const ModabbleItem = ({
           validate={validate}
           fields={editFields}
           onSubmit={handleUpdate}
+          submitProps={id}
           itemId={submitProps || id}
           onItemClick={handleListItemClick}
-          submitProps={id}
           alertStyle="alertTextSm mt-1"
           formStyle={style?.formStyle}
         />

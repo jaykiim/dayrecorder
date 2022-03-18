@@ -1,5 +1,6 @@
-import { atom, selector, selectorFamily } from 'recoil'
+import { atom, atomFamily, selector, selectorFamily } from 'recoil'
 import { getRecordsReq } from '../apiCalls/recordCalls'
+import { getUserCategoryReq } from '../apiCalls/colorCalls'
 import {
   getCurrentTime,
   getMinutehandPos,
@@ -33,20 +34,12 @@ export const isRecording = atom({
 })
 
 // 레코드
-export const recordsData = atom({
+export const recordsData = atomFamily({
   key: 'recordsData',
-  default: [],
-})
-
-// 레코드 패치
-export const fetchRecords = selectorFamily({
-  key: 'fetchRecords',
-  get:
-    ({ datestamp, email }) =>
-    async () => {
-      const records = await getRecordsReq(datestamp, email)
-      return records
-    },
+  default: async ({ datestamp, email }) => {
+    const records = await getRecordsReq(datestamp, email)
+    return records
+  },
 })
 
 // 할 일
@@ -56,9 +49,12 @@ export const todos = atom({
 })
 
 // 카테고리
-export const categoriesData = atom({
-  key: 'categories',
-  default: [],
+export const categoriesData = atomFamily({
+  key: 'categoriesData',
+  default: async (email) => {
+    const categories = await getUserCategoryReq(email)
+    return categories
+  },
 })
 
 // 선택된 카테고리 아이디
@@ -68,27 +64,34 @@ export const currentCategoryId = atom({
 })
 
 // 선택된 카테고리 객체
-export const currentCategory = selector({
+export const currentCategory = selectorFamily({
   key: 'currentCategory',
-  get: ({ get }) => {
-    const categories = get(categoriesData)
-    const id = get(currentCategoryId)
+  get:
+    (email) =>
+    ({ get }) => {
+      const categories = get(categoriesData(email))
+      const id = get(currentCategoryId)
 
-    if (categories) return categories.find((category) => category.id === id)
-    else return {}
-  },
+      if (!categories) return {}
+      else if (!id) return categories[0]
+      else return categories.find((category) => category.id === id)
+    },
 })
 
 // 선택된 카테고리에 속한 컬러들의 hex 및 tag 배열
-export const currentCategoryHexTag = selector({
+export const currentCategoryHexTag = selectorFamily({
   key: 'currentCategoryHexTag',
-  get: ({ get }) => {
-    const selectedCategory = get(currentCategory)
+  get:
+    (email) =>
+    ({ get }) => {
+      const selectedCategory = get(currentCategory(email))
 
-    if (selectedCategory) {
-      const hexes = selectedCategory.userColors.map((color) => color.color.hex)
-      const tags = selectedCategory.userColors.map((color) => color.tag)
-      return [hexes, tags]
-    }
-  },
+      if (selectedCategory) {
+        const hexes = selectedCategory.userColors.map(
+          (color) => color.color.hex
+        )
+        const tags = selectedCategory.userColors.map((color) => color.tag)
+        return [hexes, tags]
+      }
+    },
 })

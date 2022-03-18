@@ -4,6 +4,7 @@ import BtnText from '../micro/BtnText'
 import BtnRight from '../micro/BtnRight'
 import BtnToggleSquare from '../micro/BtnToggleSquare'
 import RecordCreateModal from './RecordCreateModal'
+import { useRecorder } from '../../hooks/useRecorder'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {
@@ -18,6 +19,7 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
     'bg-carrot-light text-white px-3 py-1 rounded-md cursor-pointer hover:bg-carrot-deep'
 
   const [modal, setModal] = useState(false)
+  const { recording, startRecording, stopRecording } = useRecorder()
 
   return (
     <div className="flex items-center ">
@@ -30,12 +32,22 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
 
       <div className="relative">
         {/* 시간 기록 시작 버튼 */}
-        <BtnText
-          btnClick={() => setModal(!modal)}
-          text="Record"
-          style={recordStyle}
-        />
-        {modal && <RecordCreateModal />}
+        {recording ? (
+          <button onClick={stopRecording} className={recordStyle}>
+            Stop
+          </button>
+        ) : (
+          <button onClick={() => setModal(!modal)} className={recordStyle}>
+            Record
+          </button>
+        )}
+
+        {modal && (
+          <RecordCreateModal
+            setModal={setModal}
+            startRecording={startRecording}
+          />
+        )}
       </div>
     </div>
   )

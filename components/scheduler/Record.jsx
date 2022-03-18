@@ -6,6 +6,8 @@ import RecordEditModal from './RecordEditModal'
 const Record = (props) => {
   const { userColor, start, end, title } = props
 
+  const [modal, setModal] = useState(false)
+
   const top = convertToMin(start) * MIN_HEIGHT + 'px'
   const height = (convertToMin(end) - convertToMin(start)) * MIN_HEIGHT + 'px'
 
@@ -22,17 +24,15 @@ const Record = (props) => {
     },
     boxLeft: {
       width: '7px',
-      backgroundColor: userColor || DEFAULT_COLOR.hex,
+      backgroundColor: userColor?.color.hex || DEFAULT_COLOR.hex,
     },
     boxRight: {
       width: '100%',
       padding: '4px 8px',
-      backgroundColor: userColor?.hex || DEFAULT_COLOR.hex + '4d',
-      color: userColor?.hex || DEFAULT_COLOR.hex,
+      backgroundColor: (userColor?.color.hex || DEFAULT_COLOR.hex) + '4d',
+      color: userColor?.color.hex || DEFAULT_COLOR.hex,
     },
   }
-
-  const [modal, setModal] = useState(false)
 
   return (
     <>

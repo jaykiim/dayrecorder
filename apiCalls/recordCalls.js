@@ -14,6 +14,10 @@ export const getRecords = gql`
         }
         id
         tag
+        userCategory {
+          id
+          categoryName
+        }
       }
       id
       start
@@ -33,6 +37,136 @@ export const getRecordsReq = async (date, email) => {
     })
 
     return records
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const updateRecord = gql`
+  mutation updateRecord(
+    $date: Date!
+    $end: String!
+    $start: String!
+    $memo: String
+    $title: String
+    $email: String!
+    $colorId: ID!
+    $categoryId: ID!
+    $recordId: ID!
+  ) {
+    updatedRecord: updateRecord(
+      data: {
+        date: $date
+        end: $end
+        start: $start
+        memo: $memo
+        title: $title
+        user: { connect: { email: $email } }
+        userColor: { connect: { id: $colorId } }
+        userCategory: { connect: { id: $categoryId } }
+      }
+      where: { id: $recordId }
+    ) {
+      id
+      memo
+      date
+      end
+      start
+      title
+      userColor {
+        id
+        tag
+        color {
+          hex
+        }
+        userCategory {
+          id
+          categoryName
+        }
+      }
+      userCategory {
+        id
+        categoryName
+        userColors {
+          id
+          tag
+          color {
+            hex
+          }
+        }
+      }
+    }
+  }
+`
+
+export const updateRecordReq = async (values) => {
+  try {
+    const { updatedRecord } = await graphcmsClient.request(updateRecord, values)
+    return updatedRecord
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const createRecord = gql`
+  mutation createRecord(
+    $date: Date!
+    $end: String!
+    $start: String!
+    $memo: String
+    $title: String
+    $email: String!
+    $colorId: ID
+    $categoryId: ID
+  ) {
+    createdRecord: createRecord(
+      data: {
+        date: $date
+        end: $end
+        start: $start
+        memo: $memo
+        title: $title
+        user: { connect: { email: $email } }
+        userColor: { connect: { id: $colorId } }
+        userCategory: { connect: { id: $categoryId } }
+      }
+    ) {
+      id
+      memo
+      date
+      end
+      start
+      title
+      userColor {
+        id
+        tag
+        color {
+          hex
+        }
+        userCategory {
+          id
+          categoryName
+        }
+      }
+      userCategory {
+        id
+        categoryName
+        userColors {
+          id
+          tag
+          color {
+            hex
+          }
+        }
+      }
+    }
+  }
+`
+
+export const createRecordReq = async (values) => {
+  try {
+    const { createdRecord } = await graphcmsClient.request(createRecord, values)
+    return createdRecord
   } catch (err) {
     console.log(err)
   }
@@ -70,39 +204,6 @@ export const getWeeklyRecordsReq = async (email, firstday, lastday) => {
   }
 }
 
-export const UpdateRecord = gql`
-  mutation UpdateRecord(
-    $start: String!
-    $end: String!
-    $color: Json!
-    $date: Date!
-    $title: String
-    $memo: String
-    $id: ID!
-  ) {
-    updateRecord(
-      data: {
-        color: $color
-        date: $date
-        end: $end
-        memo: $memo
-        start: $start
-        title: $title
-      }
-      where: { id: $id }
-    ) {
-      color
-    }
-  }
-`
-export const updateRecordReq = async (values) => {
-  try {
-    await graphcmsClient.request(UpdateRecord, values)
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const DeleteRecord = gql`
   mutation DeleteRecord($id: ID!) {
     deleteRecord(where: { id: $id }) {
@@ -114,47 +215,6 @@ export const DeleteRecord = gql`
 export const deleteRecordReq = async (id) => {
   try {
     await graphcmsClient.request(DeleteRecord, { id })
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const CreateRecord = gql`
-  mutation CreateRecord(
-    $start: String!
-    $end: String!
-    $date: Date!
-    $email: String!
-    $color: Json!
-    $title: String
-    $memo: String
-  ) {
-    createRecord(
-      data: {
-        start: $start
-        end: $end
-        color: $color
-        date: $date
-        memo: $memo
-        title: $title
-        user: { connect: { email: $email } }
-      }
-    ) {
-      color
-      date
-      end
-      id
-      memo
-      start
-      title
-    }
-  }
-`
-
-export const createRecordReq = async (values) => {
-  try {
-    const { createRecord } = await graphcmsClient.request(CreateRecord, values)
-    return createRecord
   } catch (err) {
     console.log(err)
   }

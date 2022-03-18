@@ -9,8 +9,8 @@ const TextInput = ({
   handleBlur,
   styles,
 }) => (
-  <div className={styles.container}>
-    <label htmlFor={id} className={styles.label}>
+  <div className={styles?.container}>
+    <label htmlFor={id} className={styles?.label}>
       {id.toUpperCase()}
     </label>
     <input
@@ -20,7 +20,7 @@ const TextInput = ({
       value={values[id]}
       onChange={handleChange}
       onBlur={handleBlur}
-      className={styles.input}
+      className={styles?.input}
     />
   </div>
 )

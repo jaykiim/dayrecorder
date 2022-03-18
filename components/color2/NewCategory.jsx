@@ -2,14 +2,10 @@ import React from 'react'
 import * as Yup from 'yup'
 import { createUserCategoryReq } from '../../apiCalls/colorCalls'
 import { useSession } from 'next-auth/react'
-import { useRecoilState } from 'recoil'
-import { categoriesData } from '../../store/common'
 import Form from '../micro/Form'
 
-const NewCategory = ({ open }) => {
+const NewCategory = ({ categories, setCategories, open }) => {
   const email = useSession().data.user.email
-
-  const [categories, setCategories] = useRecoilState(categoriesData)
 
   // 새 카테고리명이 기존 카테고리명과 중복되지 않도록, 기존 카테고리명 배열을 생성해서 validate에서 사용
   const names = categories.map((category) => category.categoryName)

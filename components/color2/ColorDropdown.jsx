@@ -2,17 +2,21 @@ import React, { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import Dropdown from '../micro/Dropdown'
 import { DEFAULT_COLOR } from '../../store/constants'
+import { useRecoilValueLoadable } from 'recoil'
+import { categoriesData } from '../../store/common'
 
 const ColorDropdown = ({ defaultColor, handleColorClick, style }) => {
-  const categories = useSession().data.user.categories
+  const email = useSession().data.user.email
+  const categories = useRecoilValueLoadable(categoriesData(email))
+  console.log(categories)
 
   const [outerList, setOuterList] = useState({ id: '', state: false })
   const [innerList, setInnerList] = useState({ id: '', state: false })
-  //console.log(categories)
 
   // 내부 드롭다운 안에 아이템 (= 컬러 목록)
   const renderInnerList = (id) =>
-    categories
+    categories.state === 'hasValue' &&
+    categories.contents
       .find((category) => category.id === id)
       .userColors.map((colorInfo, i) => (
         <div className="flex items-center" key={i}>
@@ -21,7 +25,10 @@ const ColorDropdown = ({ defaultColor, handleColorClick, style }) => {
             style={{ backgroundColor: colorInfo.color.hex + '4d' }}
           />
           <div
-            onClick={() => handleColorClick(colorInfo)}
+            onClick={() => {
+              handleColorClick(colorInfo)
+              setOuterList({ id: '', state: false })
+            }}
             className="flex-1 cursor-pointer p-2 text-sm hover:bg-gray-50"
           >
             {colorInfo.tag}
@@ -36,7 +43,8 @@ const ColorDropdown = ({ defaultColor, handleColorClick, style }) => {
 
   // 외부 드롭다운
   const renderOuterList = () =>
-    categories.map((category, i) => (
+    categories.state === 'hasValue' &&
+    categories.contents.map((category, i) => (
       <Dropdown
         key={i}
         id={category.id}
@@ -53,26 +61,15 @@ const ColorDropdown = ({ defaultColor, handleColorClick, style }) => {
 
   // 외부 드롭다운 열기 전 프리뷰 (컬러)
   const renderPreviewColor = () => {
-    if (!defaultColor)
-      return (
-        <>
-          <div
-            className="mr-2 h-4 w-4 rounded-full"
-            style={{ backgroundColor: DEFAULT_COLOR.hex + '4d' }}
-          />
-          <div className={style?.outside?.title}>{DEFAULT_COLOR.tag}</div>
-        </>
-      )
-    else
-      return (
-        <>
-          <div
-            className="mr-2 h-4 w-4 rounded-full"
-            style={{ backgroundColor: defaultColor.color.hex + '4d' }}
-          />
-          <div className={style?.outside?.title}>{defaultColor.tag}</div>
-        </>
-      )
+    return (
+      <>
+        <div
+          className="mr-2 h-4 w-4 rounded-full"
+          style={{ backgroundColor: defaultColor.color.hex + '4d' }}
+        />
+        <div className={style?.outside?.title}>{defaultColor.tag}</div>
+      </>
+    )
   }
 
   return (

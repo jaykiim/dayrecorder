@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
@@ -14,7 +15,8 @@ import ModabbleItem from '../micro/ModabbleItem'
 import { colorValidate } from './utils'
 
 const ColorList = ({ categories, setCategories }) => {
-  const selectedCategory = useRecoilValue(currentCategory)
+  const email = useSession().data.user.email
+  const selectedCategory = useRecoilValue(currentCategory(email))
   const selectedCategoryId = useRecoilValue(currentCategoryId)
   const [updating, setUpdating] = useState({ id: '', state: false })
 
@@ -41,7 +43,7 @@ const ColorList = ({ categories, setCategories }) => {
   }
 
   // 같은 카테고리 내에서 hex 및 tag 값 중복 방지를 위해 validate에 필요한 배열
-  const hexesTags = useRecoilValue(currentCategoryHexTag)
+  const hexesTags = useRecoilValue(currentCategoryHexTag(email))
 
   const handleUpdate = async (values, _, id) => {
     const { userCategory: updatedCategory } = await updateUserColorReq({

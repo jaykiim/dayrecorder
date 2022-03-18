@@ -1,18 +1,20 @@
 import React from 'react'
-import { useRecoilValueLoadable } from 'recoil'
-import { fetchRecords } from '../../store/common'
+import { useRecoilStateLoadable } from 'recoil'
+import { recordsData } from '../../store/common'
 import { MIN_HEIGHT } from '../../store/constants'
 import { getTimeline } from './utils'
 import { getDateStamp } from '../calendar/utils'
 import { useSession } from 'next-auth/react'
 import Record from './Record'
 
+// 현재 날짜의 레코드 데이터를 배열로 받아와서 map 돌며 Record 컴포넌트에 넘김
 const TableBody = ({ date }) => {
   const email = useSession().data.user.email
   const timeline = getTimeline()
   const datestamp = getDateStamp(date.year, date.month, date.day)
-  const { state, contents: records } = useRecoilValueLoadable(
-    fetchRecords({ datestamp, email })
+
+  const [records, setRecords] = useRecoilStateLoadable(
+    recordsData({ datestamp, email })
   )
 
   return (
@@ -25,10 +27,15 @@ const TableBody = ({ date }) => {
         ></div>
       ))}
 
-      {state === 'loading' ? (
+      {records.state === 'loading' ? (
         <div>loading</div>
       ) : (
-        records.map((record, i) => <Record key={i} {...record} />)
+        records.contents.map((record, i) => (
+          <Record
+            key={i}
+            {...{ ...record, records: records.contents, setRecords }}
+          />
+        ))
       )}
     </>
   )
