@@ -9,11 +9,12 @@ import CategoryForm from './CategoryForm'
 import { createUserCategoryReq } from '../../apiCalls/colorCalls'
 
 const style = {
-  container: 'rounded-md border border-green-900 text-green-900',
+  container: 'rounded-md border border-green-900 text-green-900 mb-4',
   preview: 'flex cursor-pointer items-center py-1 px-2 border-green-900',
 }
 
 const CategoryDropdown = ({ email, categories, setCategories }) => {
+  console.log('CategoryDropdown')
   const [selectedCategoryId, setSelectedCategoryId] =
     useRecoilState(currentCategoryId)
 
@@ -69,6 +70,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
             placeholder="새 카테고리명 입력 후 Enter"
             validate={validate}
             handleSubmit={handleSubmit}
+            defaultValue=""
           />
         </div>
       </>

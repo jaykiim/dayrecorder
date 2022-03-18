@@ -19,7 +19,7 @@ const Form2 = ({
         <form
           onSubmit={props.handleSubmit}
           onKeyPress={
-            noEnter ? () => {} : (e) => e.key === 'Enter' && handleSubmit
+            noEnter ? () => {} : (e) => e.key === 'Enter' && props.handleSubmit
           }
           className={style}
         >

@@ -26,7 +26,7 @@ const CategoryForm = ({
             onChange={handleChange}
             placeholder={placeholder}
           />
-          <p className="alertTextSm absolute">{errors.categoryName}</p>
+          <p className="alertTextSm">{errors.categoryName}</p>
         </>
       )}
     </Form2>

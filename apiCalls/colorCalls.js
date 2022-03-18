@@ -145,7 +145,7 @@ export const createUserColorReq = async (values) => {
       createUserColor,
       values
     )
-    console.log(updatedCategory)
+
     return updatedCategory
   } catch (err) {
     console.log(err)

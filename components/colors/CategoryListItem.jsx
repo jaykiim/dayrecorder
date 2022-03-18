@@ -3,8 +3,7 @@ import {
   deleteUserCategoryReq,
   updateUserCategoryNameReq,
 } from '../../apiCalls/colorCalls'
-import BtnDelete from '../micro/BtnDelete'
-import BtnUpdate from '../micro/BtnUpdate'
+import ModdableItem from '../micro/ModdableItem'
 import CategoryForm from './CategoryForm'
 
 const CategoryListItem = ({
@@ -39,34 +38,30 @@ const CategoryListItem = ({
   if (category.categoryName === '미분류') return <div />
 
   return (
-    <div className="flex cursor-pointer items-center p-1 text-sm hover:bg-gray-50">
-      {updating ? (
-        <CategoryForm
-          defaultValue={category.categoryName}
-          validate={validate}
-          style="mr-4 w-full"
-          handleSubmit={handleUpdate}
-        />
-      ) : (
-        <p
-          className="flex-1"
-          onClick={() => setSelectedCategoryId(category.id)}
-        >
-          {category.categoryName}
-        </p>
-      )}
-
-      <div className="flex items-center gap-x-2">
-        {!updating && (
-          <BtnUpdate updating={updating} setUpdating={setUpdating} />
+    <ModdableItem
+      style="flex cursor-pointer items-center p-1 text-sm hover:bg-gray-50"
+      updating={updating}
+      setUpdating={setUpdating}
+      handleDelete={handleDelete}
+    >
+      <>
+        {updating ? (
+          <CategoryForm
+            defaultValue={category.categoryName}
+            validate={validate}
+            style="mr-4 w-full"
+            handleSubmit={handleUpdate}
+          />
+        ) : (
+          <p
+            className="flex-1"
+            onClick={() => setSelectedCategoryId(category.id)}
+          >
+            {category.categoryName}
+          </p>
         )}
-        <BtnDelete
-          updating={updating}
-          setUpdating={setUpdating}
-          handleDelete={handleDelete}
-        />
-      </div>
-    </div>
+      </>
+    </ModdableItem>
   )
 }
 

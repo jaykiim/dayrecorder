@@ -4,6 +4,8 @@ import { useRecoilStateLoadable } from 'recoil'
 import { categoriesData } from '../../store/common'
 import Title from '../micro/Title'
 import CategoryDropdown from './CategoryDropdown'
+import ColorForm from './ColorForm'
+import ColorList from './ColorList'
 
 const Colors = () => {
   console.log('Colors')
@@ -21,6 +23,15 @@ const Colors = () => {
           <section className="bodyContainer">
             <CategoryDropdown
               email={email}
+              categories={categories.contents}
+              setCategories={setCategories}
+            />
+            <ColorForm
+              email={email}
+              categories={categories.contents}
+              setCategories={setCategories}
+            />
+            <ColorList
               categories={categories.contents}
               setCategories={setCategories}
             />
