@@ -1,60 +1,31 @@
-import React from 'react'
 import { Formik } from 'formik'
+import React from 'react'
 
 const Form = ({
-  initialValues,
+  values,
   validate,
-  onSubmit,
-  fields,
-  formStyle,
-  alertStyle,
-  submitProps,
-  renderComponents,
-  useLabel,
+  handleSubmit,
+  style,
+  cssStyle,
+  noEnter,
+  children,
 }) => {
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={values}
       validationSchema={validate}
-      onSubmit={(values, tools) => {
-        console.log('onsubmit')
-        onSubmit(values, tools, submitProps)
-      }}
+      onSubmit={handleSubmit}
     >
       {(props) => (
         <form
           onSubmit={props.handleSubmit}
-          onKeyDown={(e) => e.key === 'Enter' && props.handleSubmit}
-          className={formStyle}
+          onKeyPress={
+            noEnter ? () => {} : (e) => e.key === 'Enter' && props.handleSubmit
+          }
+          className={style}
+          style={cssStyle}
         >
-          {renderComponents && renderComponents(props)}
-          {fields?.map(
-            (
-              { name, className, type, placeholder, autoFocus, containerStyle },
-              i
-            ) => (
-              <section
-                key={i}
-                className={
-                  'flex h-full flex-col justify-center ' + containerStyle
-                }
-              >
-                <input
-                  name={name}
-                  type={type}
-                  placeholder={placeholder}
-                  autoFocus={autoFocus}
-                  value={props.values[name]}
-                  onBlur={props.handleBlur}
-                  onChange={props.handleChange}
-                  className={className}
-                />
-                {props.errors[name] && (
-                  <p className={alertStyle}>{props.errors[name]}</p>
-                )}
-              </section>
-            )
-          )}
+          {children(props)}
         </form>
       )}
     </Formik>

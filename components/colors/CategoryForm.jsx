@@ -1,5 +1,5 @@
 import React from 'react'
-import Form2 from '../micro/Form2'
+import Form from '../micro/Form'
 
 const CategoryForm = ({
   defaultValue,
@@ -9,7 +9,7 @@ const CategoryForm = ({
   placeholder,
 }) => {
   return (
-    <Form2
+    <Form
       values={{ categoryName: defaultValue }}
       validate={validate}
       style={style}
@@ -29,7 +29,7 @@ const CategoryForm = ({
           <p className="alertTextSm">{errors.categoryName}</p>
         </>
       )}
-    </Form2>
+    </Form>
   )
 }
 

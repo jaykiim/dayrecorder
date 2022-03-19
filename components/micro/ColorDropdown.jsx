@@ -1,79 +1,70 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSession } from 'next-auth/react'
-import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai'
+import { useRecoilValueLoadable } from 'recoil'
+import { categoriesData } from '../../store/common'
+import Dropdown from './Dropdown'
+import ColorChip from './ColorChip'
 
-const ColorDropdown = () => {
-  const colors = useSession().data.user.colors
-  const folderNames = Object.keys(colors)
+const ColorDropdown = ({ style, innerStyle, color, setColor, setCategory }) => {
+  const defaultStyle = style || {
+    container:
+      'rounded-md border border-green-900 text-green-900 mb-4 bg-gray-50',
+    preview:
+      'flex cursor-pointer items-center py-1 px-2 border-green-900 font-bold',
+    open: 'overflow-y-auto',
+  }
 
-  const [open, setOpen] = useState(false)
-  const [subOpen, setSubOpen] = useState({ name: '', state: false })
-  const [selectedColor, setSelectedColor] = useState({ tag: '', hex: '' })
+  const defaultInnerStyle = {
+    container: 'text-green-900 text-xs border-t',
+    preview: 'flex cursor-pointer items-center py-2 px-2 border-green-900',
+    open: 'overflow-y-auto',
+  }
 
-  console.log(colors[subOpen.name])
+  const email = useSession().data.user.email
+  const categories = useRecoilValueLoadable(categoriesData(email))
+  const defaultColor =
+    categories.state === 'hasValue' && categories.contents[0].userColors[0]
+
+  const renderPreview = () => (
+    <div className="flex items-center">
+      <ColorChip hex={color?.color?.hex || defaultColor?.color?.hex} />
+      <p>{color?.tag || defaultColor.tag}</p>
+    </div>
+  )
 
   return (
-    <div
-      className={`my-3 h-52 rounded-lg ${
-        open ? 'max-h-52' : 'max-h-7'
-      } bg-gray-50 pl-2 transition-all`}
+    <Dropdown
+      style={style || defaultStyle}
+      preview={renderPreview()}
+      fullHeight="210px"
+      maxHeight="34px"
     >
-      <div className="h-52 overflow-y-scroll">
-        <section className="flex items-center justify-between p-1">
-          <div className="flex items-center text-sm">
-            <div
-              className="mr-3 h-4 w-4 rounded-full"
-              style={{ backgroundColor: selectedColor.hex + '80' }}
-            />
-            <p>{selectedColor.tag}</p>
-          </div>
-
-          <AiFillCaretDown onClick={() => setOpen(!open)} />
-        </section>
-
-        <ul className={` ${!open && 'hidden'} p-1 text-sm`}>
-          {folderNames.map((name, i) => (
-            <li
-              key={i}
-              className={`cursor-pointer transition-all ${
-                subOpen.state && subOpen.name === name
-                  ? 'max-h-full'
-                  : 'max-h-7'
-              } py-1 `}
-            >
-              <section
-                onClick={() => setSubOpen({ name, state: !subOpen.state })}
-                className="flex items-center hover:bg-gray-100"
-              >
-                <AiFillCaretDown className="text-gray-300" />
-                <p className="p-1">{name}</p>
-              </section>
-
-              {subOpen.state && subOpen.name === name && (
-                <ul className="pl-2">
-                  {colors[subOpen.name].map(({ hex, tag }, i) => (
-                    <li
-                      key={i}
-                      onClick={() => {
-                        setSelectedColor({ tag, hex })
-                        setOpen(false)
-                      }}
-                      className="flex items-center py-1 hover:bg-gray-100"
-                    >
-                      <div
-                        className="mr-4 h-4 w-4 rounded-full"
-                        style={{ backgroundColor: hex + '80' }}
-                      />
-                      <p>{tag}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      {categories.state === 'hasValue' &&
+        categories.contents.map((category, i) => (
+          <Dropdown
+            key={i}
+            style={innerStyle || defaultInnerStyle}
+            preview={category.categoryName}
+            fullHeight="150px"
+            maxHeight="34px"
+          >
+            <div className="cursor-pointer">
+              {category.userColors.map((colorInfo, i) => (
+                <div
+                  key={i}
+                  onClick={() =>
+                    setColor({ ...colorInfo, userCategory: category })
+                  }
+                  className="flex items-center px-4 py-2 hover:bg-gray-100"
+                >
+                  <ColorChip hex={colorInfo.color.hex} />
+                  <p>{colorInfo.tag}</p>
+                </div>
+              ))}
+            </div>
+          </Dropdown>
+        ))}
+    </Dropdown>
   )
 }
 

@@ -115,6 +115,7 @@ export function useRecorder() {
         start: saved.start,
         end: endTime,
       })
+      console.log('newRecord', newRecord)
       const record = await createRecordReq(newRecord)
       setRecords((records) => [...records, record])
     }

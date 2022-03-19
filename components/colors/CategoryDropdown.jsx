@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { currentCategoryId } from '../../store/common'
 import { getCategoryNameValidate } from './utils'
-import Dropdown2 from '../micro/Dropdown2'
+import Dropdown from '../micro/Dropdown'
 import CategoryListItem from './CategoryListItem'
 import CategoryForm from './CategoryForm'
 import { createUserCategoryReq } from '../../apiCalls/colorCalls'
@@ -34,7 +34,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
   }
 
   return (
-    <Dropdown2
+    <Dropdown
       style={style}
       preview={
         getPreviewName() ||
@@ -74,7 +74,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
           />
         </div>
       </>
-    </Dropdown2>
+    </Dropdown>
   )
 }
 

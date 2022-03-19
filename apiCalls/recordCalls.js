@@ -42,6 +42,35 @@ export const getRecordsReq = async (date, email) => {
   }
 }
 
+export const getAllRecords = gql`
+  query getAllRecords($email: String!) {
+    records(where: { user: { email: $email } }) {
+      userCategory {
+        userColors {
+          color {
+            hex
+          }
+          id
+          tag
+        }
+        id
+        categoryName
+      }
+      start
+      end
+    }
+  }
+`
+
+export const getAllRecordsReq = async (email) => {
+  try {
+    const { records } = await graphcmsClient.request(getAllRecords, { email })
+    return records
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const updateRecord = gql`
   mutation updateRecord(
     $date: Date!
@@ -172,40 +201,8 @@ export const createRecordReq = async (values) => {
   }
 }
 
-export const GetWeeklyRecords = gql`
-  query GetWeeklyRecords($email: String!, $firstday: Date!, $lastday: Date!) {
-    weeklyRecords: dayrecorderUser(where: { email: $email }) {
-      record(
-        where: { date_gte: $firstday, date_lte: $lastday }
-        orderBy: date_ASC
-      ) {
-        id
-        date
-        start
-        end
-        color
-        title
-        memo
-      }
-    }
-  }
-`
-
-export const getWeeklyRecordsReq = async (email, firstday, lastday) => {
-  try {
-    const { weeklyRecords } = await graphcmsClient.request(GetWeeklyRecords, {
-      email,
-      firstday,
-      lastday,
-    })
-    return weeklyRecords.record
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const DeleteRecord = gql`
-  mutation DeleteRecord($id: ID!) {
+export const deleteRecord = gql`
+  mutation deleteRecord($id: ID!) {
     deleteRecord(where: { id: $id }) {
       id
     }
@@ -214,7 +211,7 @@ export const DeleteRecord = gql`
 
 export const deleteRecordReq = async (id) => {
   try {
-    await graphcmsClient.request(DeleteRecord, { id })
+    await graphcmsClient.request(deleteRecord, { id })
   } catch (err) {
     console.log(err)
   }

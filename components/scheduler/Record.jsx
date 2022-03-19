@@ -9,19 +9,9 @@ const Record = (props) => {
   const [modal, setModal] = useState(false)
 
   const top = convertToMin(start) * MIN_HEIGHT + 'px'
-  const height = (convertToMin(end) - convertToMin(start)) * MIN_HEIGHT + 'px'
+  const height = (convertToMin(end) - convertToMin(start)) * MIN_HEIGHT
 
   const style = {
-    absoluteContainer: {
-      position: 'absolute',
-      top,
-      padding: '5px',
-      width: '100%',
-    },
-    recordBox: {
-      display: 'flex',
-      height,
-    },
     boxLeft: {
       width: '7px',
       backgroundColor: userColor?.color.hex || DEFAULT_COLOR.hex,
@@ -36,15 +26,21 @@ const Record = (props) => {
 
   return (
     <>
-      <div style={style.absoluteContainer}>
+      <div className="absolute w-full p-1" style={{ top }}>
         <div
-          style={style.recordBox}
+          className="flex cursor-pointer rounded-lg hover:shadow-lg"
+          style={{ height: height < 25 ? '25px' : height + 'px' }}
           onClick={() => setModal(!modal)}
-          className="cursor-pointer rounded-lg hover:shadow-lg"
         >
           <div style={style.boxLeft} className="rounded-l-lg" />
-          <div style={style.boxRight} className="overflow-hidden rounded-r-lg">
-            <p className="font-bold">{title}</p>
+          <div
+            style={style.boxRight}
+            className={
+              'overflow-hidden rounded-r-lg ' +
+              (height < 45 && 'flex items-center')
+            }
+          >
+            <p className={'font-bold ' + (height < 45 && 'mr-2')}>{title}</p>
             <p className="text-xs">
               {start} ~ {end}
             </p>

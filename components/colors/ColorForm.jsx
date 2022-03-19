@@ -2,7 +2,7 @@ import React from 'react'
 import { useRecoilValue } from 'recoil'
 import { createUserColorReq } from '../../apiCalls/colorCalls'
 import { currentCategoryId } from '../../store/common'
-import Form2 from '../micro/Form2'
+import Form from '../micro/Form'
 import ColorPicker from './ColorPicker'
 import { getColorValidate } from './utils'
 
@@ -37,7 +37,7 @@ const ColorForm = ({ email, categories, setCategories }) => {
   }
 
   return (
-    <Form2
+    <Form
       values={{ hex: '', tag: '' }}
       validate={getColorValidate('hex', 'tag')}
       handleSubmit={handleSubmit}
@@ -70,7 +70,7 @@ const ColorForm = ({ email, categories, setCategories }) => {
           <p className="alertTextSm mt-2">{errors.hex || errors.tag}</p>
         </>
       )}
-    </Form2>
+    </Form>
   )
 }
 

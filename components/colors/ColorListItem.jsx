@@ -3,7 +3,7 @@ import {
   deleteUserColorReq,
   updateUserColorReq,
 } from '../../apiCalls/colorCalls'
-import Form2 from '../micro/Form2'
+import Form from '../micro/Form'
 import ModdableItem from '../micro/ModdableItem'
 import { getColorValidate } from './utils'
 
@@ -70,7 +70,7 @@ const ColorListItem = ({
         />
 
         {updating ? (
-          <Form2
+          <Form
             values={{
               updateHex: colorInfo.color.hex,
               updateTag: colorInfo.tag,
@@ -103,7 +103,7 @@ const ColorListItem = ({
                 </p>
               </>
             )}
-          </Form2>
+          </Form>
         ) : (
           <p className="text-sm">{colorInfo.tag}</p>
         )}

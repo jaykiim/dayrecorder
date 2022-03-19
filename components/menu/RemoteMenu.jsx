@@ -26,7 +26,11 @@ const LeftRemote = () => {
           </div>
         </Link>
 
-        <AiOutlineAreaChart className="leftRemoteIcon" />
+        <Link href="/statistics">
+          <div>
+            <AiOutlineAreaChart className="leftRemoteIcon" />
+          </div>
+        </Link>
 
         <Link href="/account">
           <div>

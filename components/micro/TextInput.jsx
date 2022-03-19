@@ -1,26 +1,17 @@
 import React from 'react'
 
-const TextInput = ({
-  type,
-  id,
-  placeholder,
-  values,
-  handleChange,
-  handleBlur,
-  styles,
-}) => (
-  <div className={styles?.container}>
-    <label htmlFor={id} className={styles?.label}>
+const TextInput = ({ id, placeholder, value, handleChange, style }) => (
+  <div className={style?.container}>
+    <label htmlFor={id} className={style?.label}>
       {id.toUpperCase()}
     </label>
     <input
-      type={type}
+      type="text"
       id={id}
       placeholder={placeholder}
-      value={values[id]}
+      value={value}
       onChange={handleChange}
-      onBlur={handleBlur}
-      className={styles?.input}
+      className={style?.input}
     />
   </div>
 )

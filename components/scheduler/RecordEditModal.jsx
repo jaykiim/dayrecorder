@@ -10,8 +10,8 @@ const RecordEditModal = ({ modal, setModal, recordData }) => {
         className="fixed top-0 left-0 h-full w-full cursor-pointer bg-black bg-opacity-20"
       />
       <div
-        className="fixed left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-evenly rounded-lg bg-gray-50 p-5 shadow-lg md:bg-white"
-        style={{ width: '350px', height: '500px' }}
+        className="fixed left-1/2 top-1/2 z-30  -translate-x-1/2 -translate-y-1/2 rounded-lg bg-gray-50 p-5 shadow-lg md:bg-white"
+        style={{ width: '350px', height: '515px' }}
       >
         {/* ===============================================================================================================================  
           // GUIDE 타이틀 
@@ -33,6 +33,7 @@ const RecordEditModal = ({ modal, setModal, recordData }) => {
         {/* ===============================================================================================================================  
           // GUIDE 입력폼 
         =============================================================================================================================== */}
+
         <EditorForm recordData={recordData} setModal={setModal} />
       </div>
     </>

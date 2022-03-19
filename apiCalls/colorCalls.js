@@ -1,6 +1,43 @@
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 
+export const getAllCategories = gql`
+  query getAllCategories($email: String!) {
+    userCategories(where: { dayrecorderUser: { email: $email } }) {
+      categoryName
+      id
+      records {
+        start
+        end
+        id
+      }
+      userColors {
+        id
+        tag
+        color {
+          hex
+        }
+        record {
+          end
+          id
+          start
+        }
+      }
+    }
+  }
+`
+
+export const getAllCategoriesReq = async (email) => {
+  try {
+    const { userCategories } = await graphcmsClient.request(getAllCategories, {
+      email,
+    })
+    return userCategories
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const getUserCategory = gql`
   query getUserCategory($email: String!) {
     userCategories(where: { dayrecorderUser: { email: $email } }) {

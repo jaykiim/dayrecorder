@@ -1,44 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineDownCircle } from 'react-icons/ai'
 
-const Dropdown = ({
-  id,
-  open,
-  setOpen,
-  before,
-  after,
-  style,
-  preview,
-  contents,
-  contentHeight,
-  others,
-}) => {
+const Dropdown = ({ children, style, preview, fullHeight, maxHeight }) => {
+  const [open, setOpen] = useState(false)
+
   return (
-    <section
-      className={`flex flex-col h-${after} rounded-md transition-all ${
-        style?.container
-      } ${open.state && open.id === id ? 'max-h-' + after : 'max-h-' + before}`}
+    <div
+      className={style.container}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: fullHeight,
+        maxHeight: open ? fullHeight : maxHeight,
+        transition: 'all 200ms',
+      }}
     >
-      <div
-        onClick={() => setOpen({ id, state: !open.state })}
-        className={`flex h-${before} cursor-pointer items-center px-2`}
-      >
-        <AiOutlineDownCircle className={style?.icon} />
-        {preview}
+      {/* ===========================================================================================================================
+        // GUIDE 닫힘 
+      =========================================================================================================================== */}
+
+      <div onClick={() => setOpen(!open)} className={style.preview}>
+        <AiOutlineDownCircle className="mr-2 text-lg" />
+        <div>{preview}</div>
       </div>
 
-      <div
-        className={`${
-          open.state && open.id === id
-            ? `h-${contentHeight} overflow-y-auto border-t ${style?.underlineColor} p-2`
-            : 'hidden'
-        }`}
-      >
-        {contents}
-      </div>
+      {/* ===========================================================================================================================
+        // GUIDE 열림 
+      =========================================================================================================================== */}
 
-      {others}
-    </section>
+      <div
+        className={style.open}
+        style={{
+          height: '100%',
+          opacity: open ? '1' : '0',
+          visibility: open ? 'visible' : 'hidden',
+          transition: 'all 200ms',
+        }}
+      >
+        {children}
+      </div>
+    </div>
   )
 }
 

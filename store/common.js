@@ -1,6 +1,6 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
-import { getRecordsReq } from '../apiCalls/recordCalls'
-import { getUserCategoryReq } from '../apiCalls/colorCalls'
+import { getAllRecordsReq, getRecordsReq } from '../apiCalls/recordCalls'
+import { getAllCategoriesReq, getUserCategoryReq } from '../apiCalls/colorCalls'
 import {
   getCurrentTime,
   getMinutehandPos,
@@ -39,6 +39,15 @@ export const recordsData = atomFamily({
   default: async ({ datestamp, email }) => {
     const records = await getRecordsReq(datestamp, email)
     return records
+  },
+})
+
+// 모든 레코드
+export const allCategories = atomFamily({
+  key: 'allCategories',
+  default: async (email) => {
+    const categories = await getAllCategoriesReq(email)
+    return categories
   },
 })
 
