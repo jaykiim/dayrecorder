@@ -24,8 +24,6 @@ export const perCategoryWhole = (categories) => {
 }
 
 export const getColors = (categories) => {
-  console.log('categories', categories)
-
   const colors = categories.reduce((acc, category) => {
     const curCategoryColors = category.userColors.reduce(
       (acc, curCategoryColor) => ({
@@ -36,8 +34,6 @@ export const getColors = (categories) => {
     )
     return { ...acc, ...curCategoryColors }
   }, {})
-
-  console.log('colors', colors)
 
   return colors
 }

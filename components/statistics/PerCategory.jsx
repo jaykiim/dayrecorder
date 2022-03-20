@@ -1,15 +1,55 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import { ResponsiveBar } from '@nivo/bar'
 import { getColors, perCategoryWhole } from './utils'
+import { useRecoilValue } from 'recoil'
+import { selectedDate } from '../../store/common'
+import { dateObj, getSelectedWeekNo } from '../calendar/utils'
+import {
+  getDailyRecordsCategoryReq,
+  getFromToRecordsCategoryReq,
+} from '../../apiCalls/colorCalls'
+import { dateFormatter } from '../scheduler/utils'
 
-const PerCategory = ({ categories }) => {
-  const data = perCategoryWhole(categories)
-  const colors = getColors(categories)
-  const tags = Object.keys(colors)
+const PerCategory = () => {
+  const email = useSession().data.user.email
+
+  const date = useRecoilValue(selectedDate)
+  const { year, month, day } = dateObj(date)
+
+  const week = getSelectedWeekNo(year, month, day)
+  const [weekFirst, weekLast] = [
+    dateFormatter(year, month, week[0]),
+    dateFormatter(year, month, week[6]),
+  ]
+
+  let daily,
+    weekly,
+    monthly = null
+
+  useEffect(() => {
+    const fetchRecordsCategory = async () => {
+      try {
+        const dailyRecordsCat = await getDailyRecordsCategoryReq(email, date)
+        const weeklyRecordsCat = await getFromToRecordsCategoryReq(
+          email,
+          weekFirst,
+          weekLast
+        )
+        // const monthlyRecordsCat = await getFromToRecordsCategoryReq()
+        console.log(dailyRecordsCat)
+        daily = dailyRecordsCat
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchRecordsCategory()
+  }, [])
 
   return (
     <div style={{ height: '400px' }}>
-      <ResponsiveBar
+      {/* <ResponsiveBar
         data={data}
         colors={(bar) => colors[bar.id]}
         keys={tags}
@@ -53,7 +93,7 @@ const PerCategory = ({ categories }) => {
             itemHeight: 20,
             itemDirection: 'left-to-right',
             itemOpacity: 0.85,
-            symbolSize: 20,
+            symbolSize: 14,
             effects: [
               {
                 on: 'hover',
@@ -64,7 +104,7 @@ const PerCategory = ({ categories }) => {
             ],
           },
         ]}
-      />
+      /> */}
     </div>
   )
 }

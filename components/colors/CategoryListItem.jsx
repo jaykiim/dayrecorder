@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  deleteManyUserColorReq,
   deleteUserCategoryReq,
   updateUserCategoryNameReq,
 } from '../../apiCalls/colorCalls'
@@ -10,6 +11,7 @@ const CategoryListItem = ({
   category,
   categories,
   setCategories,
+  selectedCategoryId,
   setSelectedCategoryId,
   validate,
 }) => {
@@ -30,8 +32,15 @@ const CategoryListItem = ({
   }
 
   const handleDelete = async () => {
+    await deleteManyUserColorReq(category.id)
     await deleteUserCategoryReq(category.id)
+
     const newCategories = categories.filter((item) => item.id !== category.id)
+
+    // 만약 현재 선택된 카테고리를 삭제한 경우 선택된 카테고리를 바꾼다
+    if (category.id === selectedCategoryId)
+      setSelectedCategoryId(categories[1].id)
+
     setCategories(newCategories)
   }
 

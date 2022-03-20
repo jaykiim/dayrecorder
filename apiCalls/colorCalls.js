@@ -27,11 +27,91 @@ export const getAllCategories = gql`
   }
 `
 
+export const getDailyRecordsCategory = gql`
+  query getDailyRecordsCategory($email: String!, $date: Date!) {
+    userCategories(where: { dayrecorderUser: { email: $email } }) {
+      categoryName
+      id
+      records(where: { date: $date }) {
+        start
+        end
+        id
+      }
+      userColors {
+        id
+        tag
+        color {
+          hex
+        }
+        record {
+          end
+          id
+          start
+        }
+      }
+    }
+  }
+`
+
+export const getFromToRecordsCategory = gql`
+  query getFromToRecordsCategory(
+    $email: String!
+    $firstday: Date!
+    $lastday: Date!
+  ) {
+    userCategories(where: { dayrecorderUser: { email: $email } }) {
+      categoryName
+      id
+      records(where: { date_gte: $firstday, date_lte: $lastday }) {
+        start
+        end
+        id
+      }
+      userColors {
+        id
+        tag
+        color {
+          hex
+        }
+        record {
+          end
+          id
+          start
+        }
+      }
+    }
+  }
+`
+
 export const getAllCategoriesReq = async (email) => {
   try {
     const { userCategories } = await graphcmsClient.request(getAllCategories, {
       email,
     })
+    return userCategories
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const getDailyRecordsCategoryReq = async (email, date) => {
+  try {
+    const { userCategories } = await graphcmsClient.request(
+      getDailyRecordsCategory,
+      { email, date }
+    )
+    return userCategories
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const getFromToRecordsCategoryReq = async (email, firstday, lastday) => {
+  try {
+    const { userCategories } = await graphcmsClient.request(
+      getFromToRecordsCategory,
+      { email, firstday, lastday }
+    )
     return userCategories
   } catch (err) {
     console.log(err)
@@ -245,6 +325,23 @@ export const deleteUserColorReq = async (id) => {
       id,
     })
     return updatedCategory
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteManyUserColor = gql`
+  mutation deleteManyUserColor($id: ID!) {
+    deleteManyUserColors(where: { userCategory: { id: $id } }) {
+      count
+    }
+  }
+`
+
+export const deleteManyUserColorReq = async (id) => {
+  try {
+    const res = await graphcmsClient.request(deleteManyUserColor, { id })
+    console.log(res)
   } catch (err) {
     console.log(err)
   }

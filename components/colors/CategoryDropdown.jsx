@@ -56,6 +56,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
               category={category}
               categories={categories}
               setCategories={setCategories}
+              selectedCategoryId={selectedCategoryId}
               setSelectedCategoryId={setSelectedCategoryId}
               validate={validate}
             />

@@ -17,6 +17,8 @@ const TableBody = ({ date }) => {
     recordsData({ datestamp, email })
   )
 
+  console.log(records)
+
   return (
     <>
       {timeline.map((time, i) => (
