@@ -12,9 +12,9 @@ const Item = ({ todo }) => {
 
   const dropdownStyle = {
     container:
-      'rounded-md items-center  text-green-900 bg-gray-100 mr-2 text-xs',
+      'rounded-md items-center  text-green-900 bg-gray-200 md:bg-gray-100 mr-2 text-xs',
     preview: 'flex cursor-pointer items-center border-green-900',
-    open: 'overflow-y-auto',
+    open: 'overflow-y-auto bg-gray-100 md:bg-gray-50',
   }
 
   const itemStyle = {
