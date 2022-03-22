@@ -1,5 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
-import { getAllRecordsReq, getRecordsReq } from '../apiCalls/recordCalls'
+import { getRecordsBetweenReq, getRecordsReq } from '../apiCalls/recordCalls'
 import { getAllCategoriesReq, getUserCategoryReq } from '../apiCalls/colorCalls'
 import {
   getCurrentTime,
@@ -33,7 +33,7 @@ export const isRecording = atom({
   default: null,
 })
 
-// 레코드
+// 레코드 (일간)
 export const recordsData = atomFamily({
   key: 'recordsData',
   default: async ({ datestamp, email }) => {
@@ -42,7 +42,15 @@ export const recordsData = atomFamily({
   },
 })
 
-// 모든 레코드
+// 레코드 (주간, 월간)
+export const recordsBetween = atomFamily({
+  key: 'recordsBetween',
+  default: async ({ email, firstday, lastday }) => {
+    const records = await getRecordsBetweenReq(email, firstday, lastday)
+    return records
+  },
+})
+
 export const allCategories = atomFamily({
   key: 'allCategories',
   default: async (email) => {

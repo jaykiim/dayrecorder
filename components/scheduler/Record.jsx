@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { DEFAULT_COLOR, MIN_HEIGHT } from '../../store/constants'
+import { DEFAULT_COLOR, ONE_MINUTE_HEIGHT } from '../../store/constants'
 import { convertToMin } from '../scheduler/utils'
 import RecordEditModal from './RecordEditModal'
+import Minutehand from './Minutehand'
 
 const Record = (props) => {
   const { userColor, start, end, title } = props
 
   const [modal, setModal] = useState(false)
 
-  const top = convertToMin(start) * MIN_HEIGHT + 'px'
-  const height = (convertToMin(end) - convertToMin(start)) * MIN_HEIGHT
+  const top = convertToMin(start) * ONE_MINUTE_HEIGHT + 'px'
+  const height = (convertToMin(end) - convertToMin(start)) * ONE_MINUTE_HEIGHT
 
   const style = {
     boxLeft: {
@@ -47,6 +48,8 @@ const Record = (props) => {
           </div>
         </div>
       </div>
+
+      {/* <Minutehand /> */}
 
       {modal && (
         <RecordEditModal modal={modal} setModal={setModal} recordData={props} />

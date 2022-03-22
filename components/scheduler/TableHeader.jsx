@@ -1,9 +1,15 @@
 import React from 'react'
 import { TABLE_HEADER_HEIGHT } from '../../store/constants'
 import { dateObj } from '../calendar/utils'
+import { dateFormatter } from '../scheduler2/utils'
 
 const TableHeader = ({ date, isWeek }) => {
-  const { year, month, day } = date
+  const [year, month, day] = dateFormatter(
+    date.year,
+    date.month,
+    date.day
+  ).split('-')
+
   const { weekday } = dateObj(new Date(year, month - 1, day))
 
   return (

@@ -1,9 +1,9 @@
 import React from 'react'
 import { MdArrowForwardIos } from 'react-icons/md'
 
-const BtnRight = ({ style }) => {
+const BtnRight = ({ btnClick, style }) => {
   return (
-    <div className={style.container}>
+    <div onClick={btnClick} className={style.container}>
       <MdArrowForwardIos className={style.icon} />
     </div>
   )

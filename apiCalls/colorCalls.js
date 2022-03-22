@@ -10,73 +10,13 @@ export const getAllCategories = gql`
         start
         end
         id
-      }
-      userColors {
-        id
-        tag
-        color {
-          hex
-        }
-        record {
-          end
+        date
+        userColor {
           id
-          start
-        }
-      }
-    }
-  }
-`
-
-export const getDailyRecordsCategory = gql`
-  query getDailyRecordsCategory($email: String!, $date: Date!) {
-    userCategories(where: { dayrecorderUser: { email: $email } }) {
-      categoryName
-      id
-      records(where: { date: $date }) {
-        start
-        end
-        id
-      }
-      userColors {
-        id
-        tag
-        color {
-          hex
-        }
-        record {
-          end
-          id
-          start
-        }
-      }
-    }
-  }
-`
-
-export const getFromToRecordsCategory = gql`
-  query getFromToRecordsCategory(
-    $email: String!
-    $firstday: Date!
-    $lastday: Date!
-  ) {
-    userCategories(where: { dayrecorderUser: { email: $email } }) {
-      categoryName
-      id
-      records(where: { date_gte: $firstday, date_lte: $lastday }) {
-        start
-        end
-        id
-      }
-      userColors {
-        id
-        tag
-        color {
-          hex
-        }
-        record {
-          end
-          id
-          start
+          tag
+          color {
+            hex
+          }
         }
       }
     }
@@ -88,30 +28,6 @@ export const getAllCategoriesReq = async (email) => {
     const { userCategories } = await graphcmsClient.request(getAllCategories, {
       email,
     })
-    return userCategories
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const getDailyRecordsCategoryReq = async (email, date) => {
-  try {
-    const { userCategories } = await graphcmsClient.request(
-      getDailyRecordsCategory,
-      { email, date }
-    )
-    return userCategories
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const getFromToRecordsCategoryReq = async (email, firstday, lastday) => {
-  try {
-    const { userCategories } = await graphcmsClient.request(
-      getFromToRecordsCategory,
-      { email, firstday, lastday }
-    )
     return userCategories
   } catch (err) {
     console.log(err)

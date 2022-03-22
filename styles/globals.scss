@@ -68,7 +68,7 @@ input
 }
 
 .btnGreen {
-  @apply rounded-md bg-green-500 px-2 py-1;
+  @apply rounded-md bg-green-500 px-2 py-1 md:bg-green-300;
 }
 
 .btnLightGreen {

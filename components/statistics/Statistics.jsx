@@ -1,13 +1,13 @@
 import React from 'react'
 import Title from '../micro/Title'
-import PerCategory from './PerCategory'
+import ByCategory from './ByCategory'
 
 const Statistics = () => {
   return (
     <>
       <Title title="Statistics" />
       <section className="bodyContainer">
-        <PerCategory />
+        <ByCategory />
       </section>
     </>
   )

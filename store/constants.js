@@ -13,5 +13,5 @@ export const DEFAULT_COLOR = {
   uuid: '',
 }
 
-export const MIN_HEIGHT = 3
+export const ONE_MINUTE_HEIGHT = 3
 export const TABLE_HEADER_HEIGHT = 64

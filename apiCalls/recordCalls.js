@@ -42,29 +42,47 @@ export const getRecordsReq = async (date, email) => {
   }
 }
 
-export const getAllRecords = gql`
-  query getAllRecords($email: String!) {
-    records(where: { user: { email: $email } }) {
+export const getRecordsBetween = gql`
+  query getRecordsBetween($email: String!, $firstday: Date!, $lastday: Date!) {
+    records(
+      where: {
+        user: { email: $email }
+        date_gte: $firstday
+        date_lte: $lastday
+      }
+    ) {
       userCategory {
-        userColors {
-          color {
-            hex
-          }
-          id
-          tag
+        categoryName
+        id
+      }
+      userColor {
+        color {
+          hex
         }
         id
-        categoryName
+        tag
+        userCategory {
+          id
+          categoryName
+        }
       }
+      id
       start
       end
+      title
+      date
+      memo
     }
   }
 `
 
-export const getAllRecordsReq = async (email) => {
+export const getRecordsBetweenReq = async (email, firstday, lastday) => {
   try {
-    const { records } = await graphcmsClient.request(getAllRecords, { email })
+    const { records } = await graphcmsClient.request(getRecordsBetween, {
+      email,
+      firstday,
+      lastday,
+    })
     return records
   } catch (err) {
     console.log(err)

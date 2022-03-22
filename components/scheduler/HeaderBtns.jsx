@@ -5,6 +5,9 @@ import BtnRight from '../micro/BtnRight'
 import BtnToggleSquare from '../micro/BtnToggleSquare'
 import RecordCreateModal from './RecordCreateModal'
 import { useRecorder } from '../../hooks/useRecorder'
+import { useRecoilState } from 'recoil'
+import { selectedDate } from '../../store/common'
+import { getNextDate, getPrevDate } from './utils'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {
@@ -21,12 +24,27 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const [modal, setModal] = useState(false)
   const { recording, startRecording, stopRecording } = useRecorder()
 
+  const [clickedDate, setClickedDate] = useRecoilState(selectedDate)
+
+  // 이전, 다음 날짜
+  const prevDate = getPrevDate(clickedDate)
+  const nextDate = getNextDate(clickedDate)
+
+  console.log(prevDate)
+
   return (
     <div className="flex items-center ">
       <div className="flex flex-1 items-center gap-x-1">
-        <BtnLeft style={arrowStyle} />
-        <BtnText text="Today" style={todayStyle} />
-        <BtnRight style={arrowStyle} />
+        <BtnLeft btnClick={() => setClickedDate(prevDate)} style={arrowStyle} />
+        <BtnText
+          btnClick={() => setClickedDate(new Date())}
+          text="Today"
+          style={todayStyle}
+        />
+        <BtnRight
+          btnClick={() => setClickedDate(nextDate)}
+          style={arrowStyle}
+        />
         <BtnToggleSquare toggle={isWeek} setToggle={setIsWeek} />
       </div>
 

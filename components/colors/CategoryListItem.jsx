@@ -32,7 +32,7 @@ const CategoryListItem = ({
   }
 
   const handleDelete = async () => {
-    await deleteManyUserColorReq(category.id)
+    await deleteManyUserColorReq(category.id) // 카테고리 내 컬러 삭제
     await deleteUserCategoryReq(category.id)
 
     const newCategories = categories.filter((item) => item.id !== category.id)
