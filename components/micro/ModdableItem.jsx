@@ -10,10 +10,14 @@ const ModdableItem = ({
   handleDelete,
 }) => {
   return (
-    <div className={style}>
+    <div className={style?.container || style}>
       {children}
 
-      <div className="flex cursor-pointer items-center gap-x-2">
+      <div
+        className={
+          'flex cursor-pointer items-center gap-x-2 ' + style?.btnContainer
+        }
+      >
         {!updating && (
           <BtnUpdate updating={updating} setUpdating={setUpdating} />
         )}

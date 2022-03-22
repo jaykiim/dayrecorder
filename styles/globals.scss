@@ -91,6 +91,10 @@ input
   @apply w-full border-b bg-transparent pl-1 tracking-wide focus:outline-none;
 }
 
+.inputBorder {
+  @apply w-full border bg-transparent tracking-wide text-gray-700 focus:border-2 focus:outline-none;
+}
+
 .inputBorderBottomBlue {
   @apply w-full border-b bg-transparent pl-1 tracking-wide text-gray-700 focus:border-b-2 focus:border-blue-500 focus:outline-none;
 }

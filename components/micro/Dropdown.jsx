@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import { AiOutlineDownCircle } from 'react-icons/ai'
 
-const Dropdown = ({ children, style, preview, fullHeight, maxHeight }) => {
+const Dropdown = ({
+  children,
+  style,
+  preview,
+  fullHeight,
+  maxHeight,
+  noArrow,
+}) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -10,6 +17,7 @@ const Dropdown = ({ children, style, preview, fullHeight, maxHeight }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
+
         height: fullHeight,
         maxHeight: open ? fullHeight : maxHeight,
         transition: 'all 200ms',
@@ -20,8 +28,13 @@ const Dropdown = ({ children, style, preview, fullHeight, maxHeight }) => {
       =========================================================================================================================== */}
 
       <div onClick={() => setOpen(!open)} className={style.preview}>
-        <AiOutlineDownCircle className="mr-2 text-lg" />
-        <div>{preview}</div>
+        {!noArrow && <AiOutlineDownCircle className="mr-2 text-lg" />}
+        <div
+          className="flex flex-col justify-center"
+          style={{ height: maxHeight }}
+        >
+          {preview}
+        </div>
       </div>
 
       {/* ===========================================================================================================================

@@ -10,7 +10,7 @@ import { createUserCategoryReq } from '../../apiCalls/colorCalls'
 
 const style = {
   container: 'rounded-md border border-green-900 text-green-900 mb-4',
-  preview: 'flex cursor-pointer items-center py-1 px-2 border-green-900',
+  preview: 'flex cursor-pointer items-center px-2 border-green-900',
 }
 
 const CategoryDropdown = ({ email, categories, setCategories }) => {

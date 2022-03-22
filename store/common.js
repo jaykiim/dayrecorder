@@ -1,10 +1,8 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
 import { getRecordsBetweenReq, getRecordsReq } from '../apiCalls/recordCalls'
-import { getAllCategoriesReq, getUserCategoryReq } from '../apiCalls/colorCalls'
-import {
-  getCurrentTime,
-  getMinutehandPos,
-} from '../components/scheduler2/utils'
+import { getUserCategoryReq } from '../apiCalls/colorCalls'
+import { getTodosReq } from '../apiCalls/todoCalls'
+import { getCurrentTime, getMinutehandPos } from '../components/scheduler/utils'
 
 // 클릭된 날짜
 export const selectedDate = atom({
@@ -51,18 +49,13 @@ export const recordsBetween = atomFamily({
   },
 })
 
-export const allCategories = atomFamily({
-  key: 'allCategories',
-  default: async (email) => {
-    const categories = await getAllCategoriesReq(email)
-    return categories
-  },
-})
-
 // 할 일
-export const todos = atom({
-  key: 'todos',
-  default: [],
+export const todosData = atomFamily({
+  key: 'todosData',
+  default: async (values) => {
+    const { todos } = await getTodosReq(values)
+    return todos
+  },
 })
 
 // 카테고리

@@ -1,58 +1,65 @@
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 
-export const GetTodos = gql`
-  query GetTodos($date: Date!, $email: String!) {
-    todos: todos(where: { date: $date, user: { email: $email } }) {
-      title
-      id
-      date
-      done
-      color
-    }
-  }
-`
-
-export const getTodos = async (date, email) => {
-  try {
-    const { todos } = await graphcmsClient.request(GetTodos, { date, email })
-    return todos
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const CreateTodo = gql`
-  mutation CreateTodo(
-    $title: String!
-    $color: Json!
-    $done: Boolean!
-    $date: Date!
-    $email: String!
-  ) {
-    newTodo: createTodo(
-      data: {
-        title: $title
-        color: $color
-        done: $done
-        date: $date
-        user: { connect: { email: $email } }
+const getTodos = gql`
+  query getTodos($email: String!, $firstday: Date!, $lastday: Date!) {
+    todos(
+      where: {
+        user: { email: $email }
+        date_gte: $firstday
+        date_lte: $lastday
       }
     ) {
-      title
       date
       done
       id
-      color
+      title
+      userColor {
+        color {
+          hex
+        }
+        id
+        tag
+        userCategory {
+          categoryName
+          id
+        }
+      }
     }
   }
 `
 
-export const createTodoReq = async (values) => {
+const updateTodoTitle = gql`
+  mutation updateTodoTitle($title: String!, $id: ID!) {
+    todo: updateTodoTitle(data: { title: "" }, where: { id: "" }) {
+      id
+      done
+      date
+      title
+      userColor {
+        color {
+          hex
+        }
+        id
+        tag
+        userCategory {
+          categoryName
+          id
+        }
+      }
+    }
+  }
+`
+
+const basicRequest = async (query, values) => {
   try {
-    const { newTodo } = await graphcmsClient.request(CreateTodo, values)
-    return newTodo
+    const response = await graphcmsClient.request(query, values)
+    return response
   } catch (err) {
     console.log(err)
   }
 }
+
+export const getTodosReq = (values) => basicRequest(getTodos, values)
+export const updateTodoTitleReq = (values) =>
+  basicRequest(updateTodoTitle, values)

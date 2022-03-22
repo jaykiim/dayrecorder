@@ -1,7 +1,7 @@
 import React from 'react'
 import { TABLE_HEADER_HEIGHT } from '../../store/constants'
 import { dateObj } from '../calendar/utils'
-import { dateFormatter } from '../scheduler2/utils'
+import { dateFormatter } from '../scheduler/utils'
 
 const TableHeader = ({ date, isWeek }) => {
   const [year, month, day] = dateFormatter(

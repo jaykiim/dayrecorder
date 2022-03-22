@@ -5,18 +5,24 @@ import { categoriesData } from '../../store/common'
 import Dropdown from './Dropdown'
 import ColorChip from './ColorChip'
 
-const ColorDropdown = ({ style, innerStyle, color, setColor, setCategory }) => {
+const ColorDropdown = ({
+  style,
+  innerStyle,
+  color,
+  setColor,
+  setCategory,
+  maxHeight,
+}) => {
   const defaultStyle = style || {
     container:
       'rounded-md border border-green-900 text-green-900 mb-4 bg-gray-50',
-    preview:
-      'flex cursor-pointer items-center py-1 px-2 border-green-900 font-bold',
+    preview: 'flex cursor-pointer items-center px-2 border-green-900 font-bold',
     open: 'overflow-y-auto',
   }
 
   const defaultInnerStyle = {
     container: 'text-green-900 text-xs border-t',
-    preview: 'flex cursor-pointer items-center py-2 px-2 border-green-900',
+    preview: 'flex cursor-pointer items-center px-2 border-green-900',
     open: 'overflow-y-auto',
   }
 
@@ -37,7 +43,7 @@ const ColorDropdown = ({ style, innerStyle, color, setColor, setCategory }) => {
       style={style || defaultStyle}
       preview={renderPreview()}
       fullHeight="210px"
-      maxHeight="34px"
+      maxHeight={maxHeight || '34px'}
     >
       {categories.state === 'hasValue' &&
         categories.contents.map((category, i) => (
@@ -46,7 +52,7 @@ const ColorDropdown = ({ style, innerStyle, color, setColor, setCategory }) => {
             style={innerStyle || defaultInnerStyle}
             preview={category.categoryName}
             fullHeight="150px"
-            maxHeight="34px"
+            maxHeight={maxHeight || '34px'}
           >
             <div className="cursor-pointer">
               {category.userColors.map((colorInfo, i) => (

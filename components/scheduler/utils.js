@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import { dateObj, getMonthlyDate } from '../calendar/utils'
+import { ONE_MINUTE_HEIGHT } from '../../store/constants'
 
 /* 
 ============================================================================================================ 
@@ -151,4 +152,20 @@ export const getNextDate = (date) => {
 
   // 마지막 날이 아닌 경우
   else return new Date(year, month - 1, day + 1)
+}
+
+/* 
+============================================================================================================ 
+  DO :: 분침
+============================================================================================================ 
+*/
+
+export const getMinutehandPos = (hr, min, timestr) => {
+  // top에서부터 몇 픽셀 지점에 위치해야하는지 계산하여 리턴
+  // ===> 현재 시각을 분 단위로 바꾼 뒤 ONE_MINUTE_HEIGHT 를 곱해준다
+  if (timestr) {
+    const [hr, min] = timestr.split(':')
+    return (hr * 60 + Number(min)) * ONE_MINUTE_HEIGHT
+  }
+  return (hr * 60 + Number(min)) * ONE_MINUTE_HEIGHT
 }
