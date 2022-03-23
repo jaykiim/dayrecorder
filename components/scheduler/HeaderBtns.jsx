@@ -30,8 +30,6 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const prevDate = getPrevDate(clickedDate)
   const nextDate = getNextDate(clickedDate)
 
-  console.log(prevDate)
-
   return (
     <div className="flex items-center ">
       <div className="flex flex-1 items-center gap-x-1">

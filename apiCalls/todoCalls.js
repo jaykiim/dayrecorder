@@ -29,9 +29,12 @@ const getTodos = gql`
   }
 `
 
-const updateTodoTitle = gql`
-  mutation updateTodoTitle($title: String!, $id: ID!) {
-    todo: updateTodoTitle(data: { title: "" }, where: { id: "" }) {
+const updateTodo = gql`
+  mutation updateTodo($title: String!, $colorId: ID!, $todoId: ID!) {
+    updatedTodo: updateTodo(
+      data: { title: $title, userColor: { connect: { id: $colorId } } }
+      where: { id: $todoId }
+    ) {
       id
       done
       date
@@ -61,5 +64,4 @@ const basicRequest = async (query, values) => {
 }
 
 export const getTodosReq = (values) => basicRequest(getTodos, values)
-export const updateTodoTitleReq = (values) =>
-  basicRequest(updateTodoTitle, values)
+export const updateTodoReq = (values) => basicRequest(updateTodo, values)

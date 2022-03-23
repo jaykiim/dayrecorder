@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { AiOutlinePlayCircle } from 'react-icons/ai'
 import ReactTooltip from 'react-tooltip'
-import { updateTodoTitleReq } from '../../apiCalls/todoCalls'
+import { updateTodoReq } from '../../apiCalls/todoCalls'
 import { DEFAULT_COLOR } from '../../store/constants'
 import ColorDropdown from '../micro/ColorDropdown'
 import ModdableItem from '../micro/ModdableItem'
 
-const Item = ({ todo }) => {
+const Item = ({ currentTodo, setTodos }) => {
   const [updating, setUpdating] = useState(false)
-  const [color, setColor] = useState(todo.userColor)
+  const [color, setColor] = useState(currentTodo.userColor)
 
   const dropdownStyle = {
     container:
@@ -27,7 +27,19 @@ const Item = ({ todo }) => {
 
     if (!value.replace(/\s+/g, '')) return
 
-    const { todo } = await updateTodoTitleReq({ id: todo.id, title: value })
+    const { updatedTodo } = await updateTodoReq({
+      title: value,
+      colorId: color.id,
+      todoId: currentTodo.id,
+    })
+
+    setTodos((todos) =>
+      todos.map((originTodo) =>
+        originTodo.id === currentTodo.id ? updatedTodo : originTodo
+      )
+    )
+
+    setUpdating(false)
   }
 
   return (
@@ -50,16 +62,19 @@ const Item = ({ todo }) => {
               className="mr-1 h-4 w-4 whitespace-nowrap rounded-full"
               style={{
                 backgroundColor:
-                  (todo.userColor?.color?.hex || DEFAULT_COLOR.hex) + '4d',
+                  (currentTodo.userColor?.color?.hex || DEFAULT_COLOR.hex) +
+                  '4d',
               }}
             />
 
             <span
               style={{
-                color: (todo.userColor?.color?.hex || DEFAULT_COLOR.hex) + '4d',
+                color:
+                  (currentTodo.userColor?.color?.hex || DEFAULT_COLOR.hex) +
+                  '4d',
               }}
             >
-              {todo.userColor?.tag || DEFAULT_COLOR.tag}
+              {currentTodo.userColor?.tag || DEFAULT_COLOR.tag}
             </span>
           </div>
         )}
@@ -71,11 +86,11 @@ const Item = ({ todo }) => {
               autoFocus={true}
               className="inputUnderline flex-1 border-green-700"
               placeholder="수정 후 Enter"
-              defaultValue={todo.title}
+              defaultValue={currentTodo.title}
               onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
             />
           ) : (
-            <p>{todo.title}</p>
+            <p>{currentTodo.title}</p>
           )}
         </div>
 
