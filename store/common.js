@@ -31,6 +31,12 @@ export const isRecording = atom({
   default: null,
 })
 
+// 타이머 시작 상태
+export const isTimerOn = atom({
+  key: 'isTimerOn',
+  default: null,
+})
+
 // 레코드 (일간)
 export const recordsData = atomFamily({
   key: 'recordsData',

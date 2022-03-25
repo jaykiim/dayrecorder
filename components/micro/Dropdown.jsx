@@ -13,7 +13,7 @@ const Dropdown = ({
 
   return (
     <div
-      className={style.container}
+      className={style?.container}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -27,7 +27,7 @@ const Dropdown = ({
         // GUIDE 닫힘 
       =========================================================================================================================== */}
 
-      <div onClick={() => setOpen(!open)} className={style.preview}>
+      <div onClick={() => setOpen(!open)} className={style?.preview}>
         {!noArrow && <AiOutlineDownCircle className="mr-2 text-lg" />}
         <div
           className="flex flex-col justify-center"
@@ -42,7 +42,7 @@ const Dropdown = ({
       =========================================================================================================================== */}
 
       <div
-        className={style.open}
+        className={style?.open}
         style={{
           height: '100%',
           opacity: open ? '1' : '0',

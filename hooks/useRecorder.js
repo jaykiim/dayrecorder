@@ -30,8 +30,8 @@ export function useRecorder() {
     // TODO 레코딩 시작
   ============================================================================================================================================ */
 
-  const startRecording = (e, title, userColor, setModal) => {
-    e.preventDefault()
+  const startRecording = (e, title, userColor, setModal, todoId) => {
+    e?.preventDefault()
 
     setRecording(true)
 
@@ -42,10 +42,11 @@ export function useRecorder() {
         title,
         userColor,
         date: datestamp,
+        todoId,
       })
     )
 
-    setModal(false)
+    setModal && setModal(false)
   }
 
   /* ============================================================================================================================================

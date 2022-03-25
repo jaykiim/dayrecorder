@@ -26,7 +26,7 @@ const Todo = () => {
       <Title title="todo" />
 
       <section className="bodyContainer">
-        <NewTodo />
+        <NewTodo datestamp={datestamp} setTodos={setTodos} />
 
         <div className="overflow-y-auto" style={{ height: '685px' }}>
           {Object.keys(todosByCat).map((categoryName, i) => (

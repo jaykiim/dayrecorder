@@ -54,6 +54,57 @@ const updateTodo = gql`
   }
 `
 
+const createTodo = gql`
+  mutation createTodo(
+    $title: String!
+    $date: Date!
+    $colorId: ID!
+    $email: String!
+  ) {
+    newTodo: createTodo(
+      data: {
+        title: $title
+        done: false
+        date: $date
+        userColor: { connect: { id: $colorId } }
+        user: { connect: { email: $email } }
+      }
+    ) {
+      id
+      done
+      date
+      title
+      userColor {
+        color {
+          hex
+        }
+        id
+        tag
+        userCategory {
+          categoryName
+          id
+        }
+      }
+    }
+  }
+`
+
+const deleteTodo = gql`
+  mutation deleteTodo($id: ID!) {
+    todo: deleteTodo(where: { id: $id }) {
+      id
+    }
+  }
+`
+
+const doneTodo = gql`
+  mutation doneTodo($id: ID!) {
+    updateTodo(data: { done: true }, where: { id: "" }) {
+      id
+    }
+  }
+`
+
 const basicRequest = async (query, values) => {
   try {
     const response = await graphcmsClient.request(query, values)
@@ -65,3 +116,6 @@ const basicRequest = async (query, values) => {
 
 export const getTodosReq = (values) => basicRequest(getTodos, values)
 export const updateTodoReq = (values) => basicRequest(updateTodo, values)
+export const createTodoReq = (values) => basicRequest(createTodo, values)
+export const deleteTodoReq = (values) => basicRequest(deleteTodo, values)
+export const doneTodoReq = (values) => basicRequest(doneTodo, values)

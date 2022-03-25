@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import { AiOutlinePlayCircle } from 'react-icons/ai'
-import ReactTooltip from 'react-tooltip'
-import { updateTodoReq } from '../../apiCalls/todoCalls'
+import { AiOutlineCheckCircle } from 'react-icons/ai'
+import {
+  deleteTodoReq,
+  doneTodoReq,
+  updateTodoReq,
+} from '../../apiCalls/todoCalls'
 import { DEFAULT_COLOR } from '../../store/constants'
 import ColorDropdown from '../micro/ColorDropdown'
 import ModdableItem from '../micro/ModdableItem'
+import TodoRecorder from './TodoRecorder'
 
 const Item = ({ currentTodo, setTodos }) => {
   const [updating, setUpdating] = useState(false)
@@ -42,13 +46,40 @@ const Item = ({ currentTodo, setTodos }) => {
     setUpdating(false)
   }
 
+  const handleDelete = async () => {
+    await deleteTodoReq({ id: currentTodo.id })
+    setTodos((todos) =>
+      todos.filter((originTodo) => originTodo.id !== currentTodo.id)
+    )
+  }
+
+  const handleDone = async () => {
+    await doneTodoReq({ id: currentTodo.id })
+    setTodos((todos) =>
+      todos.map((originTodo) =>
+        originTodo.id === currentTodo.id
+          ? { ...currentTodo, done: !originTodo.done }
+          : originTodo
+      )
+    )
+  }
+
   return (
     <ModdableItem
       style={itemStyle}
       updating={updating}
       setUpdating={setUpdating}
+      handleDelete={handleDelete}
     >
       <>
+        <AiOutlineCheckCircle
+          onClick={handleDone}
+          className={`mr-2 cursor-pointer text-lg ${
+            currentTodo.done ? 'text-green-700' : 'text-gray-200'
+          }`}
+          style={{ transform: 'translateY(1px)' }}
+        />
+
         {updating ? (
           <ColorDropdown
             style={dropdownStyle}
@@ -90,16 +121,13 @@ const Item = ({ currentTodo, setTodos }) => {
               onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
             />
           ) : (
-            <p>{currentTodo.title}</p>
+            <p className={currentTodo.done ? 'text-gray-300 line-through' : ''}>
+              {currentTodo.title}
+            </p>
           )}
         </div>
 
-        {!updating && (
-          <div data-tip="시간 기록 시작" className="mr-3 cursor-pointer">
-            <ReactTooltip backgroundColor="#e5e5e54d" textColor="#404040" />
-            <AiOutlinePlayCircle className="text-xl text-gray-300 hover:text-red-600" />
-          </div>
-        )}
+        {!updating && <TodoRecorder todo={currentTodo} color={color} />}
       </>
     </ModdableItem>
   )

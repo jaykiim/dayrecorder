@@ -1,8 +1,11 @@
+import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
+import { createTodoReq } from '../../apiCalls/todoCalls'
 import ColorDropdown from '../micro/ColorDropdown'
 
-const NewTodo = () => {
-  const [color, setColor] = useState(null)
+const NewTodo = ({ datestamp, setTodos }) => {
+  const user = useSession().data.user
+  const [color, setColor] = useState(user.categories[0].userColors[0])
 
   const dropdownStyle = {
     container:
@@ -12,10 +15,20 @@ const NewTodo = () => {
     open: 'overflow-y-auto',
   }
 
-  const handleSubmit = (e) => {
-    const value = e.target.value
+  const handleSubmit = async (e) => {
+    const title = e.target.value
 
-    if (!value.replace(/\s+/g, '')) return
+    if (!title.replace(/\s+/g, '')) return
+
+    const { newTodo } = await createTodoReq({
+      title,
+      date: datestamp,
+      colorId: color.id,
+      email: user.email,
+    })
+
+    setTodos((todos) => [...todos, newTodo])
+    e.target.value = ''
   }
 
   return (

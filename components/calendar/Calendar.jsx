@@ -3,7 +3,7 @@ import Header from './Header'
 import Body from './Body'
 
 const Calendar = ({ date, setDate }) => {
-  const [toggle, setToggle] = useState(true)
+  const [toggle, setToggle] = useState(false)
 
   return (
     <div className="w-3/4 md:w-full">

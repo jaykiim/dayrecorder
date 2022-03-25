@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Calendar from '../components/calendar/Calendar'
+import Timer from '../components/timer/Timer'
 import Scheduler from '../components/scheduler/Scheduler'
 import SideTap from '../components/container/SideTap'
 import MainTap from '../components/container/MainTap'
@@ -18,6 +19,7 @@ const Home = () => {
 
       <SideTap>
         <Calendar date={date} setDate={setDate} />
+        <Timer />
       </SideTap>
 
       <MainTap>
