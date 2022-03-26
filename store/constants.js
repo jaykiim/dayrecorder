@@ -14,4 +14,3 @@ export const DEFAULT_COLOR = {
 }
 
 export const ONE_MINUTE_HEIGHT = 3
-export const TABLE_HEADER_HEIGHT = 64

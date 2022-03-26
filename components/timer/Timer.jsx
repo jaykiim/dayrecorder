@@ -11,7 +11,7 @@ import { useRecorder } from '../../hooks/useRecorder'
 
 const Timer = () => {
   // 열림/닫힘
-  const [timerOpen, setTimerOpen] = useState(true)
+  const [timerOpen, setTimerOpen] = useState(false)
 
   // 시간 옵션
   const options = [60, 90, 120, 150, 180]

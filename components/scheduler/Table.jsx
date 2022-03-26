@@ -2,18 +2,21 @@ import React from 'react'
 import { useRecoilStateLoadable, useRecoilValue } from 'recoil'
 import { minutehandPosition, recordsData } from '../../store/common'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
-import { dateFormatter, getTimeline } from './utils'
+import { getTimeline } from './utils'
+import { dateUtil } from '../../utils'
 import { useSession } from 'next-auth/react'
 import Record from './Record'
 import Minutehand from './Minutehand'
 
 // 현재 날짜의 레코드 데이터를 배열로 받아와서 map 돌며 Record 컴포넌트에 넘김
-const TableBody = ({ date }) => {
+const Table = ({ dateObject }) => {
   const email = useSession().data.user.email
   const timeline = getTimeline()
 
-  const { year, month, day } = date
-  const datestamp = dateFormatter(year, month, day)
+  const datestamp = dateUtil.dateConverter({
+    date: dateObject,
+    to: 'yyyy-mm-dd',
+  })
 
   const isTodayRecord = new Date().getDate() === Number(datestamp.split('-')[2])
   const minhandPos = useRecoilValue(minutehandPosition)
@@ -28,6 +31,7 @@ const TableBody = ({ date }) => {
 
       {timeline.map((time, i) => (
         <div
+          id={time}
           key={i}
           className="border-t border-l"
           style={{ height: ONE_MINUTE_HEIGHT * 30 }}
@@ -48,4 +52,4 @@ const TableBody = ({ date }) => {
   )
 }
 
-export default TableBody
+export default Table

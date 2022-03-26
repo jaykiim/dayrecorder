@@ -1,28 +1,18 @@
 import React, { useState } from 'react'
 import { useWindowSize } from 'react-use'
-import { useRecoilValue } from 'recoil'
-import { selectedDate } from '../../store/common'
 import { XLARGE } from '../../store/constants'
-import { dateObj, getSelectedWeekNo } from '../calendar/utils'
 import Title from '../micro/Title'
 import HeaderBtns from './HeaderBtns'
-import TableBody from './TableBody'
-import TableHeader from './TableHeader'
+import DateContainer from './DateContainer'
 import TimeLine from './TimeLine'
+import TableContainer from './TableContainer'
 
 const Scheduler = () => {
   // 브라우저 너비
   const { width } = useWindowSize()
 
-  // 주간 뷰
+  // 주간 뷰 (좁은 화면에서는 기본값 false)
   const [isWeek, setIsWeek] = useState(width < XLARGE ? false : true)
-
-  // 달력에서 클릭된 날짜
-  const clickedDate = useRecoilValue(selectedDate)
-  const { year, month, day } = dateObj(clickedDate)
-
-  // 달력에서 클릭된 날짜가 속한 주의 모든 날짜
-  const week = getSelectedWeekNo(year, month, day)
 
   return (
     <>
@@ -32,51 +22,11 @@ const Scheduler = () => {
         <HeaderBtns isWeek={isWeek} setIsWeek={setIsWeek} />
 
         <div className="mt-5">
-          {/* ===============================================================================================================================  
-            // GUIDE 날짜 
-          =============================================================================================================================== */}
-
-          <div className="mb-3 mr-2 flex">
-            <div style={{ width: 39.55 }} />
-            {isWeek ? (
-              week.map((day, i) => (
-                <TableHeader
-                  key={i}
-                  isWeek={isWeek}
-                  date={{ year, month, day }}
-                />
-              ))
-            ) : (
-              <TableHeader isWeek={isWeek} date={{ year, month, day }} />
-            )}
-          </div>
-
-          {/* ===============================================================================================================================  
-            // GUIDE 타임라인 - 테이블 
-          =============================================================================================================================== */}
+          <DateContainer isWeek={isWeek} />
 
           <div className="flex overflow-y-scroll " style={{ height: 712 }}>
-            <div className="pr-2">
-              <TimeLine />
-            </div>
-
-            {/* 테이블 */}
-            <div className="flex w-full">
-              {isWeek ? (
-                week.map((day, i) => (
-                  <div
-                    key={i}
-                    style={{ width: 'calc(100% / 7)', position: 'relative' }}
-                  >
-                    <TableBody key={i} date={{ year, month, day }} />
-                  </div>
-                ))
-              ) : (
-                <div className="relative w-full">
-                  <TableBody date={{ year, month, day }} />
-                </div>
-              )}
-            </div>
+            <TimeLine />
+            <TableContainer isWeek={isWeek} />
           </div>
         </div>
       </section>

@@ -10,7 +10,7 @@ const TimeLine = () => {
   const timeTagPos = useRecoilValue(minutehandPosition)
 
   return (
-    <div className="relative">
+    <div className="relative pr-4">
       <div
         className="absolute z-30 -translate-y-1/2 rounded-sm bg-carrot-light px-1 text-sm text-white"
         style={{ top: timeTagPos + 'px' }}

@@ -6,18 +6,16 @@ import { getTodosByCat } from './utils'
 import Title from '../micro/Title'
 import Item from './Item'
 import NewTodo from './NewTodo'
-import { getDateStamp } from '../scheduler/utils'
+import { dateUtil } from '../../utils'
 
 const Todo = () => {
   const email = useSession().data.user.email
   const date = useRecoilValue(selectedDate)
-  const datestamp = getDateStamp(date)
+  const datestamp = dateUtil.dateConverter({ date, to: 'yyyy-mm-dd' })
 
   const [todos, setTodos] = useRecoilStateLoadable(
     todosData({ email, firstday: datestamp, lastday: datestamp })
   )
-
-  console.log('todos', todos.contents)
 
   const todosByCat = todos.state === 'hasValue' && getTodosByCat(todos.contents)
 
