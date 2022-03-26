@@ -99,7 +99,7 @@ const deleteTodo = gql`
 
 const doneTodo = gql`
   mutation doneTodo($id: ID!) {
-    updateTodo(data: { done: true }, where: { id: "" }) {
+    updateTodo(data: { done: true }, where: { id: $id }) {
       id
     }
   }
