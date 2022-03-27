@@ -1,6 +1,6 @@
 import { useSetRecoilState } from 'recoil'
 import { currentTime } from '../store/common'
-import { getCurrentTime } from '../components/scheduler/utils'
+import { timeUtil } from '../utils'
 
 function useMinuteHand() {
   const setNow = useSetRecoilState(currentTime)
@@ -16,7 +16,7 @@ function useMinuteHand() {
     return timer
   }
 
-  return timeSetter(() => setNow(getCurrentTime()))
+  return timeSetter(() => setNow(timeUtil.getCurrentTime()))
 }
 
 export default useMinuteHand

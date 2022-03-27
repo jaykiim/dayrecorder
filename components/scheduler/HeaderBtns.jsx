@@ -7,7 +7,7 @@ import RecordCreateModal from './RecordCreateModal'
 import { useRecorder } from '../../hooks/useRecorder'
 import { useRecoilState } from 'recoil'
 import { selectedDate } from '../../store/common'
-import { getNextDate, getPrevDate } from './utils'
+import { dateUtil } from '../../utils'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {
@@ -27,8 +27,8 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const [clickedDate, setClickedDate] = useRecoilState(selectedDate)
 
   // 이전, 다음 날짜
-  const prevDate = getPrevDate(clickedDate)
-  const nextDate = getNextDate(clickedDate)
+  const prevDate = dateUtil.prevDatestamp(clickedDate)
+  const nextDate = dateUtil.nextDatestamp(clickedDate)
 
   return (
     <div className="flex items-center ">

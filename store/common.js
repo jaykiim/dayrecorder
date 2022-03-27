@@ -2,7 +2,7 @@ import { atom, atomFamily, selector, selectorFamily } from 'recoil'
 import { getRecordsBetweenReq, getRecordsReq } from '../apiCalls/recordCalls'
 import { getUserCategoryReq } from '../apiCalls/colorCalls'
 import { getTodosReq } from '../apiCalls/todoCalls'
-import { getCurrentTime, getMinutehandPos } from '../components/scheduler/utils'
+import { timeUtil } from '../utils'
 
 // 클릭된 날짜
 export const selectedDate = atom({
@@ -13,7 +13,7 @@ export const selectedDate = atom({
 // 현재 시각
 export const currentTime = atom({
   key: 'currentTime',
-  default: getCurrentTime(),
+  default: timeUtil.getCurrentTime(),
 })
 
 // 현재 시각이 변경됨에 따라 분침 위치를 리턴
@@ -21,7 +21,7 @@ export const minutehandPosition = selector({
   key: 'minuteHandPosition',
   get: ({ get }) => {
     const [hour, min] = get(currentTime).split(':')
-    return getMinutehandPos(hour, min)
+    return timeUtil.getMinutehandPos(hour, min)
   },
 })
 

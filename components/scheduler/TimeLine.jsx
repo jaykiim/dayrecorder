@@ -2,10 +2,10 @@ import React from 'react'
 import { useRecoilValue } from 'recoil'
 import { currentTime, minutehandPosition } from '../../store/common'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
-import { getTimeline } from '../scheduler/utils'
+import { timeUtil } from '../../utils'
 
 const TimeLine = () => {
-  const timeline = getTimeline()
+  const timeline = timeUtil.getTimeline()
   const time = useRecoilValue(currentTime)
   const timeTagPos = useRecoilValue(minutehandPosition)
 

@@ -23,17 +23,19 @@ export const dateConverter = ({ date, to }) => {
   else if (typeof date === 'object') {
     //
     // ? 일반 객체 (with String 일자) ---> 일반 객체
-    if (to === 'object') return dateObjectCorrection(date)
-
-    // ? 일반 객체 ---> Date 인스턴스
-    if (to === 'dateInstance') {
-      const { year, month, date } = dateObjectCorrection(date)
-      return new Date(`${year}-${month}-${date}`)
+    if (to === 'object') {
+      return dateObjectCorrection(date)
     }
 
     // ? 일반 객체 ---> yyyy-mm-dd
     if (to === 'yyyy-mm-dd') {
       return dateObjectToDatestamp(dateObjectCorrection(date))
+    }
+
+    // ? 일반 객체 ---> Date 인스턴스
+    if (to === 'dateInstance') {
+      const result = dateObjectCorrection(date)
+      return new Date(`${result.year}-${result.month}-${result.date}`)
     }
   }
 
@@ -203,4 +205,86 @@ export const daysOfSameWeek = ({
   return result
 }
 
-export default { WEEK_DAYS, dateConverter, daysOfMonth, daysOfSameWeek }
+/* 
+============================================================================================================ 
+  DO :: 전날 (인스턴스 ---> 날짜스탬프)
+============================================================================================================ 
+*/
+
+export const prevDatestamp = (dateInstance) => {
+  const { year, month, date } = dateConverter({
+    date: dateInstance,
+    to: 'object',
+  })
+
+  // 1일인 경우
+  if (date === 1) {
+    // 1월 1일인 경우
+    if (month === 1) {
+      return dateConverter({
+        date: { year: year - 1, month: 12, date: 31 },
+        to: 'dateInstance',
+      })
+    }
+
+    // 2 ~ 12월 1일인 경우
+    else {
+      const prevMonthDateInstance = dateConverter({
+        date: { year, month: month - 1, date },
+        to: 'dateInstance',
+      })
+
+      const [_, prevMonthLast] = daysOfMonth({
+        dateInstance: prevMonthDateInstance,
+        datestamp: true,
+        firstLast: true,
+        currentMonth: true,
+      })
+
+      // 이전달이 만약 10월이면 9월을 리턴해야하니까 8이므로 month - 2
+      return new Date(prevMonthLast) // 전월 마지막날
+    }
+  }
+
+  // 1일 아닌 경우
+  else return new Date(year, month - 1, date - 1)
+}
+
+/* 
+============================================================================================================ 
+  DO :: 다음날 (인스턴스 ---> 날짜스탬프)
+============================================================================================================ 
+*/
+
+export const nextDatestamp = (dateInstance) => {
+  const { year, month, date } = dateConverter({
+    date: dateInstance,
+    to: 'object',
+  })
+
+  const [_, lastday] = daysOfMonth({
+    dateInstance,
+    firstLast: true,
+    currentMonth: true,
+  })
+
+  // 마지막 날인 경우
+  if (date === lastday) {
+    // 12월 31일인 경우
+    if (month === 12) return new Date(year + 1, 0, 1)
+    // 1 ~ 11월 마지막 날인 경우 (만약 month = 2면 3월을 리턴해야하므로 new Date에 2를 줘야 함)
+    else return new Date(year, month, 1)
+  }
+
+  // 마지막 날이 아닌 경우
+  else return new Date(year, month - 1, date + 1)
+}
+
+export default {
+  WEEK_DAYS,
+  dateConverter,
+  daysOfMonth,
+  daysOfSameWeek,
+  prevDatestamp,
+  nextDatestamp,
+}

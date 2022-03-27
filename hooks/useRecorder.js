@@ -2,9 +2,8 @@ import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilStateLoadable } from 'recoil'
 import { createRecordReq } from '../apiCalls/recordCalls'
-import { getCurrentTime } from '../components/scheduler/utils'
 import { isRecording, recordsData } from '../store/common'
-import { dateUtil } from '../utils'
+import { dateUtil, timeUtil } from '../utils'
 
 export function useRecorder() {
   // 현재 레코딩 중인지 (전역 상태)
@@ -40,7 +39,7 @@ export function useRecorder() {
     window.localStorage.setItem(
       'recording',
       JSON.stringify({
-        start: getCurrentTime(),
+        start: timeUtil.getCurrentTime(),
         title,
         userColor,
         date: datestamp,
@@ -63,7 +62,7 @@ export function useRecorder() {
     if (!saved) return
 
     // 끝난 시간
-    const endTime = getCurrentTime()
+    const endTime = timeUtil.getCurrentTime()
 
     // 끝난 날짜
     const endDate = dateUtil.dateConverter({

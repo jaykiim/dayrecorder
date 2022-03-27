@@ -1,7 +1,7 @@
 import React from 'react'
 import { useMeasure } from 'react-use'
 import { useCanvas } from '../../hooks/useCanvas'
-import { Clock } from './lib'
+import { Clock } from '../../lib/timer'
 
 const TimerBody = ({ options, optionNum, min }) => {
   const [ref, { width }] = useMeasure()

@@ -3,9 +3,9 @@ import {
   deleteUserColorReq,
   updateUserColorReq,
 } from '../../apiCalls/colorCalls'
+import { validate } from '../../utils'
 import Form from '../micro/Form'
 import ModdableItem from '../micro/ModdableItem'
-import { getColorValidate } from './utils'
 
 const ColorListItem = ({
   colorInfo,
@@ -77,7 +77,7 @@ const ColorListItem = ({
             }}
             style="flex-1 mr-8 relative text-sm"
             handleSubmit={handleSubmit}
-            validate={getColorValidate('updateHex', 'updateTag')}
+            validate={validate.color('updateHex', 'updateTag')}
           >
             {({ values, handleChange, errors, handleSubmit }) => (
               <>

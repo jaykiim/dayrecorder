@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import * as Yup from 'yup'
+import { useSession } from 'next-auth/react'
+import { validate } from '../../utils'
 import Form from '../micro/Form'
 import TextInput from '../micro/TextInput'
 import ColorDropdown from '../micro/ColorDropdown'
 import useRecordEditor from '../../hooks/useRecordEditor'
-import { useSession } from 'next-auth/react'
 
 const EditorForm = ({ recordData, setModal }) => {
   const email = useSession().data.user.email
@@ -48,26 +48,11 @@ const EditorForm = ({ recordData, setModal }) => {
     open: 'overflow-y-auto',
   }
 
-  const validate = Yup.object({
-    start: Yup.string()
-      .matches(
-        /^(0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9])$/g,
-        '시간을 xx:xx 형식으로 입력해주세요'
-      )
-      .required('시작 시각을 입력해주세요'),
-    end: Yup.string()
-      .required('종료 시각을 입력해주세요')
-      .matches(
-        /^(0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9])$/g,
-        '시간을 xx:xx 형식으로 입력해주세요'
-      ),
-  })
-
   return (
     <>
       <Form
         values={{ title, start, end, memo }}
-        validate={validate}
+        validate={validate.record}
         cssStyle={{ height: '435px' }}
         handleSubmit={(values, { errors, setErrors }) =>
           handleUpdateRecord({

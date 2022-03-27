@@ -1,5 +1,5 @@
 import { DEFAULT_COLOR } from '../../store/constants'
-import { convertToMin } from '../scheduler/utils'
+import { timeUtil } from '../../utils'
 
 export const getRecordsByCat = (records) => {
   const sortByCat = records.reduce((acc, record) => {
@@ -15,7 +15,8 @@ export const getRecordsByCat = (records) => {
 
   const data = Object.keys(sortByCat).map((categoryName) => {
     const curCatRecords = sortByCat[categoryName].reduce((acc, record) => {
-      const time = convertToMin(record.end) - convertToMin(record.start)
+      const time =
+        timeUtil.convertToMin(record.end) - timeUtil.convertToMin(record.start)
       const tag = record.userColor?.tag || DEFAULT_COLOR.tag
 
       return {

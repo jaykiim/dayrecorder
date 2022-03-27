@@ -2,8 +2,7 @@ import React from 'react'
 import { useRecoilStateLoadable, useRecoilValue } from 'recoil'
 import { minutehandPosition, recordsData } from '../../store/common'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
-import { getTimeline } from './utils'
-import { dateUtil } from '../../utils'
+import { dateUtil, timeUtil } from '../../utils'
 import { useSession } from 'next-auth/react'
 import Record from './Record'
 import Minutehand from './Minutehand'
@@ -11,7 +10,7 @@ import Minutehand from './Minutehand'
 // 현재 날짜의 레코드 데이터를 배열로 받아와서 map 돌며 Record 컴포넌트에 넘김
 const Table = ({ dateObject }) => {
   const email = useSession().data.user.email
-  const timeline = getTimeline()
+  const timeline = timeUtil.getTimeline()
 
   const datestamp = dateUtil.dateConverter({
     date: dateObject,

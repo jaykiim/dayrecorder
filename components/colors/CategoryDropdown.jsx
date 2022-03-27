@@ -2,11 +2,11 @@ import React from 'react'
 import { useRecoilState } from 'recoil'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { currentCategoryId } from '../../store/common'
-import { getCategoryNameValidate } from './utils'
+import { createUserCategoryReq } from '../../apiCalls/colorCalls'
+import { validate } from '../../utils'
 import Dropdown from '../micro/Dropdown'
 import CategoryListItem from './CategoryListItem'
 import CategoryForm from './CategoryForm'
-import { createUserCategoryReq } from '../../apiCalls/colorCalls'
 
 const style = {
   container: 'rounded-md border border-green-900 text-green-900 mb-4',
@@ -18,7 +18,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
   const [selectedCategoryId, setSelectedCategoryId] =
     useRecoilState(currentCategoryId)
 
-  const validate = getCategoryNameValidate(categories)
+  const categoryNameValidate = validate.categoryName(categories)
 
   const getPreviewName = () => {
     const currentCategory = categories.find(
@@ -58,7 +58,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
               setCategories={setCategories}
               selectedCategoryId={selectedCategoryId}
               setSelectedCategoryId={setSelectedCategoryId}
-              validate={validate}
+              validate={categoryNameValidate}
             />
           ))}
         </div>
@@ -69,7 +69,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
           <CategoryForm
             style="w-full"
             placeholder="새 카테고리명 입력 후 Enter"
-            validate={validate}
+            validate={categoryNameValidate}
             handleSubmit={handleSubmit}
             defaultValue=""
           />

@@ -1,5 +1,5 @@
 import { deleteRecordReq, updateRecordReq } from '../apiCalls/recordCalls'
-import { convertToMin } from '../components/scheduler/utils'
+import { timeUtil } from '../utils'
 
 const useRecordEditor = (recordId, records, setRecords, setModal, email) => {
   const handleRecordDelete = async () => {
@@ -28,7 +28,7 @@ const useRecordEditor = (recordId, records, setRecords, setModal, email) => {
     }
 
     // 시작 시간보다 끝난 시간이 빠른 경우
-    if (convertToMin(start) - convertToMin(end) > 0) {
+    if (timeUtil.convertToMin(start) - timeUtil.convertToMin(end) > 0) {
       setErrors({ ...errors, start: '시작 시간이 종료 시간보다 빠릅니다' })
       return
     }
