@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
-import { createTodoReq } from '../../apiCalls/todoCalls'
+import { todoCalls } from '../../apiCalls'
 import ColorDropdown from '../micro/ColorDropdown'
 
 const NewTodo = ({ datestamp, setTodos }) => {
@@ -20,7 +20,7 @@ const NewTodo = ({ datestamp, setTodos }) => {
 
     if (!title.replace(/\s+/g, '')) return
 
-    const { newTodo } = await createTodoReq({
+    const { newTodo } = await todoCalls.createTodoReq({
       title,
       date: datestamp,
       colorId: color.id,

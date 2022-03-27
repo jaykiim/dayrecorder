@@ -1,9 +1,9 @@
 import React from 'react'
+import { useSession } from 'next-auth/react'
 import { useRecoilStateLoadable, useRecoilValue } from 'recoil'
 import { minutehandPosition, recordsData } from '../../store/common'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
 import { dateUtil, timeUtil } from '../../utils'
-import { useSession } from 'next-auth/react'
 import Record from './Record'
 import Minutehand from './Minutehand'
 

@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { graphcmsClient } from '../lib/graphcms'
+import { basicRequest } from './index'
 
 const getTodos = gql`
   query getTodos($email: String!, $firstday: Date!, $lastday: Date!) {
@@ -105,17 +105,16 @@ const doneTodo = gql`
   }
 `
 
-const basicRequest = async (query, values) => {
-  try {
-    const response = await graphcmsClient.request(query, values)
-    return response
-  } catch (err) {
-    console.log(err)
-  }
-}
+const getTodosReq = (values) => basicRequest(getTodos, values)
+const updateTodoReq = (values) => basicRequest(updateTodo, values)
+const createTodoReq = (values) => basicRequest(createTodo, values)
+const deleteTodoReq = (values) => basicRequest(deleteTodo, values)
+const doneTodoReq = (values) => basicRequest(doneTodo, values)
 
-export const getTodosReq = (values) => basicRequest(getTodos, values)
-export const updateTodoReq = (values) => basicRequest(updateTodo, values)
-export const createTodoReq = (values) => basicRequest(createTodo, values)
-export const deleteTodoReq = (values) => basicRequest(deleteTodo, values)
-export const doneTodoReq = (values) => basicRequest(doneTodo, values)
+export default {
+  getTodosReq,
+  updateTodoReq,
+  createTodoReq,
+  deleteTodoReq,
+  doneTodoReq,
+}

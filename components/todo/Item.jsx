@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import { AiOutlineCheckCircle } from 'react-icons/ai'
-import {
-  deleteTodoReq,
-  doneTodoReq,
-  updateTodoReq,
-} from '../../apiCalls/todoCalls'
+import { todoCalls } from '../../apiCalls'
 import { DEFAULT_COLOR } from '../../store/constants'
 import ColorDropdown from '../micro/ColorDropdown'
 import ModdableItem from '../micro/ModdableItem'
@@ -31,7 +27,7 @@ const Item = ({ currentTodo, setTodos }) => {
 
     if (!value.replace(/\s+/g, '')) return
 
-    const { updatedTodo } = await updateTodoReq({
+    const { updatedTodo } = await todoCalls.updateTodoReq({
       title: value,
       colorId: color.id,
       todoId: currentTodo.id,
@@ -47,14 +43,14 @@ const Item = ({ currentTodo, setTodos }) => {
   }
 
   const handleDelete = async () => {
-    await deleteTodoReq({ id: currentTodo.id })
+    await todoCalls.deleteTodoReq({ id: currentTodo.id })
     setTodos((todos) =>
       todos.filter((originTodo) => originTodo.id !== currentTodo.id)
     )
   }
 
   const handleDone = async () => {
-    await doneTodoReq({ id: currentTodo.id })
+    await todoCalls.doneTodoReq({ id: currentTodo.id })
     setTodos((todos) =>
       todos.map((originTodo) =>
         originTodo.id === currentTodo.id

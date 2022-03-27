@@ -1,7 +1,7 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
 import { getRecordsBetweenReq, getRecordsReq } from '../apiCalls/recordCalls'
 import { getUserCategoryReq } from '../apiCalls/colorCalls'
-import { getTodosReq } from '../apiCalls/todoCalls'
+import { todoCalls } from '../apiCalls'
 import { timeUtil } from '../utils'
 
 // 클릭된 날짜
@@ -59,7 +59,7 @@ export const recordsBetween = atomFamily({
 export const todosData = atomFamily({
   key: 'todosData',
   default: async (values) => {
-    const { todos } = await getTodosReq(values)
+    const { todos } = await todoCalls.getTodosReq(values)
     return todos
   },
 })
