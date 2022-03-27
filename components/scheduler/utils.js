@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 import { dateObj, getMonthlyDate } from '../calendar/utils'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
+import { dateUtil } from '../../utils'
 
 /* 
 ============================================================================================================ 
@@ -19,17 +20,6 @@ export const dateFormatter = (year, month, day) => {
   if (Number(day) < 10) day = '0' + day
 
   return `${year}-${month}-${day}`
-}
-
-/* 
-============================================================================================================ 
-  DO :: 날짜 스탬프 생성
-============================================================================================================ 
-*/
-
-export const getDateStamp = (date) => {
-  const { year, month, day } = dateObj(date)
-  return dateFormatter(year, month, day)
 }
 
 /* 
@@ -96,13 +86,23 @@ export const recordValidate = Yup.object({
 ============================================================================================================ 
 */
 
-export const getPrevDate = (date) => {
-  const { year, month, day } = dateObj(date)
+export const getPrevDate = (dateInstance) => {
+  const { year, month, date } = dateUtil.dateConverter({
+    date: dateInstance,
+    to: 'object',
+  })
 
   // 1일인 경우
-  if (day === 1) {
+  if (date === 1) {
     // 1월 1일인 경우
     if (month === 1) {
+      // const x = dateUtil.dateConverter({
+      //   date: { year: 2021, month: 12, date: 1 },
+      //   to: 'dateInstance',
+      // })
+
+      // console.log(x)
+
       const lastYearLastMonth = getMonthlyDate(year - 1, 12).filter(
         (date) => typeof date === 'number'
       )
@@ -127,7 +127,7 @@ export const getPrevDate = (date) => {
   }
 
   // 1일 아닌 경우
-  else return new Date(year, month - 1, day - 1)
+  else return new Date(year, month - 1, date - 1)
 }
 
 /* 
@@ -136,8 +136,8 @@ export const getPrevDate = (date) => {
 ============================================================================================================ 
 */
 
-export const getNextDate = (date) => {
-  const { year, month, day } = dateObj(date)
+export const getNextDate = (dateInstance) => {
+  const { year, month, day } = dateObj(dateInstance)
   const lastday = getMonthlyDate(year, month).filter(
     (date) => typeof date === 'number'
   )

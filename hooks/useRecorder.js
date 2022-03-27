@@ -2,9 +2,9 @@ import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilStateLoadable } from 'recoil'
 import { createRecordReq } from '../apiCalls/recordCalls'
-import { dateObj } from '../components/calendar/utils'
-import { dateFormatter, getCurrentTime } from '../components/scheduler/utils'
+import { getCurrentTime } from '../components/scheduler/utils'
 import { isRecording, recordsData } from '../store/common'
+import { dateUtil } from '../utils'
 
 export function useRecorder() {
   // 현재 레코딩 중인지 (전역 상태)
@@ -18,8 +18,10 @@ export function useRecorder() {
   const user = useSession().data.user
 
   // 오늘 날짜의 레코드 데이터 상태를 가져오기 위해서 datestamp를 구한다
-  const { year, month, day } = dateObj(new Date())
-  const datestamp = dateFormatter(year, month, day)
+  const datestamp = dateUtil.dateConverter({
+    date: new Date(),
+    to: 'yyyy-mm-dd',
+  })
 
   // 레코드 데이터 상태
   const [records, setRecords] = useRecoilStateLoadable(
@@ -64,8 +66,10 @@ export function useRecorder() {
     const endTime = getCurrentTime()
 
     // 끝난 날짜
-    const { year, month, day } = dateObj(new Date())
-    const endDate = dateFormatter(year, month, day)
+    const endDate = dateUtil.dateConverter({
+      date: new Date(),
+      to: 'yyyy-mm-dd',
+    })
 
     // 레코드 객체 생성기
     const createRecordData = ({ date, start, end }) => ({

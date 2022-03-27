@@ -4,12 +4,8 @@ import Timer from '../components/timer/Timer'
 import Scheduler from '../components/scheduler/Scheduler'
 import SideTap from '../components/container/SideTap'
 import MainTap from '../components/container/MainTap'
-import { useRecoilState } from 'recoil'
-import { selectedDate } from '../store/common'
 
 const Home = () => {
-  const [date, setDate] = useRecoilState(selectedDate)
-
   return (
     <>
       <Head>
@@ -18,7 +14,7 @@ const Home = () => {
       </Head>
 
       <SideTap>
-        <Calendar date={date} setDate={setDate} />
+        <Calendar />
         <Timer />
       </SideTap>
 

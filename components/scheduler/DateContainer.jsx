@@ -7,7 +7,7 @@ import Date from './Date'
 const DateContainer = ({ isWeek }) => {
   const date = useRecoilValue(selectedDate)
   const dateObject = dateUtil.dateConverter({ date, to: 'object' })
-  const week = dateUtil.daysOfSameWeek(date)
+  const week = dateUtil.daysOfSameWeek({ dateInstance: date })
 
   return (
     <div className="mb-3 mr-2 flex">

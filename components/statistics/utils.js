@@ -1,40 +1,5 @@
 import { DEFAULT_COLOR } from '../../store/constants'
-import {
-  dateObj,
-  getDateStamp,
-  getMonthlyDate,
-  getSelectedWeekNo,
-} from '../calendar/utils'
 import { convertToMin } from '../scheduler/utils'
-
-export const getDatestampFromDate = (date) => {
-  const { year, month, day } = dateObj(date)
-  return getDateStamp(year, month, day)
-}
-
-export const getWeekdaysFromDate = (date) => {
-  const { year, month, day } = dateObj(date)
-  const weekdays = getSelectedWeekNo(year, month, day).filter(
-    (date) => typeof date === 'number'
-  )
-
-  return [
-    getDateStamp(year, month, weekdays[0]),
-    getDateStamp(year, month, weekdays[weekdays.length - 1]),
-  ]
-}
-
-export const getMonthFirstLast = (date) => {
-  const { year, month } = dateObj(date)
-  const monthdays = getMonthlyDate(year, month).filter(
-    (date) => typeof date === 'number'
-  )
-
-  return [
-    getDateStamp(year, month, 1),
-    getDateStamp(year, month, monthdays[monthdays.length - 1]),
-  ]
-}
 
 export const getRecordsByCat = (records) => {
   const sortByCat = records.reduce((acc, record) => {

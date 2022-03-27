@@ -63,66 +63,6 @@ const getMonthlyDate = (year, month) => {
   return days
 }
 
-const getSelectedWeekNo = (year, month, date) => {
-  const allDates = getMonthlyDate(year, month)
-  const allWeeks = []
-  for (let i = 0; i < 6; i++) {
-    allWeeks.push(allDates.splice(0, 7))
-  }
-  let num = -1
-  allWeeks.find((week, i) => {
-    num = i
-    return week.includes(date)
-  })
-  return allWeeks[num]
-}
-
-const getSelectedWeek = (year, month, weekNo) => {
-  const allDates = getMonthlyDate(year, month)
-  const allWeeks = []
-  for (let i = 0; i < 6; i++) {
-    allWeeks.push(allDates.splice(0, 7))
-  }
-
-  const selectedWeek = allWeeks[weekNo - 1].map((date) => {
-    let _year = year
-    let _month = month
-    let _date = date
-
-    if (typeof _date === 'string') {
-      // 이전달인 경우
-      if (_date.length >= 3) {
-        // _date = parseInt(_date);
-
-        if (_month === 1) {
-          _month = 12
-          _year -= 1
-        } else _month -= 1
-      }
-
-      // 다음달인 경우
-      else {
-        // _date = parseInt(_date);
-
-        if (_month === 12) {
-          _month = 1
-          _year += 1
-        } else _month += 1
-      }
-    }
-
-    return { year: _year, month: _month, date: _date }
-  })
-
-  return selectedWeek
-}
-
-const getDateStamp = (year, month, date) => {
-  if (month < 10) month = '0' + month
-  if (date < 10) date = '0' + date
-  return `${year}-${month}-${date}`
-}
-
 const getDay = (year, month, date) => {
   return WEEK_DAYS[new Date(getDateStamp(year, month, date)).getDay()]
 }
@@ -133,8 +73,5 @@ export {
   WEEK_DAYS_KO,
   WEEK_DAYS_EN,
   MONTH_NAMES,
-  getDateStamp,
   getDay,
-  getSelectedWeek,
-  getSelectedWeekNo,
 }

@@ -4,13 +4,7 @@ import { useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import { recordsBetween, recordsData, selectedDate } from '../../store/common'
 import { dateUtil } from '../../utils'
 import BarChart from './BarChart'
-import {
-  getColors,
-  getMonthFirstLast,
-  getRecordsByCat,
-  getTags,
-  getWeekdaysFromDate,
-} from './utils'
+import { getColors, getRecordsByCat, getTags } from './utils'
 
 const CategoryCharts = ({ selectedFilter }) => {
   const email = useSession().data.user.email
@@ -18,10 +12,19 @@ const CategoryCharts = ({ selectedFilter }) => {
   const date = useRecoilValue(selectedDate)
   const datestamp = dateUtil.dateConverter({ date, to: 'yyyy-mm-dd' })
 
-  const [weekFirst, weekLast] = getWeekdaysFromDate(date)
-  const [monthFirst, monthLast] = getMonthFirstLast(date)
+  const [weekFirst, weekLast] = dateUtil.daysOfSameWeek({
+    dateInstance: date,
+    currentMonth: true,
+    datestamp: true,
+    firstLast: true,
+  })
 
-  console.log(monthFirst, monthLast)
+  const [monthFirst, monthLast] = dateUtil.daysOfMonth({
+    dateInstance: date,
+    currentMonth: true,
+    firstLast: true,
+    datestamp: true,
+  })
 
   const records =
     selectedFilter === 0
