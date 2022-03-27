@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilStateLoadable } from 'recoil'
-import { createRecordReq } from '../apiCalls/recordCalls'
+import { recordCalls } from '../apiCalls'
 import { isRecording, recordsData } from '../store/common'
 import { dateUtil, timeUtil } from '../utils'
 
@@ -106,8 +106,12 @@ export function useRecorder() {
       })
 
       // DB에 저장하고나서 응답으로 오는 데이터에 id가 포함되어 있으므로, 응답을 받고 난 다음에 setRecords를 해줘야한다
-      const record1Res = await createRecordReq(record1)
-      const record2Res = await createRecordReq(record2)
+      const { createdRecord: record1Res } = await recordCalls.createRecordReq(
+        record1
+      )
+      const { createdRecord: record2Res } = await recordCalls.createRecordReq(
+        record2
+      )
 
       setRecords((records) => [...records, record1Res, record2Res])
     }
@@ -119,9 +123,10 @@ export function useRecorder() {
         start: saved.start,
         end: endTime,
       })
-      console.log('newRecord', newRecord)
-      const record = await createRecordReq(newRecord)
-      setRecords((records) => [...records, record])
+
+      const { createdRecord } = await recordCalls.createRecordReq(newRecord)
+
+      setRecords((records) => [...records, createdRecord])
     }
 
     // 로컬 스토리지 지우기

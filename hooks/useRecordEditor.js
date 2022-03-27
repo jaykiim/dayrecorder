@@ -1,9 +1,9 @@
-import { deleteRecordReq, updateRecordReq } from '../apiCalls/recordCalls'
+import { recordCalls } from '../apiCalls'
 import { timeUtil } from '../utils'
 
 const useRecordEditor = (recordId, records, setRecords, setModal, email) => {
   const handleRecordDelete = async () => {
-    await deleteRecordReq(recordId)
+    await recordCalls.deleteRecordReq({ id: recordId })
 
     const updatedRecords = records.filter((record) => record.id !== recordId)
 
@@ -45,7 +45,7 @@ const useRecordEditor = (recordId, records, setRecords, setModal, email) => {
       recordId,
     }
 
-    const updatedRecord = await updateRecordReq(request)
+    const { updatedRecord } = await recordCalls.updateRecordReq(request)
 
     const updatedRecords = records.map((record) => {
       if (record.id === recordId) return updatedRecord

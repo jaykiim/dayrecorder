@@ -1,7 +1,6 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
-import { getRecordsBetweenReq, getRecordsReq } from '../apiCalls/recordCalls'
+import { todoCalls, recordCalls } from '../apiCalls'
 import { getUserCategoryReq } from '../apiCalls/colorCalls'
-import { todoCalls } from '../apiCalls'
 import { timeUtil } from '../utils'
 
 // 클릭된 날짜
@@ -40,8 +39,8 @@ export const isTimerOn = atom({
 // 레코드 (일간)
 export const recordsData = atomFamily({
   key: 'recordsData',
-  default: async ({ datestamp, email }) => {
-    const records = await getRecordsReq(datestamp, email)
+  default: async ({ datestamp: date, email }) => {
+    const { records } = await recordCalls.getRecordsReq({ date, email })
     return records
   },
 })
@@ -49,8 +48,8 @@ export const recordsData = atomFamily({
 // 레코드 (주간, 월간)
 export const recordsBetween = atomFamily({
   key: 'recordsBetween',
-  default: async ({ email, firstday, lastday }) => {
-    const records = await getRecordsBetweenReq(email, firstday, lastday)
+  default: async (values) => {
+    const { records } = await recordCalls.getRecordsBetweenReq(values)
     return records
   },
 })

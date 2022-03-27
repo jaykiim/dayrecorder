@@ -1,8 +1,3 @@
-export { default as authCalls } from './authCalls'
-export { default as colorCalls } from './colorCalls'
-export { default as recordCalls } from './recordCalls'
-export { default as todoCalls } from './todoCalls'
-
 import { graphcmsClient } from '../lib/graphcms'
 export const basicRequest = async (query, values) => {
   try {
@@ -12,3 +7,8 @@ export const basicRequest = async (query, values) => {
     console.log(err)
   }
 }
+
+export { default as authCalls } from './authCalls'
+export { default as colorCalls } from './colorCalls'
+export { default as recordCalls } from './recordCalls'
+export { default as todoCalls } from './todoCalls'
