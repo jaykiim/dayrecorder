@@ -1,14 +1,12 @@
 import React from 'react'
 import { useRecoilValue } from 'recoil'
-import { createUserColorReq } from '../../apiCalls/colorCalls'
+import { colorCalls } from '../../apiCalls'
 import { currentCategoryId } from '../../store/common'
 import { validate } from '../../utils'
 import Form from '../micro/Form'
 import ColorPicker from './ColorPicker'
 
 const ColorForm = ({ email, categories, setCategories }) => {
-  console.log('ColorForm')
-
   const selectedCategoryId =
     useRecoilValue(currentCategoryId) || categories[1].id
 
@@ -22,7 +20,7 @@ const ColorForm = ({ email, categories, setCategories }) => {
 
     if (!tag.replace(/\s+/g, '')) return
 
-    const updatedCategory = await createUserColorReq({
+    const { createdUserColor } = await colorCalls.createUserColorReq({
       hex,
       tag,
       email,
@@ -30,7 +28,7 @@ const ColorForm = ({ email, categories, setCategories }) => {
     })
 
     const newCategories = categories.map((item) =>
-      item.id === selectedCategoryId ? updatedCategory.userCategory : item
+      item.id === selectedCategoryId ? createdUserColor.userCategory : item
     )
 
     setCategories(newCategories)

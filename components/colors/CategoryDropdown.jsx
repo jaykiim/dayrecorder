@@ -2,7 +2,7 @@ import React from 'react'
 import { useRecoilState } from 'recoil'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { currentCategoryId } from '../../store/common'
-import { createUserCategoryReq } from '../../apiCalls/colorCalls'
+import { colorCalls } from '../../apiCalls'
 import { validate } from '../../utils'
 import Dropdown from '../micro/Dropdown'
 import CategoryListItem from './CategoryListItem'
@@ -14,7 +14,6 @@ const style = {
 }
 
 const CategoryDropdown = ({ email, categories, setCategories }) => {
-  console.log('CategoryDropdown')
   const [selectedCategoryId, setSelectedCategoryId] =
     useRecoilState(currentCategoryId)
 
@@ -28,8 +27,11 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
   }
 
   const handleSubmit = async (values, { setValues }) => {
-    const newCategory = await createUserCategoryReq(values.categoryName, email)
-    setCategories((categories) => [...categories, newCategory])
+    const { createdCategory } = await colorCalls.createUserCategoryReq({
+      categoryName: values.categoryName,
+      email,
+    })
+    setCategories((categories) => [...categories, createdCategory])
     setValues({ categoryName: '' })
   }
 

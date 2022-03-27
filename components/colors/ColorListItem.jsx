@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import {
-  deleteUserColorReq,
-  updateUserColorReq,
-} from '../../apiCalls/colorCalls'
+import { colorCalls } from '../../apiCalls'
 import { validate } from '../../utils'
 import Form from '../micro/Form'
 import ModdableItem from '../micro/ModdableItem'
@@ -25,14 +22,14 @@ const ColorListItem = ({
 
     if (!hex.replace(/\s+/g, '') || !tag.replace(/\s+/g, '')) return
 
-    const { userCategory } = await updateUserColorReq({
+    const { updatedUserColor } = await colorCalls.updateUserColorReq({
       hex,
       tag,
       id: colorInfo.id,
     })
 
     const newCategories = categories.map((item) =>
-      item.id === selectedCategoryId ? userCategory : item
+      item.id === selectedCategoryId ? updatedUserColor.userCategory : item
     )
 
     setCategories(newCategories)
@@ -40,7 +37,7 @@ const ColorListItem = ({
   }
 
   const handleDelete = async () => {
-    await deleteUserColorReq(colorInfo.id)
+    await colorCalls.deleteUserColorReq({ id: colorInfo.id })
     const newCategories = categories.map((category) =>
       category.id === selectedCategoryId
         ? {

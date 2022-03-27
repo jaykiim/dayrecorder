@@ -8,8 +8,6 @@ import ColorForm from './ColorForm'
 import ColorList from './ColorList'
 
 const Colors = () => {
-  console.log('Colors')
-
   const email = useSession().data.user.email
   const [categories, setCategories] = useRecoilStateLoadable(
     categoriesData(email)

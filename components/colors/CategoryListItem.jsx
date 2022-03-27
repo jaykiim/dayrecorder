@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
-import {
-  deleteManyUserColorReq,
-  deleteUserCategoryReq,
-  updateUserCategoryNameReq,
-} from '../../apiCalls/colorCalls'
+import { colorCalls } from '../../apiCalls'
 import ModdableItem from '../micro/ModdableItem'
 import CategoryForm from './CategoryForm'
 
@@ -18,10 +14,10 @@ const CategoryListItem = ({
   const [updating, setUpdating] = useState(false)
 
   const handleUpdate = async (values) => {
-    const updatedCategory = await updateUserCategoryNameReq(
-      values.categoryName,
-      category.id
-    )
+    const { updatedCategory } = await colorCalls.updateUserCategoryNameReq({
+      categoryName: values.categoryName,
+      id: category.id,
+    })
 
     const newCategories = categories.map((item) =>
       item.id === category.id ? updatedCategory : item
@@ -32,8 +28,8 @@ const CategoryListItem = ({
   }
 
   const handleDelete = async () => {
-    await deleteManyUserColorReq(category.id) // 카테고리 내 컬러 삭제
-    await deleteUserCategoryReq(category.id)
+    await colorCalls.deleteManyUserColorReq({ id: category.id }) // 카테고리 내 컬러 삭제
+    await colorCalls.deleteUserCategoryReq({ id: category.id })
 
     const newCategories = categories.filter((item) => item.id !== category.id)
 

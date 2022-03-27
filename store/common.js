@@ -1,6 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
-import { todoCalls, recordCalls } from '../apiCalls'
-import { getUserCategoryReq } from '../apiCalls/colorCalls'
+import { todoCalls, recordCalls, colorCalls } from '../apiCalls'
 import { timeUtil } from '../utils'
 
 // 클릭된 날짜
@@ -67,7 +66,7 @@ export const todosData = atomFamily({
 export const categoriesData = atomFamily({
   key: 'categoriesData',
   default: async (email) => {
-    const categories = await getUserCategoryReq(email)
+    const { categories } = await colorCalls.getUserCategoryReq({ email })
     return categories
   },
 })

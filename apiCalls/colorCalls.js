@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { graphcmsClient } from '../lib/graphcms'
+import { basicRequest } from './index'
 
 export const getAllCategories = gql`
   query getAllCategories($email: String!) {
@@ -23,20 +23,9 @@ export const getAllCategories = gql`
   }
 `
 
-export const getAllCategoriesReq = async (email) => {
-  try {
-    const { userCategories } = await graphcmsClient.request(getAllCategories, {
-      email,
-    })
-    return userCategories
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const getUserCategory = gql`
   query getUserCategory($email: String!) {
-    userCategories(where: { dayrecorderUser: { email: $email } }) {
+    categories: userCategories(where: { dayrecorderUser: { email: $email } }) {
       categoryName
       id
       userColors {
@@ -50,19 +39,8 @@ export const getUserCategory = gql`
   }
 `
 
-export const getUserCategoryReq = async (email) => {
-  try {
-    const { userCategories } = await graphcmsClient.request(getUserCategory, {
-      email,
-    })
-    return userCategories
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const CreateUserCategory = gql`
-  mutation CreateUserCategory($categoryName: String!, $email: String!) {
+export const createUserCategory = gql`
+  mutation createUserCategory($categoryName: String!, $email: String!) {
     createdCategory: createUserCategory(
       data: {
         categoryName: $categoryName
@@ -82,21 +60,9 @@ export const CreateUserCategory = gql`
   }
 `
 
-export const createUserCategoryReq = async (categoryName, email) => {
-  try {
-    const { createdCategory } = await graphcmsClient.request(
-      CreateUserCategory,
-      { categoryName, email }
-    )
-    return createdCategory
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const updateUserCategoryName = gql`
   mutation updateUserCategoryName($categoryName: String!, $id: ID!) {
-    updatedUserCategory: updateUserCategory(
+    updatedCategory: updateUserCategory(
       data: { categoryName: $categoryName }
       where: { id: $id }
     ) {
@@ -113,18 +79,6 @@ export const updateUserCategoryName = gql`
   }
 `
 
-export const updateUserCategoryNameReq = async (categoryName, id) => {
-  try {
-    const { updatedUserCategory } = await graphcmsClient.request(
-      updateUserCategoryName,
-      { categoryName, id }
-    )
-    return updatedUserCategory
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const deleteUserCategory = gql`
   mutation deleteUserCategory($id: ID!) {
     deleteUserCategory(where: { id: $id }) {
@@ -134,14 +88,6 @@ export const deleteUserCategory = gql`
   }
 `
 
-export const deleteUserCategoryReq = async (id) => {
-  try {
-    await graphcmsClient.request(deleteUserCategory, { id })
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const createUserColor = gql`
   mutation createUserColor(
     $hex: Hex!
@@ -149,7 +95,7 @@ export const createUserColor = gql`
     $email: String!
     $categoryId: ID!
   ) {
-    updatedCategory: createUserColor(
+    createdUserColor: createUserColor(
       data: {
         color: { hex: $hex }
         tag: $tag
@@ -172,22 +118,9 @@ export const createUserColor = gql`
   }
 `
 
-export const createUserColorReq = async (values) => {
-  try {
-    const { updatedCategory } = await graphcmsClient.request(
-      createUserColor,
-      values
-    )
-
-    return updatedCategory
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const updateUserColor = gql`
   mutation updateUserColor($hex: Hex!, $tag: String!, $id: ID!) {
-    updatedCategory: updateUserColor(
+    updatedUserColor: updateUserColor(
       data: { color: { hex: $hex }, tag: $tag }
       where: { id: $id }
     ) {
@@ -206,21 +139,9 @@ export const updateUserColor = gql`
   }
 `
 
-export const updateUserColorReq = async (values) => {
-  try {
-    const { updatedCategory } = await graphcmsClient.request(
-      updateUserColor,
-      values
-    )
-    return updatedCategory
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const deleteUserColor = gql`
   mutation deleteUserColor($id: ID!) {
-    updatedCategory: deleteUserColor(where: { id: $id }) {
+    deleteUserColor(where: { id: $id }) {
       userCategory {
         categoryName
         id
@@ -235,16 +156,6 @@ export const deleteUserColor = gql`
     }
   }
 `
-export const deleteUserColorReq = async (id) => {
-  try {
-    const { updatedCategory } = await graphcmsClient.request(deleteUserColor, {
-      id,
-    })
-    return updatedCategory
-  } catch (err) {
-    console.log(err)
-  }
-}
 
 export const deleteManyUserColor = gql`
   mutation deleteManyUserColor($id: ID!) {
@@ -254,11 +165,28 @@ export const deleteManyUserColor = gql`
   }
 `
 
-export const deleteManyUserColorReq = async (id) => {
-  try {
-    const res = await graphcmsClient.request(deleteManyUserColor, { id })
-    console.log(res)
-  } catch (err) {
-    console.log(err)
-  }
+const getAllCategoriesReq = (values) => basicRequest(getAllCategories, values)
+const getUserCategoryReq = (values) => basicRequest(getUserCategory, values)
+const createUserCategoryReq = (values) =>
+  basicRequest(createUserCategory, values)
+const updateUserCategoryNameReq = (values) =>
+  basicRequest(updateUserCategoryName, values)
+const deleteUserCategoryReq = (values) =>
+  basicRequest(deleteUserCategory, values)
+const createUserColorReq = (values) => basicRequest(createUserColor, values)
+const updateUserColorReq = (values) => basicRequest(updateUserColor, values)
+const deleteUserColorReq = (values) => basicRequest(deleteUserColor, values)
+const deleteManyUserColorReq = (values) =>
+  basicRequest(deleteManyUserColor, values)
+
+export default {
+  getAllCategoriesReq,
+  getUserCategoryReq,
+  createUserCategoryReq,
+  updateUserCategoryNameReq,
+  deleteUserCategoryReq,
+  createUserColorReq,
+  updateUserColorReq,
+  deleteUserColorReq,
+  deleteManyUserColorReq,
 }
