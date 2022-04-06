@@ -97,9 +97,11 @@ const Login = () => {
                 </div>
               ))}
 
-              <span className="mt-3 w-fit cursor-pointer rounded-md bg-gray-100 py-1 px-2 text-xs text-gray-500 hover:bg-red-50">
-                ⚠️ 이메일 혹은 비밀번호를 잊으셨나요?
-              </span>
+              <Link href="/findAccount">
+                <span className="mt-3 w-fit cursor-pointer rounded-md bg-gray-100 py-1 px-2 text-xs text-gray-500 hover:bg-red-50">
+                  ⚠️ 비밀번호를 잊으셨나요?
+                </span>
+              </Link>
 
               <button
                 type="submit"

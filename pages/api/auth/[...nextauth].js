@@ -64,6 +64,7 @@ export default NextAuth({
           if (token.sub) session.userId = token.sub
 
           session.user.categories = user.userCategory
+          session.user.phone = user.phone
         }
       }
 

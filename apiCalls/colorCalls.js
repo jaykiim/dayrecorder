@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { basicRequest } from './index'
 
-export const getAllCategories = gql`
+const getAllCategories = gql`
   query getAllCategories($email: String!) {
     userCategories(where: { dayrecorderUser: { email: $email } }) {
       categoryName
@@ -23,7 +23,7 @@ export const getAllCategories = gql`
   }
 `
 
-export const getUserCategory = gql`
+const getUserCategory = gql`
   query getUserCategory($email: String!) {
     categories: userCategories(where: { dayrecorderUser: { email: $email } }) {
       categoryName
@@ -39,7 +39,7 @@ export const getUserCategory = gql`
   }
 `
 
-export const createUserCategory = gql`
+const createUserCategory = gql`
   mutation createUserCategory($categoryName: String!, $email: String!) {
     createdCategory: createUserCategory(
       data: {
@@ -60,7 +60,7 @@ export const createUserCategory = gql`
   }
 `
 
-export const updateUserCategoryName = gql`
+const updateUserCategoryName = gql`
   mutation updateUserCategoryName($categoryName: String!, $id: ID!) {
     updatedCategory: updateUserCategory(
       data: { categoryName: $categoryName }
@@ -79,7 +79,7 @@ export const updateUserCategoryName = gql`
   }
 `
 
-export const deleteUserCategory = gql`
+const deleteUserCategory = gql`
   mutation deleteUserCategory($id: ID!) {
     deleteUserCategory(where: { id: $id }) {
       id
@@ -88,7 +88,7 @@ export const deleteUserCategory = gql`
   }
 `
 
-export const createUserColor = gql`
+const createUserColor = gql`
   mutation createUserColor(
     $hex: Hex!
     $tag: String!
@@ -118,7 +118,7 @@ export const createUserColor = gql`
   }
 `
 
-export const updateUserColor = gql`
+const updateUserColor = gql`
   mutation updateUserColor($hex: Hex!, $tag: String!, $id: ID!) {
     updatedUserColor: updateUserColor(
       data: { color: { hex: $hex }, tag: $tag }
@@ -139,7 +139,7 @@ export const updateUserColor = gql`
   }
 `
 
-export const deleteUserColor = gql`
+const deleteUserColor = gql`
   mutation deleteUserColor($id: ID!) {
     deleteUserColor(where: { id: $id }) {
       userCategory {
@@ -157,7 +157,7 @@ export const deleteUserColor = gql`
   }
 `
 
-export const deleteManyUserColor = gql`
+const deleteManyUserColor = gql`
   mutation deleteManyUserColor($id: ID!) {
     deleteManyUserColors(where: { userCategory: { id: $id } }) {
       count
