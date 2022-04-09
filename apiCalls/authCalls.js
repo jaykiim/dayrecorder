@@ -2,10 +2,10 @@ import axios from 'axios'
 import { gql } from 'graphql-request'
 import { graphcmsClient } from '../lib/graphcms'
 import { hash } from 'bcryptjs'
-import { CreateUserCategory, createUserColor } from './colorCalls'
+import colorCalls from './colorCalls'
 
-export const CreateUserByEmail = gql`
-  mutation CreateUserByEmail(
+export const createUserByEmail = gql`
+  mutation createUserByEmail(
     $username: String!
     $email: String!
     $password: String
@@ -21,16 +21,19 @@ export const CreateUserByEmail = gql`
 
 export const createInitialCategory = async (email) => {
   try {
-    const { createdCategory } = await graphcmsClient.request(
-      CreateUserCategory,
-      { categoryName: '미분류', email }
-    )
-    await graphcmsClient.request(createUserColor, {
+    const { createdCategory } = await colorCalls.createUserCategoryReq({
+      categoryName: '미분류',
+      email,
+    })
+
+    await colorCalls.createUserColorReq({
       hex: '#e5e5e5',
       tag: '미정',
       email,
       categoryId: createdCategory.id,
     })
+
+    return createdCategory
   } catch (err) {
     console.log(err)
   }
@@ -41,7 +44,7 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
     // 로컬 가입
     if (credentials) {
       const { username, email, password } = credentials
-      const { newUser } = await graphcmsClient.request(CreateUserByEmail, {
+      const { newUser } = await graphcmsClient.request(createUserByEmail, {
         username,
         email,
         password: await hash(password, 12),
@@ -52,20 +55,25 @@ export const createUserByEmailReq = async (credentials, userInfo) => {
 
     // 소셜 가입
     else {
-      const { username, email } = userInfo
-      const { newUser } = await graphcmsClient.request(CreateUserByEmail, {
+      const { name: username, email } = userInfo
+
+      // 유저 DB 등록
+      await graphcmsClient.request(createUserByEmail, {
         username,
         email,
       })
-      await createInitialCategory(email)
-      return newUser
+
+      // 초기 카테고리 생성
+      const userCategory = await createInitialCategory(email)
+
+      return userCategory
     }
   } catch (err) {
     console.log(err)
   }
 }
 
-export const GetUserByEmail = gql`
+export const getUserByEmail = gql`
   query getUserByEmail($email: String!) {
     user: dayrecorderUser(where: { email: $email }) {
       email
@@ -93,7 +101,7 @@ export const GetUserByEmail = gql`
 
 export const getUserByEmailReq = async (email) => {
   try {
-    const { user } = await graphcmsClient.request(GetUserByEmail, { email })
+    const { user } = await graphcmsClient.request(getUserByEmail, { email })
     return user
   } catch (err) {
     console.log(err)

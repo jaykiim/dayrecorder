@@ -8,7 +8,7 @@ import ColorPicker from './ColorPicker'
 
 const ColorForm = ({ email, categories, setCategories }) => {
   const selectedCategoryId =
-    useRecoilValue(currentCategoryId) || categories[1].id
+    useRecoilValue(currentCategoryId) || categories[1]?.id
 
   const fields = [
     { id: 'hex', placeholder: '직접 입력 or 왼쪽에서 선택' },

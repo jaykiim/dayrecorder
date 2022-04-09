@@ -52,16 +52,19 @@ export default NextAuth({
     async session({ session, token }) {
       if (session.user) {
         const { email } = session.user
-
         const user = await getUserByEmailReq(email) // DB에서 찾아서
         console.log('[...nextauth].js > callbacks > session', user)
 
         // 없으면 DB에 등록
         if (!user) {
-          createUserByEmailReq(null, session.user)
+          const userCategory = await createUserByEmailReq(null, session.user)
+          session.user.categories = [userCategory]
         } else {
           // 소셜 로그인의 경우
-          if (token.sub) session.userId = token.sub
+          if (token.sub) {
+            session.userId = token.sub
+            session.social = true
+          }
 
           session.user.categories = user.userCategory
           session.user.phone = user.phone

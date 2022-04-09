@@ -40,7 +40,7 @@ const CategoryDropdown = ({ email, categories, setCategories }) => {
       style={style}
       preview={
         getPreviewName() ||
-        categories[1].categoryName ||
+        categories[1]?.categoryName ||
         '생성된 카테고리가 없습니다'
       }
       fullHeight="210px"

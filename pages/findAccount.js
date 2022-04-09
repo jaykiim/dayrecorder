@@ -2,6 +2,7 @@ import { useState } from 'react'
 import EnterCode from '../components/account/EnterCode'
 import FindMyAccount from '../components/account/FindMyAccount'
 import ResetPassword from '../components/account/ResetPassword'
+import SetNewPassword from '../components/account/SetNewPassword'
 
 const STEPS = ['findMyAccount', 'resetPassword', 'enterCode', 'setNewPassword']
 
@@ -18,6 +19,8 @@ const findAccount = () => {
           <ResetPassword user={user} setUser={setUser} setStep={setStep} />
         ) : step === 2 ? (
           <EnterCode user={user} setStep={setStep} />
+        ) : step === 3 ? (
+          <SetNewPassword user={user} />
         ) : (
           ''
         )}

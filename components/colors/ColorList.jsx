@@ -5,7 +5,7 @@ import ColorListItem from './ColorListItem'
 
 const ColorList = ({ categories, setCategories }) => {
   const selectedCategoryId =
-    useRecoilValue(currentCategoryId) || categories[1].id
+    useRecoilValue(currentCategoryId) || categories[1]?.id
 
   const currentCategory = categories.find(
     (category) => category.id === selectedCategoryId
@@ -13,7 +13,7 @@ const ColorList = ({ categories, setCategories }) => {
 
   return (
     <div className="mt-8 flex flex-col gap-y-6">
-      {currentCategory.userColors?.map((color, i) => (
+      {currentCategory?.userColors?.map((color, i) => (
         <div key={i} className="rounded-lg border border-green-500 p-2">
           <ColorListItem
             colorInfo={color}

@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { compare, hash } from 'bcryptjs'
+import { compare } from 'bcryptjs'
 import { getUserByEmailReq } from '../../apiCalls/authCalls'
 import Password from '../micro/Password'
+import Link from 'next/link'
 
 const PasswordConfirm = ({ setPass }) => {
   const valueRef = useRef()
@@ -40,9 +41,11 @@ const PasswordConfirm = ({ setPass }) => {
         {error && <p className="mt-2 text-xs text-carrot-deep">{error}</p>}
 
         <div className="mt-4 flex items-center justify-between">
-          <p className="cursor-pointer rounded-md p-1 hover:bg-green-300">
-            비밀번호 찾기
-          </p>
+          <Link href="/findAccount">
+            <p className="cursor-pointer rounded-md p-1 hover:bg-green-300">
+              비밀번호 찾기
+            </p>
+          </Link>
           <button
             type="submit"
             className="rounded-md bg-green-700 px-5 py-2 text-white hover:bg-green-900"
