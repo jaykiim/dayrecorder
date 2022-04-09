@@ -23,10 +23,10 @@ const Todo = () => {
     <>
       <Title title="todo" />
 
-      <section className="bodyContainer">
+      <section className="bodyContainer overflow-y-auto">
         <NewTodo datestamp={datestamp} setTodos={setTodos} />
 
-        <div className="overflow-y-auto" style={{ height: '685px' }}>
+        <div className="overflow-y-auto">
           {Object.keys(todosByCat).map((categoryName, i) => (
             <div key={i} className="mb-6">
               <div className="mb-2 w-fit rounded-full border border-green-700 px-2 py-1 text-sm text-green-700">

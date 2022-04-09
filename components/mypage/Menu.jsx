@@ -1,6 +1,9 @@
+import { useSession } from 'next-auth/react'
 import React from 'react'
 
 const Menu = ({ selectedMenu, setSelectedMenu }) => {
+  const isSocialAccount = useSession().data.user.social
+
   const listStyle = (currentMenu) =>
     'w-full cursor-pointer py-3 my-1 hover:bg-green-500 ' +
     (selectedMenu === currentMenu ? 'bg-green-500' : '')
@@ -13,18 +16,25 @@ const Menu = ({ selectedMenu, setSelectedMenu }) => {
       >
         컬러 설정
       </li>
-      <li
-        onClick={() => setSelectedMenu('password')}
-        className={listStyle('password')}
-      >
-        비밀번호 변경
-      </li>
-      <li
-        onClick={() => setSelectedMenu('verification')}
-        className={listStyle('verification')}
-      >
-        인증 수단 추가
-      </li>
+
+      {!isSocialAccount ? (
+        <>
+          <li
+            onClick={() => setSelectedMenu('password')}
+            className={listStyle('password')}
+          >
+            비밀번호 변경
+          </li>
+          <li
+            onClick={() => setSelectedMenu('verification')}
+            className={listStyle('verification')}
+          >
+            인증 수단 추가
+          </li>
+        </>
+      ) : (
+        ''
+      )}
     </ul>
   )
 }

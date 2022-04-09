@@ -18,13 +18,13 @@ const Scheduler = () => {
     <>
       <Title title="scheduler" />
 
-      <section className="bodyContainer">
+      <section className="bodyContainer overflow-y-auto">
         <HeaderBtns isWeek={isWeek} setIsWeek={setIsWeek} />
 
-        <div className="mt-5">
+        <div className="mt-5 overflow-y-auto">
           <DateContainer isWeek={isWeek} />
 
-          <div className="flex overflow-y-scroll " style={{ height: 712 }}>
+          <div className="flex overflow-y-auto ">
             <TimeLine />
             <TableContainer isWeek={isWeek} />
           </div>

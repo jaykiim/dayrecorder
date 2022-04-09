@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import ColorDropdown from '../micro/ColorDropdown'
 
 const RecordCreateModal = ({ setModal, startRecording, cb }) => {
-  const test = useSession()
-  console.log(test)
   const categories = useSession().data.user.categories
   const [color, setColor] = useState(categories[0].userColors[0])
 
