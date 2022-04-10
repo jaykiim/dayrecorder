@@ -13,11 +13,7 @@ const ModdableItem = ({
     <div className={style?.container || style}>
       {children}
 
-      <div
-        className={
-          'flex cursor-pointer items-center gap-x-2 ' + style?.btnContainer
-        }
-      >
+      <div className={'flex cursor-pointer gap-x-2 ' + style?.btnContainer}>
         {!updating && (
           <BtnUpdate updating={updating} setUpdating={setUpdating} />
         )}

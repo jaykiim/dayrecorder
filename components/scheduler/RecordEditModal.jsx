@@ -7,10 +7,10 @@ const RecordEditModal = ({ modal, setModal, recordData }) => {
     <>
       <div
         onClick={() => setModal(false)}
-        className="fixed top-0 left-0 h-full w-full cursor-pointer bg-black bg-opacity-20"
+        className="fixed top-0 left-0 z-40 h-full w-full cursor-pointer bg-black bg-opacity-20"
       />
       <div
-        className="fixed left-1/2 top-1/2 z-30  -translate-x-1/2 -translate-y-1/2 rounded-lg bg-gray-50 p-5 shadow-lg md:bg-white"
+        className="fixed left-1/2 top-1/2 z-50  -translate-x-1/2 -translate-y-1/2 rounded-lg bg-gray-50 p-5 shadow-lg md:bg-white"
         style={{ width: '350px', height: '515px' }}
       >
         {/* ===============================================================================================================================  

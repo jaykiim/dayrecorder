@@ -11,7 +11,7 @@ const CalendarDate = () => {
     to: 'yyyy-mm-dd',
   })
 
-  // 같은 달의 모든 일자 ("prev.31" 또는 "next.1" 또는 숫자)
+  // 선택된 달의 모든 일자
   const daysOfMonth = dateUtil.daysOfMonth({
     dateInstance: clickedDate,
     datestamp: true,
@@ -22,8 +22,10 @@ const CalendarDate = () => {
 
   // 스타일
   const style = (datestamp) => {
-    const thisMonth = clickedDate.getMonth() + 1 === +datestamp.split('-')[1]
-    const style = ''
+    const currentMonth = +datestamp.split('-')[1]
+    const thisMonth = clickedDate.getMonth() + 1 === currentMonth
+
+    let style = ''
 
     // 오늘 날짜
     if (datestamp === today) style = 'rounded-full bg-green-700 text-white'
@@ -44,7 +46,7 @@ const CalendarDate = () => {
         <div
           key={i}
           className={
-            'flex h-9 cursor-pointer items-center justify-center text-xs ' +
+            'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-center text-xs' +
             style(datestamp)
           }
           onClick={() => setClickedDate(new Date(datestamp))}

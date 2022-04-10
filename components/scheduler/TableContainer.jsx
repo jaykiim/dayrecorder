@@ -10,7 +10,7 @@ const TableContainer = ({ isWeek }) => {
   const week = dateUtil.daysOfSameWeek({ dateInstance: date })
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full ">
       {isWeek ? (
         week.map((date, i) => (
           <div

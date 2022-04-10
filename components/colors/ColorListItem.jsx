@@ -58,7 +58,7 @@ const ColorListItem = ({
       updating={updating}
       setUpdating={setUpdating}
       handleDelete={handleDelete}
-      style="flex text-green-900"
+      style="flex text-green-900 items-center"
     >
       <div className="flex w-full items-center">
         <div
@@ -72,7 +72,7 @@ const ColorListItem = ({
               updateHex: colorInfo.color.hex,
               updateTag: colorInfo.tag,
             }}
-            style="flex-1 mr-8 relative text-sm"
+            style="flex flex-1 mr-8 relative text-sm"
             handleSubmit={handleSubmit}
             validate={validate.color('updateHex', 'updateTag')}
           >

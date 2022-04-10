@@ -21,13 +21,10 @@ const Scheduler = () => {
       <section className="bodyContainer overflow-y-auto">
         <HeaderBtns isWeek={isWeek} setIsWeek={setIsWeek} />
 
-        <div className="mt-5 overflow-y-auto">
-          <DateContainer isWeek={isWeek} />
-
-          <div className="flex overflow-y-auto ">
-            <TimeLine />
-            <TableContainer isWeek={isWeek} />
-          </div>
+        <DateContainer isWeek={isWeek} />
+        <div className="mt-5 flex overflow-y-auto">
+          <TimeLine />
+          <TableContainer isWeek={isWeek} />
         </div>
       </section>
     </>

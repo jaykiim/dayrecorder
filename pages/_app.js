@@ -25,11 +25,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 export default MyApp
 
 function Auth({ children }) {
-  const { data: session, status } = useSession({
+  const { data: session } = useSession({
     required: true,
-    // onUnauthenticated() {
-    //   Router.push('/landing')
-    // },
   })
   const isUser = !!session?.user
 
@@ -37,7 +34,5 @@ function Auth({ children }) {
     return children
   }
 
-  // Session is being fetched, or no user.
-  // If no user, useEffect() will redirect.
   return <div>Loading...</div>
 }

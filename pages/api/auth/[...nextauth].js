@@ -59,15 +59,15 @@ export default NextAuth({
         if (!user) {
           const userCategory = await createUserByEmailReq(null, session.user)
           session.user.categories = [userCategory]
-
-          if (token.sub) {
-            console.log()
-            session.user.userId = token.sub
-            session.user.social = true
-          }
         } else {
           session.user.categories = user.userCategory
           session.user.phone = user.phone
+        }
+
+        // 소셜 로그인 시
+        if (token.sub) {
+          session.user.userId = token.sub
+          session.user.social = true
         }
       }
 

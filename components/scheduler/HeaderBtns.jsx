@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
-import BtnLeft from '../micro/BtnLeft'
-import BtnText from '../micro/BtnText'
-import BtnRight from '../micro/BtnRight'
-import BtnToggleSquare from '../micro/BtnToggleSquare'
 import RecordCreateModal from './RecordCreateModal'
+import { BtnLeft, BtnText, BtnRight, BtnToggleSquare } from '../micro'
 import { useRecorder } from '../../hooks/useRecorder'
 import { useRecoilState } from 'recoil'
 import { selectedDate } from '../../store/common'
@@ -21,12 +18,16 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const recordStyle =
     'bg-carrot-light text-white px-3 py-1 rounded-md cursor-pointer hover:bg-carrot-deep'
 
+  // 레코드 시작 모달 열림 닫힘
   const [modal, setModal] = useState(false)
+
+  // 현재 레코딩 중인지 아닌지, 레코딩 시작, 레코딩 중지 및 레코드 등록
   const { recording, startRecording, stopRecording } = useRecorder()
 
+  // 현재 클릭된 날짜
   const [clickedDate, setClickedDate] = useRecoilState(selectedDate)
 
-  // 이전, 다음 날짜
+  // 이전, 다음 날짜 버튼 클릭
   const prevDate = dateUtil.prevDatestamp(clickedDate)
   const nextDate = dateUtil.nextDatestamp(clickedDate)
 

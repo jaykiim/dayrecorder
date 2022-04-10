@@ -30,7 +30,7 @@ const Record = (props) => {
     <>
       <div className="absolute w-full p-1" style={{ top }}>
         <div
-          className="flex cursor-pointer rounded-lg hover:shadow-lg"
+          className="z-50 flex cursor-pointer rounded-lg hover:shadow-lg"
           style={{ height: height < 25 ? '25px' : height + 'px' }}
           onClick={() => setModal(!modal)}
         >

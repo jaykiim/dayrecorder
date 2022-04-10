@@ -12,6 +12,7 @@ const Minutehand = ({ today, minhandPos }) => {
     position: 'absolute',
     width: '100%',
     top: `${minhandPos}px`,
+    zIndex: 20,
   }
 
   const indicator = {

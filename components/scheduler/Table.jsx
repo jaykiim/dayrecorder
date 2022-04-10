@@ -32,7 +32,7 @@ const Table = ({ dateObject }) => {
         <div
           id={time}
           key={i}
-          className="border-t border-l"
+          className="border-t border-l border-gray-200"
           style={{ height: ONE_MINUTE_HEIGHT * 30 }}
         ></div>
       ))}

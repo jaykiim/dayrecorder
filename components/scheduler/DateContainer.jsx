@@ -10,7 +10,7 @@ const DateContainer = ({ isWeek }) => {
   const week = dateUtil.daysOfSameWeek({ dateInstance: date })
 
   return (
-    <div className="mb-3 mr-2 flex">
+    <div className="mt-5 mr-2 flex">
       <div style={{ width: 39.55 }} />
       {isWeek ? (
         week.map((date, i) => (
