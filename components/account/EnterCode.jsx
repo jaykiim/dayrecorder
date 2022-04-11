@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { sendEmail, sendSmsCode } from '../../apicalls/authCalls'
+import { sendEmail, sendSmsCode } from '../../apiCalls/authCalls'
 
 const EnterCode = ({ user, setStep }) => {
   const method = user.address[0] === '*' ? '문자 메세지' : '이메일'
-  console.log('method', method)
 
   const inputRef = useRef()
 
@@ -30,8 +29,6 @@ const EnterCode = ({ user, setStep }) => {
     if (verificationCode === +inputRef.current.value) setStep(3)
     else setError(true)
   }
-
-  console.log(user)
 
   return (
     <>

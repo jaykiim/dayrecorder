@@ -13,8 +13,6 @@ const Colors = () => {
     categoriesData(email)
   )
 
-  console.log(categories)
-
   return (
     <>
       {categories.state === 'hasValue' && (

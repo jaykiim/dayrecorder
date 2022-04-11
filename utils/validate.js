@@ -59,7 +59,6 @@ const phoneNumber = Yup.object({
 })
 
 const verificationCode = (actualCode) => {
-  console.log(actualCode)
   Yup.object({
     verificationCode: Yup.string().matches(
       actualCode,

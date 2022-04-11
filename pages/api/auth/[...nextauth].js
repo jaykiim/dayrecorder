@@ -53,7 +53,6 @@ export default NextAuth({
       if (session.user) {
         const { email } = session.user
         const user = await getUserByEmailReq(email) // DB에서 찾아서
-        console.log('[...nextauth].js > callbacks > session', user)
 
         // 없으면 DB에 등록
         if (!user) {

@@ -52,8 +52,6 @@ const Login = () => {
               callbackUrl: `${window.location.origin}`,
             }) // [...nextauth].js > providers > CredentialsProvider > authorize 실행
 
-            console.log(res)
-
             if (res.error) {
               setServerMsg(res.error)
               setSubmitting(false)

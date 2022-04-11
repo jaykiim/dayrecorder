@@ -18,8 +18,6 @@ const PasswordChange = ({ setPass }) => {
   const [complete, setComplete] = useState(false)
 
   const handleSubmit = async (values) => {
-    console.log(values)
-
     await changePasswordReq({
       email,
       password: await hash(values.password, 12),

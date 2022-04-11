@@ -50,7 +50,6 @@ const ColorListItem = ({
     )
     setCategories(newCategories)
     setUpdating(false)
-    // console.log(newCategories)
   }
 
   return (

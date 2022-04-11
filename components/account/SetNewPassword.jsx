@@ -4,7 +4,7 @@ import Router from 'next/router'
 import Form from '../micro/Form'
 import validate from '../../utils/validate'
 import Password from '../micro/Password'
-import { changePasswordReq } from '../../apicalls/authCalls'
+import { changePasswordReq } from '../../apiCalls/authCalls'
 import { signOut } from 'next-auth/react'
 
 const SetNewPassword = ({ user }) => {

@@ -19,7 +19,6 @@ const useRecordEditor = (recordId, records, setRecords, setModal, email) => {
     selectedColor,
   }) => {
     const { start, end, title, memo } = values
-    console.log(values)
 
     // 삭제된 컬러인데 재선택 안하고 그냥 submit 누른 경우
     if (!selectedColor) {

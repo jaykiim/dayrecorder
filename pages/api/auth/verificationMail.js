@@ -22,7 +22,6 @@ export default async (req, res) => {
   smtpTransport.sendMail(mailOption, function (error, info) {
     if (error) console.log(error)
     else {
-      console.log('Email sent to: ' + info.response)
       res.send(code)
       smtpTransport.close()
     }

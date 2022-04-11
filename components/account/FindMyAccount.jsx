@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import {
   findAccountByPhoneReq,
   getUserByEmailReq,
-} from '../../apicalls/authCalls'
+} from '../../apiCalls/authCalls'
 
 const FindMyAccount = ({ setUser, setStep }) => {
   const inputRef = useRef()
