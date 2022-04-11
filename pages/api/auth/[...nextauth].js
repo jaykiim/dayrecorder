@@ -5,7 +5,7 @@ import { compare } from 'bcrypt'
 import {
   createUserByEmailReq,
   getUserByEmailReq,
-} from '../../../apicalls/authCalls'
+} from '../../../apiCalls/authCalls'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
