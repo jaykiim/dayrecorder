@@ -8,13 +8,13 @@ import {
 } from '../../../apiCalls/authCalls'
 
 export default NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.SECRET,
   session: {
     strategy: 'jwt', // 사용자 세션 저장 방법 (database 또는 jwt를 선택할 수 있는데, CredentialsProvider를 사용하려면 jwt를 써야한다.)
     maxAge: 30 * 24 * 60 * 60, // 유효 기간 30일 (기본값)
   },
   jwt: {
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.SECRET,
   },
   debug: process.env.NODE_ENV === 'development',
   providers: [
