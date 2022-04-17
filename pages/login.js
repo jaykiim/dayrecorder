@@ -127,7 +127,6 @@ const Login = () => {
           >
             구글로 시작
           </button>
-          <button className="btnFullOutlineGray">페이스북으로 시작</button>
         </div>
       </div>
     </div>
