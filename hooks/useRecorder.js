@@ -1,13 +1,15 @@
-import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilStateLoadable } from 'recoil'
-import { recordCalls } from '../apiCalls'
+import { useSession } from 'next-auth/react'
 import { isRecording, recordsData } from '../store/common'
+import { recordCalls } from '../apiCalls'
 import { dateUtil, timeUtil } from '../utils'
 
 export function useRecorder() {
   // 현재 레코딩 중인지 (전역 상태)
   const [recording, setRecording] = useRecoilState(isRecording)
+
+  // 컴포넌트 마운트 시 로컬 스토리지 확인 후 recording 값 변경
   useEffect(() => {
     window.localStorage.getItem('recording')
       ? setRecording(true)
@@ -31,9 +33,7 @@ export function useRecorder() {
     // TODO 레코딩 시작
   ============================================================================================================================================ */
 
-  const startRecording = (e, title, userColor, setModal, todoId) => {
-    e?.preventDefault()
-
+  const startRecording = ({ title, color, setModal, todoId }) => {
     setRecording(true)
 
     window.localStorage.setItem(
@@ -41,7 +41,7 @@ export function useRecorder() {
       JSON.stringify({
         start: timeUtil.getCurrentTime(),
         title,
-        userColor,
+        color,
         date: datestamp,
         todoId,
       })
@@ -79,8 +79,8 @@ export function useRecorder() {
 
       // 레코딩 시작 시 설정한 값 사용 : 제목, 컬러, 카테고리
       title: saved.title,
-      colorId: saved.userColor?.id,
-      categoryId: saved.userColor?.userCategory.id,
+      colorId: saved.color?.id,
+      categoryId: saved.color?.userCategory.id,
 
       // 입력받지 않은 값
       memo: '',

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import RecordCreateModal from './RecordCreateModal'
+import { useRecoilState } from 'recoil'
 import { BtnLeft, BtnText, BtnRight, BtnToggleSquare } from '../micro'
 import { useRecorder } from '../../hooks/useRecorder'
-import { useRecoilState } from 'recoil'
 import { selectedDate } from '../../store/common'
 import { dateUtil } from '../../utils'
+import RecordCreateModal from './RecordCreateModal'
 
 const HeaderBtns = ({ isWeek, setIsWeek }) => {
   const arrowStyle = {

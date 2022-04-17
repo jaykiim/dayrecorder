@@ -22,7 +22,7 @@ const TodoRecorder = ({ todo, color }) => {
     // 이전에 기록 중이던 것이 있으면 등록
     stopRecording()
 
-    startRecording(null, todo.title, color, null, todo.id) // 레코드 시작 정보 기록
+    startRecording({ title: todo.title, color, todoId: todo.id }) // 레코드 시작 정보 기록
     setRecording(true) // 버튼 교체
     setTimer(true) // 타이머 동작
   }

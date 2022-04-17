@@ -1,5 +1,5 @@
-import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import ColorDropdown from '../micro/ColorDropdown'
 
 const RecordCreateModal = ({ setModal, startRecording, cb }) => {
@@ -7,7 +7,8 @@ const RecordCreateModal = ({ setModal, startRecording, cb }) => {
   const [color, setColor] = useState(categories[0].userColors[0])
 
   const handleSubmit = (e) => {
-    startRecording(e, e.target.value, color, setModal)
+    e.preventDefault()
+    startRecording({ title: e.target.value, color, setModal })
     if (cb) cb()
   }
 
