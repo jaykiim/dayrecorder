@@ -1,10 +1,10 @@
+import { ONE_MINUTE_HEIGHT } from '../store/constants'
+
 /* 
 ============================================================================================================ 
   DO :: 현재 시각 
 ============================================================================================================ 
 */
-
-import { ONE_MINUTE_HEIGHT } from '../store/constants'
 
 const getCurrentTime = () => {
   let [hr, min] = [new Date().getHours(), new Date().getMinutes()]

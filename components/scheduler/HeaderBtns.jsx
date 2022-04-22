@@ -48,7 +48,7 @@ const HeaderBtns = ({ isWeek, setIsWeek }) => {
       </div>
 
       <div className="relative">
-        {/* 시간 기록 시작 버튼 */}
+        {/* 시간 기록 시작 (종료) 버튼 */}
         {recording ? (
           <button onClick={stopRecording} className={recordStyle}>
             Stop

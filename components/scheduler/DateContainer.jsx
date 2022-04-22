@@ -6,8 +6,8 @@ import Date from './Date'
 
 const DateContainer = ({ isWeek }) => {
   const date = useRecoilValue(selectedDate)
-  const dateObject = dateUtil.dateConverter({ date, to: 'object' })
   const week = dateUtil.daysOfSameWeek({ dateInstance: date })
+  const dateObject = dateUtil.dateConverter({ date, to: 'object' })
 
   return (
     <div className="mt-5 mr-2 flex">
