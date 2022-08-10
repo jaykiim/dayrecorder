@@ -1,4 +1,4 @@
-### What is dayrecorder
+## What is dayrecorder
 
 `주소` https://next-dayrecorder.vercel.app/
 
