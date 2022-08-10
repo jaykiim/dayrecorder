@@ -1,6 +1,12 @@
-## What is dayrecorder
+## Info
 
-`주소` https://next-dayrecorder.vercel.app/
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white">  <img src="https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=Twilio&logoColor=white"> <img src="https://img.shields.io/badge/Recoil-303846?style=for-the-badge&logo=Recoil&logoColor=white">  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=GraphQL&logoColor=white">  <img src="https://img.shields.io/badge/Formik-F9FAFB?style=for-the-badge&logo=Formik&logoColor=white"> <img src="https://img.shields.io/badge/Nodemailer-22B573?style=for-the-badge&logo=Nodemailer&logoColor=white">
+
+- `주소` https://next-dayrecorder.vercel.app/  
+ 
+- `제작 기간` 2022.03.07 ~ 2022.04.23 
+
+## What is dayrecorder
 
 dayrecorder 는 자신의 하루 일과를 측정하는 도구입니다. 
 
@@ -33,10 +39,4 @@ dayrecorder 는 자신의 하루 일과를 측정하는 도구입니다.
 카테고리별 투자 시간을 일간/주간/월간으로 확인할 수 있습니다. 
 
 ![image](https://user-images.githubusercontent.com/81809559/183948183-3d70d7a1-9be1-4e23-a476-c443e62665ee.png)
-
-## Info
-
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white">  <img src="https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=Twilio&logoColor=white"> <img src="https://img.shields.io/badge/Recoil-303846?style=for-the-badge&logo=Recoil&logoColor=white">  <img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=GraphQL&logoColor=white">  <img src="https://img.shields.io/badge/Formik-F9FAFB?style=for-the-badge&logo=Formik&logoColor=white"> <img src="https://img.shields.io/badge/Nodemailer-22B573?style=for-the-badge&logo=Nodemailer&logoColor=white">
-
-- `제작 기간` 2022.03.07 ~ 2022.04.23 
 
