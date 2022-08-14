@@ -10,7 +10,7 @@ const Calendar = () => {
   const [toggle, setToggle] = useState(true)
 
   return (
-    <div className="w-96 md:w-full">
+    <div className="sm:w-full">
       <Header
         clickedDate={date}
         setClickedDate={setDate}

@@ -1,12 +1,19 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
-import { currentTime, minutehandPosition } from '../../store/common'
 import { ONE_MINUTE_HEIGHT } from '../../store/constants'
 import { timeUtil } from '../../utils'
 
+// recoil
+import { useRecoilValue } from 'recoil'
+import { currentTime, minutehandPosition } from '../../store/common'
+
 const TimeLine = () => {
+  //
   const timeline = timeUtil.getTimeline()
+
+  // 현재 시각
   const time = useRecoilValue(currentTime)
+
+  // 현재 시각 태그 위치
   const timeTagPos = useRecoilValue(minutehandPosition)
 
   return (

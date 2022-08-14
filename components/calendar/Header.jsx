@@ -30,7 +30,7 @@ const Header = ({ clickedDate, setClickedDate, toggle, setToggle }) => {
   }
 
   return (
-    <header className="flex items-center px-5 md:px-2">
+    <header className="flex items-center md:px-2">
       {/* GUIDE 이전 달 =================================================================================================================  */}
 
       <button
